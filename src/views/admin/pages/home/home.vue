@@ -92,13 +92,15 @@
         overflow-x: hidden;
         overflow-y: hidden;
         background-color: #1bcbae;
+        width: 100%;
+        position: fixed;
     }
     .main-header {
         background-color: #e7ccaf;
         position: relative;
         height: 70px;
         width: 100%;
-        // text-align: center;                                      
+        text-align: center;                                      
         .main-header-left{
             background-color: #e7ccaf;
             position: absolute;
@@ -134,6 +136,7 @@
                 margin-left: 200px;
                 margin-top: 25px;
                 font-size: 1.3em;
+                font-weight: 700;
             }                     
             .edit{
                 display:inline;
@@ -149,7 +152,7 @@
         
     }
     .header-menu{
-        .el-menu{   
+        .el-menu{ 
             .el-menu-item{
                 margin-left: 6%;           
             }
@@ -169,7 +172,7 @@
             }
             .menu-item-font{
                 font-size: 1.5em;
-
+                font-weight: 800;
             }
 
         }
@@ -181,5 +184,6 @@
         line-height:48px;
         text-align:center;
         font-size: 1.3em;
+        font-weight: 600;
     }
 </style>
