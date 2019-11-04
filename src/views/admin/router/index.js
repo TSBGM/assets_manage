@@ -20,14 +20,14 @@ const router = new Router({
     scrollBehavior: () => ({y: 0}),
     routes: [
         {
-            path: '/home',
+            path: '/',
             name: '首頁',
             component: Admin,
             redirect: '/assetsDetails',
-            // meta: {
-            //     title: '',
-            //     requireAuth: true,  
-            // },
+            meta: {
+                title: '',
+                requireAuth: true,  
+            },
             children:[
                 {
                     path: '/assetsDetails',
