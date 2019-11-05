@@ -5,235 +5,529 @@
             <el-radio v-model="radio" label="2">通過excel批量導入</el-radio>
         </div>
         <div class="topline"></div>
-        <el-form>
-            <span class="title_1">請錄入内容后點擊保存：</span>
-            <div class="rowcss">
+        <div v-if="radio === '1'">
+            <el-form>
+                <span class="title_1">請錄入内容后點擊保存：</span>
+                <div class="rowcss">
+                    <el-row>
+                        <el-col :span="2">
+                            <el-form-item label="資產信息：" label-width="90px" >
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="廠區："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.factoryId" clearable class="select">
+                                    <el-option
+                                        v-for="item in factoryList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="工作區域："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.areaId" clearable class="select" @change="selectAreaChange(assetsComelnModel.areaId)">
+                                    <el-option
+                                        v-for="item in areaList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="工作樓棟："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.buildingId" clearable class="select" :disabled="this.areaIdFlag" placeholder="請先輸入工作區域">
+                                    <el-option
+                                        v-for="item in buildingList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="使用位置：" label-width="90px" >
+                                <el-input class="input" placeholder="使用位置至少具體到辦公室" v-model="assetsComelnModel.usingPlace"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="2">
+                            <el-form-item label=""  label-width="90px" >
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="資產狀態："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.assetsStatusId" clearable class="select">
+                                    <el-option
+                                        v-for="item in assetsStatusList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="資產分類："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.typeId" clearable class="select">
+                                    <el-option
+                                        v-for="item in assetsTypeList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="資產名稱："  label-width="90px" >
+                                <el-input class="input" v-model="assetsComelnModel.assetsName"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="2">
+                            <el-form-item label=""  label-width="90px" >
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="事業群："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.bgId" clearable class="select" @change="selectBGChange(assetsComelnModel.bgId)"> 
+                                    <el-option
+                                        v-for="item in bgList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="事業處："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.unitId" clearable class="select"  placeholder="請先輸入事業群"
+                                :disabled="this.BgFlag" @change="selectUnitChange(assetsComelnModel.bgId,assetsComelnModel.unitId)">
+                                    <el-option
+                                        v-for="item in unitList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="部："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.departId" clearable class="select" placeholder="請先輸入事業處"
+                                :disabled="this.unitFlag" @change="selectDepartChange(assetsComelnModel.bgId,assetsComelnModel.unitId,assetsComelnModel.departId)">
+                                    <el-option
+                                        v-for="item in departList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="課："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.classId" clearable class="select" 
+                                placeholder="請先輸入部" :disabled="this.departFlag">
+                                    <el-option
+                                        v-for="item in classList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="2">
+                            <el-form-item label="員工信息："  label-width="90px" >
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="姓名："  label-width="90px" >
+                                <el-input class="input" v-model="assetsComelnModel.ownerName"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="工號："  label-width="90px" >
+                                <el-input class="input" v-model="assetsComelnModel.ownerCode"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="幹部類型："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.staffTypeId" clearable class="select">
+                                    <el-option
+                                        v-for="item in staffTypeList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="是否在職："  label-width="90px" >
+                                <el-select v-model="assetsComelnModel.workStatusId" clearable class="select">
+                                    <el-option
+                                        v-for="item in workStatusList"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="2">
+                            <el-form-item label=""  label-width="90px" >
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="入職時間："  label-width="90px" >
+                                <el-date-picker
+                                        type="date"
+                                        style="width: 70%; margin-top:5px;"
+                                        :editable="true"
+                                        :picker-options="birthOptions"
+                                        @change="getSTime"
+                                        placeholder=""
+                                        v-model="assetsComelnModel.joinBgDate">
+                                </el-date-picker>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col>
+                            <el-form-item label="需求説明：" label-width="90px">
+                                <el-input
+                                    class="input1"
+                                    type="textarea"
+                                    :rows="3"
+                                    v-model="assetsComelnModel.specifications">
+                                </el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>   
+                    <el-row>
+                        <el-col class="col">
+                            <el-form-item label="備注：" label-width="90px">
+                                <el-input
+                                    class="input1"
+                                    type="textarea"
+                                    :rows="3"
+                                    v-model="assetsComelnModel.remark">
+                                </el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </div>
+                <div class="topline1"></div>
                 <el-row>
-                    <el-col :span="2">
-                        <el-form-item label="資產信息：" label-width="90px" >
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="廠區："  label-width="90px" >
-                            <el-select v-model="value" clearable class="select"> <!-- clearable屬性表示選擇框可清空 -->
-                               <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="工作區域："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="工作樓棟："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="使用位置：" label-width="90px" >
-                            <el-input class="input" placeholder="使用位置至少具體到辦公室"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="2">
-                        <el-form-item label=""  label-width="90px" >
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="資產狀態："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="資產分類："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="資產名稱："  label-width="90px" >
-                            <el-input class="input"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="2">
-                        <el-form-item label=""  label-width="90px" >
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="事業群："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="事業處："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="部："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="課："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="2">
-                        <el-form-item label="員工信息："  label-width="90px" >
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="姓名："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="工號："  label-width="90px" >
-                            <el-input class="input"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="幹部類型："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="是否在職："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="2">
-                        <el-form-item label=""  label-width="90px" >
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="入職時間："  label-width="90px" >
-                            <el-date-picker
-                                    type="date"
-                                    style="width: 70%;"
-                                    :editable="true"
-                                    :picker-options="birthOptions"
-                                    @change="getSTime"
-                                    placeholder="Time1">
-                            </el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col>
-                        <el-form-item label="需求説明：" label-width="90px">
-                            <el-input
-                                class="input1"
-                                type="textarea"
-                                :rows="3"
-                                v-model="textarea">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>   
-                <el-row>
-                    <el-col class="col">
-                        <el-form-item label="備注：" label-width="90px">
-                            <el-input
-                                class="input1"
-                                type="textarea"
-                                :rows="3"
-                                v-model="remark">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </div>
-            <div class="topline1"></div>
-            <el-row>
-                <el-col :span="8">
-                    <el-form-item>
-                        <el-button class="button1" type="text">保存</el-button>
+                    <el-form-item style="margin-left:35%">
+                        <el-button class="button_1 " type="button" @click = "saveComeln()">保存</el-button>
+                        <el-button class="button_1 " type="button" @click = "saveComeln()">新增下一條</el-button>
+                        <el-button class="button_1 " type="button" @click = "saveComeln()">返回</el-button>
                     </el-form-item>
-                </el-col>
-                <el-col :span="2">
-                    <el-form-item>
-                        <el-button class="button2" type="text">新增下一條</el-button>
+                </el-row>
+            </el-form>
+        </div>
+        <div v-if="radio === '2'">
+            <el-form>
+                <div>
+                    <el-button class="button_import" type="button" @click = "importTemplate()"><span>下載批量導入模板</span></el-button>
+                    <!-- <el-button class="button_1 " type="button" @click = "saveComeln()">選擇Excel文件</el-button> -->
+                    <el-upload 
+                        ref="upload"
+                        :action="`${FILE_URL_80}/tsbg/upload/importmore`"
+                        :headers="headers"
+                        :file-list="fileList"
+                        :data="otherData"
+                        :on-remove="fileRemvoeFunc"
+                        :on-error="fileErrorFunc"
+                        :before-upload="beforeUploadFunc"
+                        :on-change="handleUploadChange"
+                        :on-success="uploadCtrlFunc"
+                        :on-exceed="handleExceed"
+                        :limit="1"
+                        accept=".xlsx, .xls, .xlsm"
+                        :auto-upload="false"
+                        :http-request="uploadSectionFile">
+                        <el-button slot="trigger" type="plain" class="button_import">
+                            選擇Excel文件
+                        </el-button>
+                    </el-upload>
+                </div>    
+                <div>
+                    <span class="title_1">要導入的文件：</span>
+                    <span class="">XXXX</span>
+                </div>
+                <div class="topline1"></div>
+                <el-row>
+                    <el-form-item style="margin-left:35%">
+                        <el-button class="button_1 " type="button" @click = "saveComeln()">確認保存</el-button>
+                        <el-button class="button_1 " type="button" @click = "saveComeln()">返回</el-button>
                     </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                    <el-form-item>
-                        <el-button class="button3" type="text">返回</el-button>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
+                </el-row>
+            </el-form>
+        </div>
     </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        radio: '1',
-        textarea: '',
-        remark:'',
-      };
+// import {getInfo,getPermission} from '../../../../utils/auth'
+    export default {
+        data () {
+            return {
+                radio: '1',
+                assetsComelnModel:{
+                    // projId:3,//項目id
+                    userCode:'133',//登錄人工號
+                    factoryId:'',//厰區
+                    areaId:'',//工作區域列表
+                    buildingId:'',//廠内區域樓棟
+                    assetsStatusId:'',//資產狀態列表
+                    typeId:'',//资产类型
+                    staffTypeId:'',//幹部類型
+                    workStatusId:'',//在职状态
+                    bgId:'',//查询事业群
+                    unitId:'',//根据bgId查询事业处unit接口
+                    departId:'',//根据bgId、 unitId查询部门depart接口
+                    classId:'',//根据bgId、 unitId 、departId查询課Class接口
+                    usingPlace:'',//使用位置
+                    assetsName:'',//資產名稱
+                    ownerCode:'',
+                    ownerName:'',
+                    specifications:'',//需求说明
+                    remark:'',//備註
+                    joinBgDate:'',//入职时间
+
+                },
+                factoryList:[],//廠區
+                areaList:[],//工作區域列表
+                buildingList:[],//廠内區域樓棟
+                assetsStatusList:[],//資產狀態列表
+                assetsTypeList:[],//资产类型
+                staffTypeList:[],//幹部類型
+                workStatusList:[],//在职状态
+                bgList:[],//查询事业群
+                unitList:[],//根据bgId查询事业处unit接口
+                departList:[],//根据bgId、 unitId查询部门depart接口
+                classList:[],//根据bgId、 unitId 、departId查询課Class接口
+
+                areaIdFlag:'',
+                BgFlag:'',
+                unitFlag:'',
+                departFlag:'',
+            };
+        },
+        mounted () {
+            // this.init()
+            this.selectFactory()//廠區
+            this.selectArea()//工作區域列表
+            this.selectAssetsStatus()//資產狀態列表
+            this.selectAssetsType() //资产类型
+            this.selectStaffType()//幹部類型
+            this.selectWorkStatus() //在职状态
+            this.selectBgList() //查询事业群
+        },
+        methods: {
+            init(){
+                //權限管理
+                let permission = JSON.parse(getPermission());
+                let permissionList = permission.permissionList
+                if(permissionList.length == 2){
+                    this.POWER = ''
+                }else if(permissionList.length == 3){
+                    this.POWER = 'powerstamp'
+                }
+            },
+            //廠區
+            selectFactory(){
+                this.$store.dispatch('selectFactory')
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.factoryList.push({label:res.data[i].factoryName,value:res.data[i].factoryId});
+                        }
+                    }
+                })
+            },
+            //工作區域列表
+            selectArea(){
+                this.$store.dispatch('selectArea')
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.areaList.push({label:res.data[i].areaName,value:res.data[i].areaId});
+                        }
+                    }
+                    
+                })
+            },
+            selectAreaChange(areaId){
+                this.buildingList = []
+                this.areaIdFlag = this.assetsComelnModel.areaId ? false:true//工作區域狀態
+                if(!this.areaIdFlag){
+                    this.selectBuildingByArea(areaId)//廠内區域樓棟
+                }
+            },
+            //廠内區域樓棟
+            selectBuildingByArea(areaId){
+                this.$store.dispatch('selectBuildingByArea',{areaId:areaId})
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.buildingList.push({label:res.data[i].buildingName,value:res.data[i].buildingId});
+                        }
+                    }
+                })
+            },
+            //資產狀態列表
+            selectAssetsStatus(){
+                this.$store.dispatch('selectAssetsStatus')
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.assetsStatusList.push({label:res.data[i].assetsStatusName,value:res.data[i].assetsStatusId});
+                        }
+                    }
+                })
+            },
+            //资产类型
+            selectAssetsType(){
+                this.$store.dispatch('selectAssetsType')
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.assetsTypeList.push({label:res.data[i].typeName,value:res.data[i].typeId});
+                        }
+                    }
+                })
+            },
+            //干部类型
+            selectStaffType(){
+                this.$store.dispatch('selectStaffType')
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.staffTypeList.push({label:res.data[i].staffTypeName,value:res.data[i].staffTypeId});
+                        }
+                    }
+                })
+            },
+            //在职状态
+            selectWorkStatus(){
+                this.$store.dispatch('selectWorkStatus')
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.workStatusList.push({label:res.data[i].workStatusName,value:res.data[i].workStatusId});
+                        }
+                    }
+                })
+            },
+            //查询事业群
+            selectBgList(){
+                this.$store.dispatch('selectBgList')
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.bgList.push({label:res.data[i].bgName,value:res.data[i].bgId});
+                        }
+                    }
+                })
+            },
+            selectBGChange(bgId){
+                this.unitList = []
+                this.BgFlag = this.assetsComelnModel.bgId ? false:true//工作區域狀態
+                if(!this.BgFlag){
+                    this.selectUnitList(bgId)//廠内區域樓棟
+                }
+            },
+            //根据bgId查询事业处unit接口
+            selectUnitList(bgId){
+                this.$store.dispatch('selectUnitList',{bgId:bgId})
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.unitList.push({label:res.data[i].unitName,value:res.data[i].unitId});
+                        }
+                    }
+                })
+            },
+            selectUnitChange(bgId,unitId){
+                this.departList = []
+                this.unitFlag = this.assetsComelnModel.unitId ? false:true//工作區域狀態
+                if(!this.unitFlag){
+                    this.selectDepartList(bgId,unitId)//廠内區域樓棟
+                }
+            },
+            //根据bgId、 unitId查询部门depart接口
+            selectDepartList(bgId,unitId){
+                this.$store.dispatch('selectDepartList',{bgId:bgId,unitId:unitId})
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.departList.push({label:res.data[i].departName,value:res.data[i].departId});
+                        }
+                    }
+                })
+            },
+            selectDepartChange(bgId,unitId,departId){
+                this.classList = []
+                this.departFlag = this.assetsComelnModel.departId ? false:true//工作區域狀態
+                if(!this.departFlag){
+                    this.selectClassList(bgId,unitId,departId)//廠内區域樓棟
+                }
+            },
+            //根据bgId、 unitId 、departId查询課Class接口
+            selectClassList(bgId,unitId,departId){
+                this.$store.dispatch('selectClassList',{bgId,unitId,departId})
+                .then(res => {
+                    if(res.code == 100){
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.classList.push({label:res.data[i].className,value:res.data[i].classId});
+                        }
+                    }
+                })
+            },
+            //保存
+            saveComeln(){
+                this.$store.dispatch('saveComelninsert',this.assetsComelnModel)
+                .then(res => {
+                    if(res.code == 100){
+                        this.$alert(res.message, '提示', {
+                            confirmButtonText: '确定',
+                            showClose: false
+                            }).then(() => {
+                        })
+                    }
+                })
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>
     .register-l{
-        float: left;
-        width: 95%;
-        margin: 30px;
         margin-left: 5%;
         height: 100%;
         background-color: #1bcbae;
         width: 100%;
+        /* overflow-y: auto; */
         position: fixed;
+       
     }  
     .radio{
         margin-top: 1%;
@@ -279,37 +573,27 @@
         margin-top: 3.5%;
         border:0.5px rgb(10, 10, 10) solid;
     }
-    .button1{
-        margin: 10px 110%;
+    .button_1{
         color: #000080;
         background-color: #88C700;
-        width: 35px;
         height: 38px;
         font-size:14px;
+        margin-top: 10px;
     }
-    .button2{
-        margin: 10px 75%;
-        color: #000080;
-        background-color: #88C700;
-        width: 80px;
-        height: 38px;
-        font-size:14px;
-    }
-    .button3{
-        margin: 10px 10%;
-        color: #000080;
-        background-color: #88C700;
-        width: 35px;
-        height: 38px;
-        font-size:14px;
-    }
+
+    /* .button1{
+        width: 58px;
+    } */
+    /* .button2{
+        width: 105px;
+    } */
     .search-bar1 {
-        /* padding: 12px 22px 14px; */
         background: #fff;
         width: 87%;
     }
-    .table{
-        background-color: #D0D0AE;
-        width: 100%
+    .button_import{
+        background-color: #88C700;
+        height: 25px;
+        line-height: 25px;
     }
 </style>

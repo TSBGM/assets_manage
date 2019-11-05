@@ -8,27 +8,13 @@
             <span>TSBG固定資產管理系統</span>
         </div>
         <div class="user-header">
-            <el-form>
-                <el-row>
-                    <el-col :span="8">
-                        <el-form-item class="form" label="當前用戶:" label-width="80px" >
-                            <span class="span-header">胡永鋒{{this.userName}}</span>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-form-item class="form" label="角色:" label-width="80px">
-                            <span class="span-header">MIS資產管理員{{this.userName}}</span>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-form-item>
-                            <el-button class="button2" type="text">登出</el-button>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <!-- <div class="edit" @click="gotoLogout">
-            </div> -->
+            <div class="form" >當前用戶：胡永鋒</div>
+            <div class="form" >角色：MIS資產管理員</div>
+            
+            <div class="edit" @click="gotoLogout">
+                <span class="span-header">登出</span>
+            </div>
+        
         </div>
     </div>
   
@@ -57,6 +43,7 @@
 </template>
 
 <script>
+// import {getInfo,getPermission} from '../../../../utils/auth'
   export default {
     components: {
     },
@@ -67,6 +54,7 @@
         }
     },
     mounted () {
+        // this.init()
     },
     watch: {
         $route () {
@@ -74,6 +62,16 @@
         }
     },
     methods: {
+        init(){
+            //權限管理
+            let permission = JSON.parse(getPermission());
+            let permissionList = permission.permissionList
+            if(permissionList.length == 2){
+                this.POWER = ''
+            }else if(permissionList.length == 3){
+                this.POWER = 'powerstamp'
+            }
+        },
         handleSelect(key, keyPath) {
         }, 
         setCurrentRoute () {
@@ -81,16 +79,14 @@
         },  
         // <!--退出登录-->
         gotoLogout() {  
-            this.$store.dispatch('ecologout').then((rep) => {
-                if(rep.data.code == 100){
-                   this.$router.push({
-                        path: "/"
-                    }); 
-                    localStorage.clear();//清除localStorage
-                }else{
-                    alert(rep.data.message)
-                }
-            })
+            localStorage.clear();//清除localStorage
+            removeToken()
+            removeInfo()
+            removePermission()
+            setProjId(3)
+            this.$router.push({
+                path:(window.location.replace(`http://`+window.location.host))
+            }); 
             
         },
     },
@@ -134,27 +130,32 @@
                 display:inline-block;
                 vertical-align: middle;
             }
-        }    
+        }   
         .user-header{
-            background-color: #e7ccaf;
-            text-align: center;
-            position: absolute;
-            top: 10px;
-            left: 30%;
-            // right: 50%;
-            margin: auto;
-                 
+            padding-top: 22px;
+            padding-left: 40%;
+            .form{
+                display:inline;
+                font-size: 1.5em;
+                padding-top: 5px;
+                margin-right: 10%;
+            }           
+            .span-header{
+                margin-top: 15px;
+                margin-left: 5%;
+                width:100%;
+                font-size: 1.5em;
+                font-weight: 400;
+            }
             .edit{
                 display:inline;
-                margin-left: 10px;
-                &:hover .img-header{
-                    content: url('../../../../assets/images/edit-hovor.png');
-                } 
+                margin-left: 10%;
                 &:hover .span-header{
                     color:#a5acbe;
                 }            
             }
-        }
+        }        
+        
         
     }
     .header-menu{
@@ -183,25 +184,5 @@
 
         }
     }
-    .form{
-        width: 150px;
-        margin-top: 5px;
-    }           
-    .span-header{
-        margin-top: 15px;
-        margin-left: 5%;
-        width:100%;
-        // height:20px;
-        font-size: 14px;
-        font-weight: 400;
-    }
-    .button2{
-        margin-top: 10px;
-        margin-left: 700%;
-        color:black;
-        width: 80px;
-        height: 38px;
-        font-size:14px;
-        font-weight: 600;
-    }
+    
 </style>

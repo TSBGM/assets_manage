@@ -37,7 +37,7 @@
     </header>
 
     <main v-clickoutside="_tableClickOutsideHandler">
-      <slot
+      <slot 
         name="table"
         :clone="clone"
         :data="table.data"
@@ -73,19 +73,7 @@
           {{ table ? (table.totalSize || 0) : 0 }} 條數據，
           共 {{ totalPages }} 頁
         </span>
-        <!-- <el-pagination
-            ref="page"
-            @size-change="pageSizeChangeHandler"
-            @current-change="pageIndexChangeHandler"
-            :current-page="1"
-            :page-sizes="[8, 10, 15, 20, 30, 50]"
-            :page-size="5"  
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="table.totalSize || 0"
-            @keyup.enter.native="pageIndexEnterHandler"
-        >
-        </el-pagination> -->
-        <!-- background -->
+        
         <el-pagination
             ref="page"
             layout="sizes, prev, pager, next" 
@@ -152,9 +140,6 @@ import ITableExportExcel from './export-excel'
 // import ITableImportExcel from './import-excel'
 import ITableSift from './sift'
 import ITableSearch from './search'
-
-// import Clickoutside from 'directives/clickoutside'
-// import { getSelectData } from 'utils/index.js'
 
 import access from 'mixins/access'
 
@@ -333,12 +318,6 @@ export default {
     'loading' (val) {
       this.$emit('loading', val)
     },
-    // HACK: 后续验证是否需要
-    // clone (data) {
-    //   if (Array.isArray(data)) {
-    //     this.elTable.$props.data = data
-    //   }
-    // },
     'table.data' (data) {
       this._initData(data)
       this.table.renderColumns && this._initColumns(this.init)
@@ -429,13 +408,6 @@ export default {
       }
       return {}
     },
-
-    // _bindPageChange (fn, opts = {}) {
-    //   if (fn) {
-    //     this.$on('pageSizeChange', fn(opts))
-    //     this.$on('pageIndexChange', fn(opts))
-    //   }
-    // },
 
     /** 绑定 elTable 点击事件 */
     _bindElTableRowClick () {
@@ -566,16 +538,6 @@ export default {
           : key
       }
     },
-
-    /** 扁平化数据，用于多级表格下的渲染 */
-    // _flattenData (type, data = []) {
-    //   return data
-    //     ? this.table.multiple
-    //       ? data.map(row => this._$flattenData(type, row))
-    //       : data
-    //     : []
-    // },
-
 
     /** 反扁平化数据，用于返还后端 */
     _unFlattenData (data) {
@@ -717,30 +679,6 @@ export default {
       }
     },
 
-    /** 用于修改数据 */
-    // changeData ({ selection = this.multipleSelection, data = {} } = {}) {
-    //   Array.isArray(selection) || (selection = [selection])
-
-    //   selection.map(({ _id }) => {
-    //     const idx = this.getCloneIdx(_id)
-
-    //     try {
-    //       Object.keys(data).map(key => {
-    //         this.changeDataJudge(key)
-
-    //         this.$set(this.clone[idx], key, data[key])
-    //       })
-
-    //       this._checkData(_id)
-    //       this.changeEditing(_id, false)
-    //     } catch (err) {
-    //       this.$message({
-    //         type: 'error', message: err.message
-    //       })
-    //     }
-    //   })
-    // },
-
     /** 保存数据 */
     saveData () {
       // 异常校验，若存在异常，则结束
@@ -819,23 +757,6 @@ export default {
       this.error[_id] && delete this.error[_id][prop]
     },
 
-    /** 切换异常状态 */
-    // toggleError (row, col, isError) {
-    //   const { _id } = row
-
-    //   if (isError) {
-    //     this.error[_id] || (this.error[_id] = {})
-    //     this.error[_id][col] = true
-    //   } else {
-    //     if (this.error[_id]) {
-    //       delete this.error[_id][col]
-    //       Object.keys(this.error[_id]).length || delete this.error[_id]
-    //     }
-    //   }
-
-    //   this.dev && Object.keys(this.error).length && console.log('error', this.error)
-    // },
-
     /** 作为 create 时的附加功能：移除上一次聚焦行的编辑状态 */
     changeEditingWithCreate (_id) {
       this._toEditable()
@@ -898,12 +819,6 @@ export default {
       // HACK:
       this.fetchAfterImported && this.pageIndexChangeHandler(1)
     },
-
-    /** 点击表格以外退出编辑 */
-    // _tableClickOutsideHandler () {
-    //   this.changeEditing(this.editingCurId, false)
-
-    // },
 
     /** 设置分页信息 */
     _setPageInfo ({ pageIndex, pageSize } = {}) {
@@ -1307,17 +1222,6 @@ export default {
       return prop.split('--').slice(-1)[0]
     },
 
-    /** 对传参进行判断，防止更改 _id、禁止修改 disable 的数据 */
-    // changeDataJudge (col) {
-    //   if (col === '_id') {
-    //     throw new Error('传参不得为_id')
-    //   }
-
-    //   if (this.editor[col] && this.editor[col].disable) {
-    //     throw new Error('不得修改该数据')
-    //   }
-    // },
-
     toolbarJudge () {
       return this.toolbar.find(tool => !this._toolbarDisableMap(tool, 'empty'))
     },
@@ -1333,11 +1237,8 @@ export default {
 
   components: {
     IDialog,
-    // ITableImportExcel,
-    // ITableExportExcel,
     ITableSift,
     ITableSearch,
-    // ITask
   }
 }
 </script>
@@ -1377,7 +1278,8 @@ export default {
     height: 28px;
     justify-content: flex-end;
     align-items: center;
-    margin-top: 10px;
+    // margin-top: 10px;
+    background-color: #D0D0AE;
     > span {
       margin-left: 4px;
       height: 24px;
@@ -1392,7 +1294,19 @@ export default {
 </style>
 
 <style lang="scss">
-
+    .i-table .el-pagination button {
+        background-color: #D0D0AE;
+    }
+    .i-table .el-pager li {
+        background-color: #D0D0AE;
+    }
+    .i-table .el-pagination .el-select .el-input .el-input__inner {
+        background-color: #D0D0AE;
+    }
+    .el-table__empty-block{
+        // border: 1px solid #797979;
+        // border-bottom: 1px solid #797979;
+    }
 .i-table {
     border: 1px solid #797979;
   .footer-page {
@@ -1514,15 +1428,6 @@ export default {
   .el-table--border th:first-child .cell, .el-table .el-table--border td:first-child .cell {
     padding-left: 11px;
   }
-  // .cell{
-  //   white-space: nowrap;
-  //   overflow: hidden;
-  //     &:hover { /* 鼠标滑过  显示隐藏的内容  伴有横向的滚动条 */
-  //     overflow:auto; 
-  //     text-overflow:clip; 
-  //     } 
-  // }
-
 
   .el-table th,.el-table thead.is-group th{
     background: #D0D0AE;

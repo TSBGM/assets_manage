@@ -1,28 +1,28 @@
 const api = {
 
-  selectFactory:'/stamp/add/selectbuildingall',//廠區
+  selectFactory:'/assets/add/selectFactory',//廠區
   
-  // uploadStampApply:'/stamp/add/insert',//新增用印申請信息
+  selectArea:'/assets/add/selectArea',//工作區域列表
   
-  // selectBg: '/stamp/add/selectBg',//事業群
+  selectBuildingByArea: '/assets/add/selectBuildingByArea',//廠内區域樓棟
   
-  // selectBu:'/stamp/add/selectBu',//事業處
+  selectAssetsStatus:'/assets/add/selectAssetsStatus',//資產狀態列表
  
-  // selectFactory:'/stamp/add/selectFactory',//廠區
+  selectAssetsType:'/assets/add/selectAssetsType',//资产类型
   
-  // selectTypeName:'/stamp/add/selectTypeName',//印章類別
+  selectStaffType:'/assets/add/selectStaffType',//幹部類型
 
-  // sealQuery:'/tsbg/pc/sealQuery',//查詢導出：查詢申請信息列表
+  selectWorkStatus:'/assets/add/selectWorkStatus',//在职状态
   
-  // getQueryExcel:'/tsbg/pc/getQueryExcel',//查詢導出：導出申請信息列表
+  selectBgList:'/assets/add/selectBgList',//查询事业群
   
-  // particulars: '/tsbg/pc/particulars',//查看申請詳情頁面
+  selectUnitList: '/assets/add/selectUnitList',//根据BGId查询事业处unit接口
   
-  // StampMemList: '/tsbg/stamp/StampMemList',//群組列表
+  selectDepartList: '/assets/add/selectDepartList',//根据BGId、 unitId查询部门depart接口
   
-  // powerManage: '/tsbg/stamp/powerManage',//添加成員時，帶出相關信息
+  selectClassList: '/assets/add/selectClassList',//根据BGId、 unitId 、departId查询課Class接口
   
-  // addStampMem: '/tsbg/stamp/addStampMem',//添加成員
+  saveComelninsert: '/assets/add/insert',//保存
   
   // delStampMem: '/tsbg/stamp/delStampMem',//刪除成員
   

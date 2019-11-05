@@ -7,12 +7,12 @@ import { configUrl } from '../config';
 
 const actions = {
     
-    //
+    //廠區
     selectFactory ({commit, dispathc, state, rootState}, param) {
         return axios({
             url: api.selectFactory,
             method: 'post',
-            baseURL: configUrl.zhouUrl,// baseUrl 
+            baseURL: configUrl.baseUrl,// baseUrl 
             data: param
         }).then((rep) => {
           return (function() {  
@@ -20,12 +20,12 @@ const actions = {
           })();
         });
     },
-    //新增申请信息
-    uploadStampApply ({commit, dispathc, state, rootState}, param) {
+    //工作區域列表
+    selectArea ({commit, dispathc, state, rootState}, param) {
         return axios({
-            url: api.uploadStampApply,
+            url: api.selectArea,
             method: 'post',
-            baseURL: configUrl.baseUrl,// baseUrl  chenUrl
+            baseURL: configUrl.baseUrl,
             data: param
         }).then((rep) => {
           return (function() {  
@@ -33,10 +33,10 @@ const actions = {
           })();
         });
     },
-    //查看申請詳情頁面
-    particulars ({commit, dispathc, state, rootState}, param) {
+    //廠内區域樓棟
+    selectBuildingByArea ({commit, dispathc, state, rootState}, param) {
         return axios({
-            url: api.particulars,
+            url: api.selectBuildingByArea,
             method: 'post',
             baseURL: configUrl.baseUrl,// baseUrl  chenUrl
             data: param
@@ -46,12 +46,12 @@ const actions = {
           })();
         });
       },
-    //查詢申請歷史
-    searchApply ({commit, dispathc, state, rootState}, param) {
+    //資產狀態列表
+    selectAssetsStatus ({commit, dispathc, state, rootState}, param) {
         return axios({
-            url: api.searchApply,
+            url: api.selectAssetsStatus,
             method: 'post',
-            baseURL: configUrl.xuUrl,// baseUrl  chenUrl
+            baseURL: configUrl.baseUrl,// baseUrl  chenUrl
             data: param
         }).then((rep) => {
           return (function() {  
@@ -60,10 +60,10 @@ const actions = {
         });
         
       },
-    //查詢列表
-    sealQuery ({commit, dispathc, state, rootState}, param) {
+    //资产类型
+    selectAssetsType ({commit, dispathc, state, rootState}, param) {
         return axios({
-                url: api.sealQuery,
+                url: api.selectAssetsType,
                 method: 'post',
                 baseURL: configUrl.baseUrl,
                 data: param,
@@ -71,25 +71,10 @@ const actions = {
             return rep.data;
         });
     },
-    //导出Excel
-    getQueryExcel ({commit, dispathc, state, rootState}, param) {
+    //幹部類型
+    selectStaffType ({commit, dispathc, state, rootState}, param) {
         return axios({
-                url: api.getQueryExcel,
-                method: 'post',
-                baseURL: configUrl.baseUrl,
-                data: param,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                responseType: 'blob'
-        }).then((rep) => {
-            return rep.data;
-        });
-    },
-    //群組列表
-    StampMemList ({commit, dispathc, state, rootState}, param) {
-        return axios({
-                url: api.StampMemList,
+                url: api.selectStaffType,
                 method: 'post',
                 baseURL: configUrl.baseUrl,
                 data: param,
@@ -97,53 +82,33 @@ const actions = {
             return rep.data;
         });
     },
-    //添加成員，帶出相關信息
-    powerManage ({commit, dispathc, state, rootState}, param) {
+    //在职状态
+    selectWorkStatus ({commit, dispathc, state, rootState}, param) {
         return axios({
-                url: api.powerManage,
+                url: api.selectWorkStatus,
                 method: 'post',
                 baseURL: configUrl.baseUrl,
                 data: param,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
         }).then((rep) => {
             return rep.data;
         });
     },
-    //添加成員
-    addStampMem ({commit, dispathc, state, rootState}, param) {
+    //查询事业群
+    selectBgList ({commit, dispathc, state, rootState}, param) {
         return axios({
-                url: api.addStampMem,
+                url: api.selectBgList,
                 method: 'post',
-                baseURL: configUrl.baseUrl,//baseUrl zhouUrl  xuUrl
-                data: param,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                baseURL: configUrl.baseUrl,
+                data: param
         }).then((rep) => {
             // console.log(rep)
             return rep.data;
         });
     },
-    //刪除成員
-    delStampMem ({commit, dispathc, state, rootState}, param) {
+    //根据BGId查询事业处unit接口
+    selectUnitList ({commit, dispathc, state, rootState}, param) {
         return axios({
-                url: api.delStampMem,
-                method: 'post',
-                baseURL: configUrl.baseUrl,
-                data: param,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-        }).then((rep) => {
-            return rep.data;
-        });
-    },
-    //事業群
-    selectBg ({commit, dispathc, state, rootState}, param) {
-        return axios({
-                url: api.selectBg,
+                url: api.selectUnitList,
                 method: 'post',
                 baseURL: configUrl.baseUrl,
                 data: param,
@@ -151,10 +116,10 @@ const actions = {
             return rep.data;
         });
     },
-    //事業處
-    selectBu ({commit, dispathc, state, rootState}, param) {
+    //根据BGId、 unitId查询部门depart接口
+    selectDepartList ({commit, dispathc, state, rootState}, param) {
         return axios({
-                url: api.selectBu,
+                url: api.selectDepartList,
                 method: 'post',
                 baseURL: configUrl.baseUrl,
                 data: param,
@@ -162,10 +127,10 @@ const actions = {
             return rep.data;
         });
     },
-    //廠區
-    selectFactory ({commit, dispathc, state, rootState}, param) {
+    //根据BGId、 unitId 、departId查询課Class接口
+    selectClassList ({commit, dispathc, state, rootState}, param) {
         return axios({
-                url: api.selectFactory,
+                url: api.selectClassList,
                 method: 'post',
                 baseURL: configUrl.baseUrl,
                 data: param,
@@ -173,10 +138,10 @@ const actions = {
             return rep.data;
         });
     },
-    //印章類型
-    selectTypeName ({commit, dispathc, state, rootState}, param) {
+    //保存
+    saveComelninsert ({commit, dispathc, state, rootState}, param) {
         return axios({
-                url: api.selectTypeName,
+                url: api.saveComelninsert,
                 method: 'post',
                 baseURL: configUrl.baseUrl,
                 data: param,
@@ -184,6 +149,32 @@ const actions = {
             return rep.data;
         });
     },
+    // //印章類型
+    // selectTypeName ({commit, dispathc, state, rootState}, param) {
+    //     return axios({
+    //             url: api.selectTypeName,
+    //             method: 'post',
+    //             baseURL: configUrl.baseUrl,
+    //             data: param,
+    //     }).then((rep) => {
+    //         return rep.data;
+    //     });
+    // },
+     // //导出Excel
+    // getQueryExcel ({commit, dispathc, state, rootState}, param) {
+    //     return axios({
+    //             url: api.getQueryExcel,
+    //             method: 'post',
+    //             baseURL: configUrl.baseUrl,
+    //             data: param,
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             responseType: 'blob'
+    //     }).then((rep) => {
+    //         return rep.data;
+    //     });
+    // },
 }
 export default actions;
 
