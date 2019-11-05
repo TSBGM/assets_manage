@@ -190,7 +190,7 @@
     .span-header{
         margin-top: 15px;
         margin-left: 5%;
-        width:100px;
+        width:100%;
         // height:20px;
         font-size: 14px;
         font-weight: 400;
