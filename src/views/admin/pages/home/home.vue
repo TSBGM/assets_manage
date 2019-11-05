@@ -8,11 +8,25 @@
             <span>TSBG固定資產管理系統</span>
         </div>
         <div class="user-header">
-            <p>
-                <span class="span-header_1">當前用戶:胡永鋒{{this.userName}}</span>
-                <span class="span-header_1">角色:MIS資產管理員{{this.userName}}</span>
-                <span class="span-header">登出</span>
-            </p>
+            <el-form>
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item class="form" label="當前用戶:" label-width="80px" >
+                            <span class="span-header">胡永鋒{{this.userName}}</span>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item class="form" label="角色:" label-width="80px">
+                            <span class="span-header">MIS資產管理員{{this.userName}}</span>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item>
+                            <el-button class="button2" type="text">登出</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
             <!-- <div class="edit" @click="gotoLogout">
             </div> -->
         </div>
@@ -20,7 +34,6 @@
   
     <div class="header-menu">
         <el-menu            
-            class="el-menu-demo"
             mode="horizontal"
             @select="handleSelect" 
             background-color="#96efe6"
@@ -130,14 +143,7 @@
             left: 30%;
             // right: 50%;
             margin: auto;
-            .span-header{
-                width: 90%;
-                height: 30px;
-                margin-left: 200px;
-                margin-top: 25px;
-                font-size: 1.3em;
-                font-weight: 700;
-            }                     
+                 
             .edit{
                 display:inline;
                 margin-left: 10px;
@@ -154,7 +160,7 @@
     .header-menu{
         .el-menu{ 
             .el-menu-item{
-                margin-left: 6%;           
+                margin-left: 7.5%;           
             }
             .el-menu-item.is-active::after {
                 position: absolute;
@@ -177,13 +183,25 @@
 
         }
     }
-    .span-header_1{
-        display:inline-block;
-        width:250px;
-        height:36px;
-        line-height:48px;
-        text-align:center;
-        font-size: 1.3em;
+    .form{
+        width: 150px;
+        margin-top: 5px;
+    }           
+    .span-header{
+        margin-top: 15px;
+        margin-left: 5%;
+        width:100px;
+        // height:20px;
+        font-size: 14px;
+        font-weight: 400;
+    }
+    .button2{
+        margin-top: 10px;
+        margin-left: 700%;
+        color:black;
+        width: 80px;
+        height: 38px;
+        font-size:14px;
         font-weight: 600;
     }
 </style>

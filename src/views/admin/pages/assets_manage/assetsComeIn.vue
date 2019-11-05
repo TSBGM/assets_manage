@@ -41,6 +41,11 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="5">
+                        <el-form-item label="使用位置：" label-width="90px" >
+                            <el-input class="input" placeholder="使用位置至少具體到辦公室"></el-input>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="2">
@@ -65,24 +70,13 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產名稱："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="資產編號："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
+                            <el-input class="input"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="2">
-                        <el-form-item label="部門信息："  label-width="90px" >
+                        <el-form-item label=""  label-width="90px" >
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
@@ -133,10 +127,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="工號："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
+                            <el-input class="input"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
@@ -165,48 +156,59 @@
                         <el-form-item label="入職時間："  label-width="90px" >
                             <el-date-picker
                                     type="date"
-                                    style="width: 35%;"
+                                    style="width: 70%;"
                                     :editable="true"
                                     :picker-options="birthOptions"
                                     @change="getSTime"
                                     placeholder="Time1">
-                            </el-date-picker>
-                            <span>—</span>
-                            <el-date-picker
-                                    type="date"
-                                    style="width: 35%;"
-                                    :editable="true"
-                                    :picker-options="birthOptions"
-                                    @change="getSTime"
-                                    placeholder="Time2">
-                            </el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-form-item label="離職時間："  label-width="90px" >
-                            <el-date-picker
-                                    type="date"
-                                    style="width: 35%;"
-                                    :editable="true"
-                                    :picker-options="birthOptions"
-                                    @change="getSTime"
-                                    placeholder="Time1">
-                            </el-date-picker>
-                            <span>—</span>
-                            <el-date-picker
-                                    type="date"
-                                    style="width: 35%;"
-                                    :editable="true"
-                                    :picker-options="birthOptions"
-                                    @change="getSTime"
-                                    placeholder="Time2">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
                 </el-row>
+                <el-row>
+                    <el-col>
+                        <el-form-item label="需求説明：" label-width="90px">
+                            <el-input
+                                class="input1"
+                                type="textarea"
+                                :rows="3"
+                                v-model="textarea">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>   
+                <el-row>
+                    <el-col class="col">
+                        <el-form-item label="備注：" label-width="90px">
+                            <el-input
+                                class="input1"
+                                type="textarea"
+                                :rows="3"
+                                v-model="remark">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
             </div>
+            <div class="topline1"></div>
+            <el-row>
+                <el-col :span="8">
+                    <el-form-item>
+                        <el-button class="button1" type="text">保存</el-button>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="2">
+                    <el-form-item>
+                        <el-button class="button2" type="text">新增下一條</el-button>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item>
+                        <el-button class="button3" type="text">返回</el-button>
+                    </el-form-item>
+                </el-col>
+            </el-row>
         </el-form>
-        <div class="topline"></div>
     </div>
 </template>
 
@@ -214,7 +216,9 @@
   export default {
     data () {
       return {
-        radio: '1'
+        radio: '1',
+        textarea: '',
+        remark:'',
       };
     }
   }
@@ -232,12 +236,15 @@
         position: fixed;
     }  
     .radio{
+        margin-top: 1%;
         margin-left: 32%;
         font-size: 14px;
-        font-weight: 500;
     }
     .el-col{
         height: 35px;
+    }
+    .col{
+        margin-top: 3%;
     }
     .title_1{
         font-size: 14px;
@@ -251,16 +258,48 @@
         width: 70%;
         margin-top: 5px;
     }
+    .input{
+        width: 70%;
+        margin-top: 5px;
+    }
+    .input1{
+        display: block;
+        margin-bottom: 100px;
+        text-align: center;
+        width: 86.3%;
+        margin-top: 5px;
+    }
     .topline{
         width: 87%;
-        margin-top: 1.3%;
+        margin-top: 3%;
+        border:0.5px rgb(10, 10, 10) solid;
+    }
+    .topline1{
+        width: 87%;
+        margin-top: 3.5%;
         border:0.5px rgb(10, 10, 10) solid;
     }
     .button1{
-        margin: 10px 40%;
+        margin: 10px 110%;
+        color: #000080;
+        background-color: #88C700;
+        width: 35px;
+        height: 38px;
+        font-size:14px;
+    }
+    .button2{
+        margin: 10px 75%;
         color: #000080;
         background-color: #88C700;
         width: 80px;
+        height: 38px;
+        font-size:14px;
+    }
+    .button3{
+        margin: 10px 10%;
+        color: #000080;
+        background-color: #88C700;
+        width: 35px;
         height: 38px;
         font-size:14px;
     }
@@ -272,14 +311,5 @@
     .table{
         background-color: #D0D0AE;
         width: 100%
-    }
-    .button2{
-        line-height: 10%;
-        margin: 10px 39.7%;
-        color: #000080;
-        border: 1px #797979 solid;
-        width: 100px;
-        height: 25px;
-        font-size:13px;
     }
 </style>
