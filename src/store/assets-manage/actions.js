@@ -1,5 +1,5 @@
 /**
- * 用印歸檔
+ * 固定資產
  */
 import { api } from './api';
 import axios from '../http';//使用 http response 拦截器
@@ -7,12 +7,12 @@ import { configUrl } from '../config';
 
 const actions = {
     
-    //通過工號帶出相關信息
-    selectUserInfo ({commit, dispathc, state, rootState}, param) {
+    //
+    selectFactory ({commit, dispathc, state, rootState}, param) {
         return axios({
-            url: api.selectUserInfo,
+            url: api.selectFactory,
             method: 'post',
-            baseURL: configUrl.baseUrl,// baseUrl  chenUrl
+            baseURL: configUrl.zhouUrl,// baseUrl 
             data: param
         }).then((rep) => {
           return (function() {  

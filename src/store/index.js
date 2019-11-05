@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import affixArchive from './affix-archive';
+import assetsManage from './assets-manage';
 import mutations from './mutations';
 
 Vue.use(Vuex);
@@ -9,7 +9,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
     mutations,
-    affixArchive,
+    assetsManage,
   },
   state: {
     token: null,

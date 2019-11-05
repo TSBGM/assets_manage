@@ -1394,7 +1394,7 @@ export default {
 <style lang="scss">
 
 .i-table {
-    border: 1px solid #dddee1;
+    border: 1px solid #797979;
   .footer-page {
     display: flex;
 
@@ -1421,7 +1421,7 @@ export default {
   }
   tr{
     td {
-      border-right: 1px solid #e6ebf5;
+      border-right: 1px solid #797979;
     }
   }
   tr:not(:last-child) {
@@ -1499,7 +1499,7 @@ export default {
       height: 24px;
       line-height: 24px;
       background-color: #FFFFFF;
-      border: 1px solid #E0E0E0;
+      border: 1px solid #797979;
       border-radius: 0;
       &.more {
         border: none;
@@ -1525,16 +1525,16 @@ export default {
 
 
   .el-table th,.el-table thead.is-group th{
-    background: #F2F2F2;
-    color: #3A3A53;
+    background: #D0D0AE;
+    color: #333;
   }
 
   //table的border
   .el-table--border{
-    border-color: #E0E0E0;
+    // border-color: #797979;
   }
   .el-table--border th{
-    border-right: 1px solid #E0E0E0
+    border-right: 1px solid #797979
   }
   //hover背景颜色，table的文字大小
   .el-table__body tr.hover-row > td, .el-table__body tr.hover-row.current-row > td, .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row.el-table__row--striped.current-row > td {

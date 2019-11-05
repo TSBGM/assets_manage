@@ -2402,7 +2402,7 @@
     border-color: #b4bccc; }
   .el-select .el-input__inner {
     cursor: pointer;
-    padding-right: 35px; }
+    padding-right:47px; }
     .el-select .el-input__inner:focus {
       border-color: #3da5fe; }
   .el-select .el-input .el-select__caret {

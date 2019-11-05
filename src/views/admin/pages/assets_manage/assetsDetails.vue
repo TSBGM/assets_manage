@@ -10,9 +10,9 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="廠區："  label-width="90px" >
-                            <el-select v-model="value" clearable class="select"> <!-- clearable屬性表示選擇框可清空 -->
-                               <el-option
-                                    v-for="item in options"
+                            <el-select v-model="assetsDetailsModel.factoryId" clearable class="select">
+                                <el-option
+                                    v-for="item in factoryList"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value">
@@ -60,18 +60,12 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產名稱："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
+                            <el-input v-model.trim="assetsDetailsModel.assetsName" ></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產編號："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
+                            <el-input v-model.trim="assetsDetailsModel.assetsNumber"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -120,18 +114,12 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="姓名："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
+                           <el-input v-model.trim="assetsDetailsModel.ownerName"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="工號："  label-width="90px" >
-                            <el-select class="select">
-                                <el-option>
-                                </el-option>
-                            </el-select>
+                            <el-input v-model.trim="assetsDetailsModel.ownerCode"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
@@ -221,7 +209,7 @@
                                     @current-change="handleChange22"
                                     @selection-change="handleSelectionChange"
                                 >
-                                    <el-table-column type="selection" label="全選" width="45">
+                                    <el-table-column type="selection" label="全選" width="45" >
                                         <template slot-scope="scope">{{scope.$index + 1}}</template>
                                     </el-table-column>
                                     <el-table-column label="序号" width="45">
@@ -348,46 +336,53 @@
 export default {
     data() {
         return {
-            options: [
-                {
-                    value: '选项1',
-                    label: '黄金糕'
-                }, 
-                {
-                    value: '选项2',
-                    label: '双皮奶'
-                },
-                {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, 
-                {
-                    value: '选项4',
-                    label: '龙须面'
-                }, 
-                {
-                    value: '选项5',
-                    label: '北京烤鸭'
-                }
-            ],
             value: '',
             tableData: [],
             multipleSelection: [],
+
+            assetsDetailsModel:{
+                factoryId:'',//厰區
+                ownerCode:'',
+                ownerName:'',
+                assetsName:'', //資產名稱
+                assetsNumber:'', //資產編號
+                ownerCode:'',
+                ownerCode:'',
+            },
+            factoryList:[],
       }
     },
+    mounted () {
+        this.selectFactory()
+        // this.selectUnit(),
+        // this.selectFactory(),
+        // this.selectDepart(),
+        // this.selectTypeName()
+    },
     methods: {
-        arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-            if (rowIndex % 2 === 0) {
-                if (columnIndex === 0) {
-                    return [1, 2];
-                } else if (columnIndex === 1) {
-                    return [0, 0];
+        //廠區
+        selectFactory(){
+            this.$store.dispatch('selectFactory')
+            .then(res => {
+                if(res.code == 100){
+                    for (var i = 0; i < res.data.length; i++) {
+                        this.factoryList.push({label:res.data[i].factoryName,value:res.data[i].factoryId});
+                    }
                 }
-            }
+            })
         },
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
+        // arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+        //     if (rowIndex % 2 === 0) {
+        //         if (columnIndex === 0) {
+        //             return [1, 2];
+        //         } else if (columnIndex === 1) {
+        //             return [0, 0];
+        //         }
+        //     }
+        // },
+        // handleSelectionChange(val) {
+        //     this.multipleSelection = val;
+        // },
     }
     
 }
@@ -406,6 +401,10 @@ export default {
     }  
     .el-col{
         height: 35px;
+    }
+    .el-input{
+        width: 70%;
+        margin-top: 5px;
     }
     .title_1{
         font-size: 14px;
