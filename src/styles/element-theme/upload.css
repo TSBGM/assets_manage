@@ -646,7 +646,7 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     border-radius: 4px;
-    width: 100%; }
+    width: 50%; }
     .el-upload-list__item .el-progress {
       position: absolute;
       top: 20px;
@@ -714,7 +714,9 @@
     text-overflow: ellipsis;
     -webkit-transition: color .3s;
     transition: color .3s;
-    white-space: nowrap; }
+    white-space: nowrap;
+    width:40%;
+   }
     .el-upload-list__item-name [class^="el-icon"] {
       height: 100%;
       margin-right: 7px;

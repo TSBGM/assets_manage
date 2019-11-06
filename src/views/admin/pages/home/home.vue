@@ -29,8 +29,8 @@
             :default-active="activerouter">
             <el-menu-item index="/assetsDetails" class="menu-item-font" >固定資產明細</el-menu-item>
             <el-menu-item index="/assetsComeIn" class="menu-item-font">固定資產入庫</el-menu-item>
-            <el-menu-item index="/assetsDistribute" class="menu-item-font">固定資產分配</el-menu-item>
-            <el-menu-item index="/assetsScrap" class="menu-item-font" >資產報廢管理</el-menu-item>
+            <!-- <el-menu-item index="/assetsDistribute" class="menu-item-font">固定資產分配</el-menu-item>
+            <el-menu-item index="/assetsScrap" class="menu-item-font" >資產報廢管理</el-menu-item> -->
             <el-menu-item index="/assetsUserManage" class="menu-item-font">系統用戶管理</el-menu-item>
             <el-menu-item index="/FeedbackUpload" class="menu-item-font">問題反饋</el-menu-item>
         </el-menu>

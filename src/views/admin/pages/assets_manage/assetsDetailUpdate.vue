@@ -1,7 +1,7 @@
 <template>
     <div class="register-l">
         <el-form>
-            <span class="title_1">請選擇查詢範圍：</span>
+            <span class="title_1">請修改內容後點擊保存：</span>
             <div class="rowcss">
                 <el-row>
                     <el-col :span="2">
@@ -10,7 +10,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="廠區："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.factoryId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.factoryId" clearable class="select">
                                 <el-option
                                     v-for="item in factoryList"
                                     :key="item.value"
@@ -22,7 +22,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="工作區域："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.areaId" clearable class="select" @change="selectAreaChange(assetsDetailsModel.areaId)">
+                            <el-select v-model="assetsDetailUpdateModel.areaId" clearable class="select" @change="selectAreaChange(assetsDetailUpdateModel.areaId)">
                                 <el-option
                                     v-for="item in areaList"
                                     :key="item.value"
@@ -34,7 +34,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="工作樓棟："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.buildingId" clearable class="select" :disabled="this.areaIdFlag" placeholder="請先輸入工作區域">
+                            <el-select v-model="assetsDetailUpdateModel.buildingId" clearable class="select" :disabled="this.areaIdFlag" placeholder="請先輸入工作區域">
                                 <el-option
                                     v-for="item in buildingList"
                                     :key="item.value"
@@ -46,7 +46,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="使用位置：" label-width="90px" >
-                            <el-input class="input" placeholder="使用位置至少具體到辦公室" v-model="assetsDetailsModel.usingPlace"></el-input>
+                            <el-input class="input" placeholder="使用位置至少具體到辦公室" v-model="assetsDetailUpdateModel.usingPlace"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -57,7 +57,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產狀態："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.assetsStatusId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.assetsStatusId" clearable class="select">
                                 <el-option
                                     v-for="item in assetsStatusList"
                                     :key="item.value"
@@ -69,7 +69,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產分類："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.typeId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.typeId" clearable class="select">
                                 <el-option
                                     v-for="item in assetsTypeList"
                                     :key="item.value"
@@ -81,7 +81,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產名稱："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailsModel.assetsName"></el-input>
+                            <el-input class="input" v-model="assetsDetailUpdateModel.assetsName"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -92,7 +92,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="事業群："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.bgId" clearable class="select" @change="selectBGChange(assetsDetailsModel.bgId)"> 
+                            <el-select v-model="assetsDetailUpdateModel.bgId" clearable class="select" @change="selectBGChange(assetsDetailUpdateModel.bgId)"> 
                                 <el-option
                                     v-for="item in bgList"
                                     :key="item.value"
@@ -104,8 +104,8 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="事業處："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.unitId" clearable class="select"  placeholder="請先輸入事業群"
-                            :disabled="this.BgFlag" @change="selectUnitChange(assetsDetailsModel.bgId,assetsDetailsModel.unitId)">
+                            <el-select v-model="assetsDetailUpdateModel.unitId" clearable class="select"  placeholder="請先輸入事業群"
+                            :disabled="this.BgFlag" @change="selectUnitChange(assetsDetailUpdateModel.bgId,assetsDetailUpdateModel.unitId)">
                                 <el-option
                                     v-for="item in unitList"
                                     :key="item.value"
@@ -117,8 +117,8 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="部："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.departId" clearable class="select" placeholder="請先輸入事業處"
-                            :disabled="this.unitFlag" @change="selectDepartChange(assetsDetailsModel.bgId,assetsDetailsModel.unitId,assetsDetailsModel.departId)">
+                            <el-select v-model="assetsDetailUpdateModel.departId" clearable class="select" placeholder="請先輸入事業處"
+                            :disabled="this.unitFlag" @change="selectDepartChange(assetsDetailUpdateModel.bgId,assetsDetailUpdateModel.unitId,assetsDetailUpdateModel.departId)">
                                 <el-option
                                     v-for="item in departList"
                                     :key="item.value"
@@ -130,7 +130,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="課："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.classId" clearable class="select" 
+                            <el-select v-model="assetsDetailUpdateModel.classId" clearable class="select" 
                             placeholder="請先輸入部" :disabled="this.departFlag">
                                 <el-option
                                     v-for="item in classList"
@@ -149,17 +149,17 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="姓名："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailsModel.ownerName"></el-input>
+                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerName"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="工號："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailsModel.ownerCode"></el-input>
+                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerCode"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="幹部類型："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.staffTypeId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.staffTypeId" clearable class="select">
                                 <el-option
                                     v-for="item in staffTypeList"
                                     :key="item.value"
@@ -171,7 +171,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="是否在職："  label-width="90px" >
-                            <el-select v-model="assetsDetailsModel.workStatusId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.workStatusId" clearable class="select">
                                 <el-option
                                     v-for="item in workStatusList"
                                     :key="item.value"
@@ -190,46 +190,26 @@
                     <el-col :span="5">
                         <el-form-item label="入職時間："  label-width="90px" >
                             <el-date-picker
-                                    type="date"
-                                    style="width: 35%;"
-                                    :editable="true"
-                                    :picker-options="birthOptions"
-                                    @change="getSTime"
-                                    placeholder="Time1"
-                                    v-model="assetsDetailsModel.joinBgDate">
-                            </el-date-picker>
-                            <span>—</span>
-                            <el-date-picker
-                                    type="date"
-                                    style="width: 35%;"
-                                    :editable="true"
-                                    :picker-options="birthOptions"
-                                    @change="getSTime"
-                                    placeholder="Time2"
-                                    v-model="assetsDetailsModel.joinBgDate">
+                                type="date"
+                                style="width: 70%; margin-top:5px;"
+                                :editable="true"
+                                :picker-options="birthOptions"
+                                @change="getSTime"
+                                placeholder=""
+                                v-model="assetsDetailUpdateModel.joinBgDate">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="離職時間："  label-width="90px" >
                             <el-date-picker
-                                    type="date"
-                                    style="width: 35%;"
-                                    :editable="true"
-                                    :picker-options="birthOptions"
-                                    @change="getSTime"
-                                    placeholder="Time1"
-                                    v-model="assetsDetailsModel.joinBgDate">
-                            </el-date-picker>
-                            <span>—</span>
-                            <el-date-picker
-                                    type="date"
-                                    style="width: 35%;"
-                                    :editable="true"
-                                    :picker-options="birthOptions"
-                                    @change="getSTime"
-                                    placeholder="Time2"
-                                    v-model="assetsDetailsModel.joinBgDate">
+                                type="date"
+                                style="width: 70%; margin-top:5px;"
+                                :editable="true"
+                                :picker-options="birthOptions"
+                                @change="getSTime"
+                                placeholder=""
+                                v-model="assetsDetailUpdateModel.joinBgDate">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -237,9 +217,9 @@
             </div>
         </el-form>
         <div class="topline"></div>
-        <el-button class="button1" type="button" @click= "searchDetails(val)">查詢</el-button>
+            <el-button class="button1" type="button" @click= "searchDetails(val)">保存修改</el-button>
         <div>
-            <span class="title_1">查詢結果：</span>
+            <span class="title_1">修改結果：</span>
             <div class="register-1" >
                 <div class="search-bar1">
                     <i-layout :toolbar="bottomButton" :title="title" destroyedWhenClose size="large">
@@ -247,7 +227,7 @@
                             <template slot="table">
                                 <el-table
                                     class="table"
-                                    :data="table.data"
+                                    :data="tableData"
                                     border
                                     tooltip-effect="dark"
                                     :span-method="arraySpanMethod"
@@ -256,115 +236,107 @@
                                     @current-change="handleChange22"
                                     @selection-change="handleSelectionChange"
                                 >
-                                    <el-table-column type="selection" width="55"></el-table-column>
-                                    <el-table-column label="序号" width="45">
-                                        <template slot-scope="scope">{{scope.$index + 1}}</template>
-                                    </el-table-column>
                                     <el-table-column label="工號" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="姓名" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="在職狀態" width="78" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="入職時間" width="78" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="離職時間" width="78" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="幹部類型" width="77" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="事業群" width="70" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="事業處" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="部" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="課" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產名稱" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產類型" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="需求説明" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產編號" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產狀態" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="廠區" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="工作區域" width="70" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="工作樓棟" width="70" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="使用地點" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="備注" width="70" >
                                         <template slot-scope="scope">
-                                           {{scope.row.ownerCode}}
+                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="操作" min-width="50" fixed="right">
-                                        <template slot-scope="scope">
-                                            <el-button @click="updateOpen(scope.row)" type="text" size="small">修改</el-button>
-                                        </template>
-                                    </el-table-column>
+                                    
                                 </el-table>
                             </template> 
                         </i-table>
@@ -372,8 +344,6 @@
                 </div>
             </div>
         </div>
-        <div class="topline"></div>
-        <el-button class="button2" type="text">導出到Excel</el-button>
     </div>
 </template>
 
@@ -381,7 +351,8 @@
 export default {
     data() {
         return {
-            assetsDetailsModel:{
+            intengibleAssetsId:localStorage.getItem('intengibleAssetsId'),
+            assetsDetailUpdateModel:{
                 // projId:3,//項目id
                 // userCode:'133',//登錄人工號
                 factoryId:'',//厰區
@@ -427,22 +398,32 @@ export default {
                 data: null,
                 // 注册 page 相关信息
                 // ---是否显示底部分页
-                showPagebar: true,
+                showPagebar: false,
                 info: null,
                 totalSize: 0,
             }
         }
     },
     mounted () {
-        this.selectFactory(),//廠區
-        this.selectArea(),//工作區域列表
-        this.selectAssetsStatus(),//資產狀態列表
-        this.selectAssetsType(), //资产类型
-        this.selectStaffType(),//幹部類型
-        this.selectWorkStatus(), //在职状态
+        this.updateOpen()
+        this.selectFactory()//廠區
+        this.selectArea()//工作區域列表
+        this.selectAssetsStatus()//資產狀態列表
+        this.selectAssetsType() //资产类型
+        this.selectStaffType()//幹部類型
+        this.selectWorkStatus() //在职状态
         this.selectBgList() //查询事业群
     },
     methods: {
+        //修改頁面詳情
+        updateOpen(){
+            this.$store.dispatch('selectAssetsInfoById',{intengibleAssetsId:this.intengibleAssetsId})
+            .then(res => {
+                if(res.code == 100){
+                    this.assetsDetailUpdateModel = res.data
+                }
+            })
+        },
         //廠區
         selectFactory(){
             this.$store.dispatch('selectFactory')
@@ -468,7 +449,7 @@ export default {
         },
         selectAreaChange(areaId){
             this.buildingList = []
-            this.areaIdFlag = this.assetsDetailsModel.areaId ? false:true//工作區域狀態
+            this.areaIdFlag = this.assetsDetailUpdateModel.areaId ? false:true//工作區域狀態
             if(!this.areaIdFlag){
                 this.selectBuildingByArea(areaId)//廠内區域樓棟
             }
@@ -541,7 +522,7 @@ export default {
         },
         selectBGChange(bgId){
             this.unitList = []
-            this.BgFlag = this.assetsDetailsModel.bgId ? false:true//工作區域狀態
+            this.BgFlag = this.assetsDetailUpdateModel.bgId ? false:true//工作區域狀態
             if(!this.BgFlag){
                 this.selectUnitList(bgId)//廠内區域樓棟
             }
@@ -559,7 +540,7 @@ export default {
         },
         selectUnitChange(bgId,unitId){
             this.departList = []
-            this.unitFlag = this.assetsDetailsModel.unitId ? false:true//工作區域狀態
+            this.unitFlag = this.assetsDetailUpdateModel.unitId ? false:true//工作區域狀態
             if(!this.unitFlag){
                 this.selectDepartList(bgId,unitId)//廠内區域樓棟
             }
@@ -577,7 +558,7 @@ export default {
         },
         selectDepartChange(bgId,unitId,departId){
             this.classList = []
-            this.departFlag = this.assetsDetailsModel.departId ? false:true//工作區域狀態
+            this.departFlag = this.assetsDetailUpdateModel.departId ? false:true//工作區域狀態
             if(!this.departFlag){
                 this.selectClassList(bgId,unitId,departId)//廠内區域樓棟
             }
@@ -593,43 +574,20 @@ export default {
                 }
             })
         },
-        // 监听每页显示条数变化
-        handleSizeChange (val) {
-            let params = {
-                pageIndex: val.pageIndex,
-                pageSize: val.pageSize,
-            }   
-            this.table.info = val
-            this.searchDetails(params)
-        },
-        // 监听页数变化
-        handleCurrentChange (val) {
-            let params = {
-                pageIndex: val.pageIndex,
-                pageSize: val.pageSize,
-            }
-            this.table.info = val
-            this.searchDetails(params)
-        },
         //查詢
         searchDetails(val){
             let params = {
-                pageRequest:{
-                    pageIndex: val ? val.pageIndex :1,
-                    pageSize: val ? val.pageSize :10,
-                },
-                assetsquerypackage:{}
+                pageIndex: val ? val.pageIndex :1,
+                pageSize: val ? val.pageSize :10,
             }
-            params.assetsquerypackage = this.assetsDetailsModel
-            this.$store.dispatch('query',params)
+            this.$store.dispatch('saveComelninsert',this.assetsDetailUpdateModel)
             .then(res => {
                 if(res.code == 100){
-                    this.rep = res.data.content
+                    this.rep = res.data  
                     Object.keys(res).map(key => (this.table[key] = res.data[key]))
                     this.table.data = this.rep
-                    this.table.totalSize = res.data.totalSize
-                    this.table.totalPages = res.data.totalPages
-                    console.log(this.table.data)
+                    this.table.totalSize = res.dataSecond.totalSize
+                    this.table.totalPages = res.dataSecond.totalPages
                 }else{
                     this.$alert(res.message, '提示', {
                         confirmButtonText: '确定',
@@ -640,57 +598,7 @@ export default {
                 }
             })
         },
-        //修改   
-        updateOpen(id){
-            localStorage.setItem('intengibleAssetsId', id);
-            this.$store.dispatch('selectAssetsInfoById', {intengibleAssetsId:id})
-            .then(res => {
-                // if(res.data.code == 0){
-                    // window.open("http://localhost:8080/#/assetsDetailUpdate")
-                    window.open(`${BASE_URL}/#/assetsDetailUpdate`)
-            })
         
-        },
-        exportExcel() {
-            this.postparams = new FormData()
-            let params = {
-                userCode:this.UploadModel.userCode,
-                factoryName: this.UploadModel.factoryName,
-                bgName: this.UploadModel.BGName,
-                submitDate: this.UploadModel.submitDate ? this.UploadModel.submitDate[0]:'',    
-                submitDate1: this.UploadModel.submitDate ? this.UploadModel.submitDate[1]:'',   
-                typeName: this.UploadModel.typeName,    
-            }
-            let date = moment(new Date()).format('YYYY-MM-DD')//今日時間
-            this.$store.dispatch('getQueryExcel',params).then((json) => { 
-                if (json && json.type == 'application/vnd.ms-excel') {
-                    const blob = new Blob([json],{type: 'application/vnd.openxmlformats-  officedocument.spreadsheetml.sheet;charset=utf-8'});
-                    const fileName = date+'用印歸檔導出文檔.xlsx';
-                    const elink = document.createElement('a');
-                    elink.download = fileName;
-                    elink.style.display = 'none';
-                    elink.href = URL.createObjectURL(blob);
-                    document.body.appendChild(elink);
-                    elink.click();
-                    URL.revokeObjectURL(elink.href); // 释放URL 对象
-                    document.body.removeChild(elink);
-                }
-                else if(json && json.type == 'application/json'){
-                    this.$message({
-                        message:'未查詢到用印信息,無法導出Excel！',
-                        type:'error',
-                        showClose:true
-                    })
-                }
-            }).catch(err => {
-                this.$message({
-                    message:'下载失败！',
-                    type:'error',
-                    showClose:true
-                })
-            })
-            // })
-        },
         // arraySpanMethod({ row, column, rowIndex, columnIndex }) {
         //     if (rowIndex % 2 === 0) {
         //         if (columnIndex === 0) {
@@ -712,8 +620,7 @@ export default {
     .register-l{
         float: left;
         width: 95%;
-        margin: 30px;
-        margin-left: 5%;
+        padding:3% 0 0 8%;
         height: 100%;
         background-color: #1bcbae;
         width: 100%;
@@ -747,9 +654,9 @@ export default {
         margin: 10px 40%;
         color: #000080;
         background-color: #88C700;
-        width: 80px;
+        width: 85px;
         height: 38px;
-        font-size:14px;
+        font-size:1.25em;
     }
     .search-bar1 {
         /* padding: 12px 22px 14px; */

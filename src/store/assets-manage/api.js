@@ -1,30 +1,32 @@
 const api = {
 
-  selectFactory:'/assets/add/selectFactory',//廠區
+  selectFactory:'/assets/selectFactory',//廠區
   
-  selectArea:'/assets/add/selectArea',//工作區域列表
+  selectArea:'/assets/selectArea',//工作區域列表
   
-  selectBuildingByArea: '/assets/add/selectBuildingByArea',//廠内區域樓棟
+  selectBuildingByArea: '/assets/selectBuildingByArea',//廠内區域樓棟
   
-  selectAssetsStatus:'/assets/add/selectAssetsStatus',//資產狀態列表
+  selectAssetsStatus:'/assets/selectAssetsStatus',//資產狀態列表
  
-  selectAssetsType:'/assets/add/selectAssetsType',//资产类型
+  selectAssetsType:'/assets/selectAssetsType',//资产类型
   
-  selectStaffType:'/assets/add/selectStaffType',//幹部類型
+  selectStaffType:'/assets/selectStaffType',//幹部類型
 
-  selectWorkStatus:'/assets/add/selectWorkStatus',//在职状态
+  selectWorkStatus:'/assets/selectWorkStatus',//在职状态
   
-  selectBgList:'/assets/add/selectBgList',//查询事业群
+  selectBgList:'/assets/selectBgList',//查询事业群
   
-  selectUnitList: '/assets/add/selectUnitList',//根据BGId查询事业处unit接口
+  selectUnitList: '/assets/selectUnitList',//根据BGId查询事业处unit接口
   
-  selectDepartList: '/assets/add/selectDepartList',//根据BGId、 unitId查询部门depart接口
+  selectDepartList: '/assets/selectDepartList',//根据BGId、 unitId查询部门depart接口
   
-  selectClassList: '/assets/add/selectClassList',//根据BGId、 unitId 、departId查询課Class接口
+  selectClassList: '/assets/selectClassList',//根据BGId、 unitId 、departId查询課Class接口
   
-  saveComelninsert: '/assets/add/insert',//保存
+  saveComelninsert: '/assets/insert',//保存
   
-  // delStampMem: '/tsbg/stamp/delStampMem',//刪除成員
+  query: '/tsbg/ac/query',//查詢
+
+  selectAssetsInfoById: '/assets/selectAssetsInfoById',//根据固定资产id查询资产信息接口
   
 
 };

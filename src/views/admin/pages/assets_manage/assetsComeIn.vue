@@ -244,10 +244,12 @@
         </div>
         <div v-if="radio === '2'">
             <el-form>
-                <div>
-                    <el-button class="button_import" type="button" @click = "importTemplate()"><span>下載批量導入模板</span></el-button>
+                <div class="import-style">
+                    <el-button class="button_import" type="button" @click = "importTemplate()">
+                        下載批量導入模板
+                    </el-button>
                     <!-- <el-button class="button_1 " type="button" @click = "saveComeln()">選擇Excel文件</el-button> -->
-                    <el-upload 
+                    <el-upload   style="display:inline;"
                         ref="upload"
                         :action="`${FILE_URL_80}/tsbg/upload/importmore`"
                         :headers="headers"
@@ -272,7 +274,7 @@
                     <span class="title_1">要導入的文件：</span>
                     <span class="">XXXX</span>
                 </div>
-                <div class="topline1"></div>
+                <div class="topline-1"></div>
                 <el-row>
                     <el-form-item style="margin-left:35%">
                         <el-button class="button_1 " type="button" @click = "saveComeln()">確認保存</el-button>
@@ -519,7 +521,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .register-l{
         margin-left: 5%;
         height: 100%;
@@ -591,9 +593,19 @@
         background: #fff;
         width: 87%;
     }
-    .button_import{
-        background-color: #88C700;
-        height: 25px;
-        line-height: 25px;
+    //批量导入
+    .import-style{
+        margin-top: 10px;
+        margin-bottom: 50px;
+        .button_import{
+            background-color: #88C700;
+            line-height: 3px;
+            display: inline;
+        }
+    }
+    .topline-1{
+        width: 87%;
+        margin-top: 10px;
+        border:0.5px rgb(10, 10, 10) solid;
     }
 </style>

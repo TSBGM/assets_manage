@@ -149,17 +149,28 @@ const actions = {
             return rep.data;
         });
     },
-    // //印章類型
-    // selectTypeName ({commit, dispathc, state, rootState}, param) {
-    //     return axios({
-    //             url: api.selectTypeName,
-    //             method: 'post',
-    //             baseURL: configUrl.baseUrl,
-    //             data: param,
-    //     }).then((rep) => {
-    //         return rep.data;
-    //     });
-    // },
+    //查詢
+    query ({commit, dispathc, state, rootState}, param) {
+        return axios({
+                url: api.query,
+                method: 'post',
+                baseURL: configUrl.zhouUrl,
+                data: param,
+        }).then((rep) => {
+            return rep.data;
+        });
+    },
+    //根据固定资产id查询资产信息接口
+    selectAssetsInfoById ({commit, dispathc, state, rootState}, param) {
+        return axios({
+                url: api.selectAssetsInfoById,
+                method: 'post',
+                baseURL: configUrl.baseUrl,
+                data: param,
+        }).then((rep) => {
+            return rep.data;
+        });
+    },
      // //导出Excel
     // getQueryExcel ({commit, dispathc, state, rootState}, param) {
     //     return axios({

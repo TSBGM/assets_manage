@@ -1326,7 +1326,9 @@ export default {
     font-size: 12px;
     color: #333;
   }
-
+  .cell{
+    background-color: #D0D0AE;
+  }
   .el-table--border th:last-child {
     border: none;
   }
@@ -1371,6 +1373,7 @@ export default {
     height: 36px;
     overflow: hidden;
     text-align: center;//selectCustomer.vue 序号居中，没找到其他地方改
+    background-color: #D0D0AE;
   }
   //控制分页栏目控制
   .el-pagination {

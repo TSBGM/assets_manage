@@ -13,6 +13,7 @@ import assetsComeIn from '../pages/assets_manage/assetsComeIn.vue'
 import assetsDistribute from '../pages/assets_manage/assetsDistribute.vue'
 import assetsScrap from '../pages/assets_manage/assetsScrap.vue'
 import assetsUserManage from '../pages/assets_manage/assetsUserManage.vue'
+import assetsDetailUpdate from '../pages/assets_manage/assetsDetailUpdate.vue'
 import FeedbackUpload from '../pages/feedback/feedbackUpload'
 
 
@@ -95,8 +96,8 @@ const router = new Router({
     },
     
     {
-        path: '/assetsDetails',
-        component: assetsDetails,
+        path: '/assetsDetailUpdate',
+        component: assetsDetailUpdate,
         meta: {
             title: '',
             requireAuth: true,  

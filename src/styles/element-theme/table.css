@@ -1257,7 +1257,9 @@
     .el-table tr input[type="checkbox"] {
       margin: 0; }
   .el-table th.is-leaf, .el-table td {
-    border-bottom: 1px solid #e6ebf5; }
+    /* border-bottom: 1px solid #e6ebf5;  */
+    border-bottom: 1px solid #797979; 
+  }
   .el-table th.is-sortable {
     cursor: pointer; }
   .el-table th {
@@ -1464,11 +1466,17 @@
   .el-table--striped .el-table__body tr.el-table__row--striped td {
     background: #FAFAFA; }
   .el-table--striped .el-table__body tr.el-table__row--striped.current-row td {
-    background-color: #ecf6ff; }
+    /*background-color: #ecf6ff;*/ 
+    background-color: red;
+  }
   .el-table__body tr.hover-row > td, .el-table__body tr.hover-row.current-row > td, .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row.el-table__row--striped.current-row > td {
-    background-color: #ecf6ff; }
+    /*background-color: #ecf6ff;*/
+    background-color: red;
+   }
   .el-table__body tr.current-row > td {
-    background-color: #ecf6ff; }
+    /*background-color: #ecf6ff;*/
+    background-color: red;
+  }
   .el-table__column-resize-proxy {
     position: absolute;
     left: 200px;
