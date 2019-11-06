@@ -218,7 +218,7 @@
         </el-form>
         <div class="topline"></div>
             <el-button class="button1" type="button" @click= "searchDetails(val)">保存修改</el-button>
-        <div>
+        <div v-if="true">
             <span class="title_1">修改結果：</span>
             <div class="register-1" >
                 <div class="search-bar1">
@@ -405,7 +405,6 @@ export default {
         }
     },
     mounted () {
-        this.updateOpen()
         this.selectFactory()//廠區
         this.selectArea()//工作區域列表
         this.selectAssetsStatus()//資產狀態列表
@@ -413,6 +412,13 @@ export default {
         this.selectStaffType()//幹部類型
         this.selectWorkStatus() //在职状态
         this.selectBgList() //查询事业群
+        
+        this.selectBuildingByArea()//廠内區域樓棟
+        this.selectUnitList()//根据bgId查询事业处unit接口
+        this.selectDepartList()//根据bgId、 unitId查询部门depart接口
+        this.selectClassList()//根据bgId、 unitId 、departId查询課Class接口
+
+        this.updateOpen()
     },
     methods: {
         //修改頁面詳情
@@ -420,7 +426,14 @@ export default {
             this.$store.dispatch('selectAssetsInfoById',{intengibleAssetsId:this.intengibleAssetsId})
             .then(res => {
                 if(res.code == 100){
-                    this.assetsDetailUpdateModel = res.data
+                    this.assetsDetailUpdateModel = res.data[0]
+                    if(this.assetsDetailUpdateModel.areaId){
+
+                    }
+                    this.areaIdFlag = this.assetsDetailUpdateModel.areaId ? false:true//工作區域狀態
+                    this.BgFlag = this.assetsDetailUpdateModel.bgId ? false:true//工作區域狀態
+                    this.unitFlag = this.assetsDetailUpdateModel.unitId ? false:true//工作區域狀態
+                    this.departFlag = this.assetsDetailUpdateModel.departId ? false:true//工作區域狀態
                 }
             })
         },
@@ -654,7 +667,7 @@ export default {
         margin: 10px 40%;
         color: #000080;
         background-color: #88C700;
-        width: 85px;
+        width: 88px;
         height: 38px;
         font-size:1.25em;
     }

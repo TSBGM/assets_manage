@@ -636,7 +636,7 @@
   .el-button:hover, .el-button:focus {
     color: #3da5fe;
     border-color: #c5e4ff;
-    /*background-color: #ecf6ff;*/background-color: red; }
+    background-color: #ecf6ff; }
   .el-button:active {
     color: #3795e5;
     border-color: #3795e5;
@@ -721,7 +721,7 @@
         outline: none; }
       .el-button--primary.is-plain.is-disabled, .el-button--primary.is-plain.is-disabled:hover, .el-button--primary.is-plain.is-disabled:focus, .el-button--primary.is-plain.is-disabled:active {
         color: #8bc9fe;
-        /*background-color: #ecf6ff;*/background-color: red;
+        background-color: #ecf6ff;
         border-color: #d8edff; }
   .el-button--success {
     color: #fff;

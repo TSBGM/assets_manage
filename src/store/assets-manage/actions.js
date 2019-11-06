@@ -171,21 +171,21 @@ const actions = {
             return rep.data;
         });
     },
-     // //导出Excel
-    // getQueryExcel ({commit, dispathc, state, rootState}, param) {
-    //     return axios({
-    //             url: api.getQueryExcel,
-    //             method: 'post',
-    //             baseURL: configUrl.baseUrl,
-    //             data: param,
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             responseType: 'blob'
-    //     }).then((rep) => {
-    //         return rep.data;
-    //     });
-    // },
+    //导出Excel
+    capitalexcel ({commit, dispathc, state, rootState}, param) {
+        return axios({
+                url: api.capitalexcel,
+                method: 'post',
+                baseURL: configUrl.zhouUrl,
+                data: param,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                responseType: 'blob'
+        }).then((rep) => {
+            return rep.data;
+        });
+    },
 }
 export default actions;
 

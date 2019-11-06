@@ -161,7 +161,8 @@
     .header-menu{
         .el-menu{ 
             .el-menu-item{
-                margin-left: 7.5%;           
+                // margin-left: 7.5%;
+                margin-left: 12%;           
             }
             .el-menu-item.is-active::after {
                 position: absolute;

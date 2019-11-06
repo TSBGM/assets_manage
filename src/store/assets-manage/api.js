@@ -25,6 +25,7 @@ const api = {
   saveComelninsert: '/assets/insert',//保存
   
   query: '/tsbg/ac/query',//查詢
+  capitalexcel:'/tsbg/ac/capitalexcel',//導出
 
   selectAssetsInfoById: '/assets/selectAssetsInfoById',//根据固定资产id查询资产信息接口
   

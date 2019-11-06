@@ -206,7 +206,7 @@
                                     :picker-options="birthOptions"
                                     @change="getSTime"
                                     placeholder="Time2"
-                                    v-model="assetsDetailsModel.joinBgDate">
+                                    v-model="assetsDetailsModel.joinBgDate1">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -219,7 +219,7 @@
                                     :picker-options="birthOptions"
                                     @change="getSTime"
                                     placeholder="Time1"
-                                    v-model="assetsDetailsModel.joinBgDate">
+                                    v-model="assetsDetailsModel.leftDate">
                             </el-date-picker>
                             <span>—</span>
                             <el-date-picker
@@ -229,7 +229,7 @@
                                     :picker-options="birthOptions"
                                     @change="getSTime"
                                     placeholder="Time2"
-                                    v-model="assetsDetailsModel.joinBgDate">
+                                    v-model="assetsDetailsModel.leftDate1">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -362,7 +362,7 @@
                                     </el-table-column>
                                     <el-table-column label="操作" min-width="50" fixed="right">
                                         <template slot-scope="scope">
-                                            <el-button @click="updateOpen(scope.row)" type="text" size="small">修改</el-button>
+                                            <el-button @click="updateOpen(scope.row.intengibleAssetsId)" type="text" size="small">修改</el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
@@ -373,11 +373,12 @@
             </div>
         </div>
         <div class="topline"></div>
-        <el-button class="button2" type="text">導出到Excel</el-button>
+        <el-button class="button2" type="button" @click= "exportExcel(val)">導出到Excel</el-button>
     </div>
 </template>
 
 <script>
+import moment from 'moment'
 export default {
     data() {
         return {
@@ -646,26 +647,25 @@ export default {
             this.$store.dispatch('selectAssetsInfoById', {intengibleAssetsId:id})
             .then(res => {
                 // if(res.data.code == 0){
-                    // window.open("http://localhost:8080/#/assetsDetailUpdate")
-                    window.open(`${BASE_URL}/#/assetsDetailUpdate`)
+                    window.open("http://localhost:8080/#/assetsDetailUpdate")
+                    // window.open(`${BASE_URL}/#/assetsDetailUpdate`)
             })
         
         },
-        exportExcel() {
-            this.postparams = new FormData()
+        exportExcel(val) {
             let params = {
-                userCode:this.UploadModel.userCode,
-                factoryName: this.UploadModel.factoryName,
-                bgName: this.UploadModel.BGName,
-                submitDate: this.UploadModel.submitDate ? this.UploadModel.submitDate[0]:'',    
-                submitDate1: this.UploadModel.submitDate ? this.UploadModel.submitDate[1]:'',   
-                typeName: this.UploadModel.typeName,    
+                pageRequest:{
+                    pageIndex: val ? val.pageIndex :1,
+                    pageSize: val ? val.pageSize :10,
+                },
+                assetsquerypackage:{}
             }
+            params.assetsquerypackage = this.assetsDetailsModel
             let date = moment(new Date()).format('YYYY-MM-DD')//今日時間
-            this.$store.dispatch('getQueryExcel',params).then((json) => { 
+            this.$store.dispatch('capitalexcel',params).then((json) => { 
                 if (json && json.type == 'application/vnd.ms-excel') {
                     const blob = new Blob([json],{type: 'application/vnd.openxmlformats-  officedocument.spreadsheetml.sheet;charset=utf-8'});
-                    const fileName = date+'用印歸檔導出文檔.xlsx';
+                    const fileName = date+'固定資產數據導出.xls';
                     const elink = document.createElement('a');
                     elink.download = fileName;
                     elink.style.display = 'none';
@@ -765,6 +765,7 @@ export default {
         margin: 10px 39.7%;
         color: #000080;
         border: 1px #797979 solid;
+        background-color: #1bcbae;
         width: 100px;
         height: 25px;
         font-size:13px;
