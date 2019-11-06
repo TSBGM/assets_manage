@@ -6,7 +6,7 @@
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="系統名稱：" label-width="300px" >
-                            <span class="sys-name" >合作夥伴管理系統</span>
+                            <span class="sys-name" >TSBG固定資產管理系統</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -61,49 +61,56 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                        <el-col :span="50">
-                            <el-form-item label="附件：" label-width="300px" >
+                    <el-col :span="50">
+                        <el-form-item label="附件：" label-width="300px" >
+                            <el-upload
+                                ref="upload"
+                                :action="`${FILE_URL}/tsbg/upload/importmore`"
+                                :headers="headers"
+                                :file-list="fileList"
+                                :data="otherData"
+                                :on-remove="fileRemvoeFunc"
+                                :on-error="fileErrorFunc"
+                                :before-upload="beforeUploadFunc"
+                                :on-change="handleUploadChange"
+                                :on-success="uploadCtrlFunc"
+                                :on-exceed="handleExceed"
+                                :limit="15" multiple
+                                accept=".pdf, .doc, .docx, .xlsx, .xls, .xlsm,.jpg, .png, .ppt, .pptx, .jpeg "
                                 
-                                <el-upload
-                                    ref="upload"
-                                    :action="`${FILE_URL}/tsbg/upload/importmore`"
-                                    :headers="headers"
-                                    :file-list="fileList"
-                                    :data="otherData"
-                                    :on-remove="fileRemvoeFunc"
-                                    :on-error="fileErrorFunc"
-                                    :before-upload="beforeUploadFunc"
-                                    :on-change="handleUploadChange"
-                                    :on-success="uploadCtrlFunc"
-                                    :on-exceed="handleExceed"
-                                    :limit="15" multiple
-                                    accept=".pdf, .doc, .docx, .xlsx, .xls, .xlsm,.jpg, .png, .ppt, .pptx, .jpeg "
-                                    
-                                    :auto-upload="false"
-                                    :http-request="uploadSectionFile">
-                                    <div class="name_1">
-                                        <el-button slot="trigger" type="plain">
-                                            選擇文件
-                                        </el-button>
-                                        <span>只能上傳jpg、png、pdf、word、excel、txt、ppt文件，單次上傳附件大小不能超過30M。</span>
+                                :auto-upload="false"
+                                :http-request="uploadSectionFile">
+                                <div class="name_1">
+                                    <el-button slot="trigger" type="plain">
+                                        選擇文件
+                                    </el-button>
+                                    <span>只能上傳jpg、png、pdf、word、excel、txt、ppt文件，單次上傳附件大小不能超過30M。</span>
+                                </div>
+                            </el-upload>
+                            <template v-for="(file, id) in this.qhfileLst" >
+                                <div class="flex-space-between file-item" :key="id">
+                                    <div>
+                                        <i class="el-icon-document"></i>
+                                        <a class="icon" :href="getDownload(file)" @click="download(file);" >{{file}}</a>
+                                        <i class="el-icon-close closeFile" @click.stop="closeFile(file);"></i>
                                     </div>
-                                </el-upload>
-                                <template v-for="(file, id) in this.qhfileLst" >
-                                    <div class="flex-space-between file-item" :key="id">
-                                        <div>
-                                            <i class="el-icon-document"></i>
-                                            <a class="icon" :href="getDownload(file)" @click="download(file);" >{{file}}</a>
-                                            <i class="el-icon-close closeFile" @click.stop="closeFile(file);"></i>
-                                        </div>
-                                    </div>
-                                </template>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                <el-form-item style="text-align:center;margin-top:25px;">
-                    <el-button type="primary" style="border-radius:5px;" @click = "uploadQuestion('UploadModel')"  :disabled="isDisable">提交</el-button>
-                    <el-button type="primary" style="border-radius:5px;" @click = "gotoLogin">返回</el-button>
-                </el-form-item>
+                                </div>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="50">
+                        <el-form-item style="text-align:center;margin-top:25px;margin-left:700px">
+                            <el-button type="primary" class="button1" @click = "uploadQuestion('UploadModel')"  :disabled="isDisable">提交</el-button>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="50">
+                        <el-form-item style="text-align:center;margin-top:25px;">
+                            <el-button type="primary" class="button1" @click = "gotoLogin">返回</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
             </el-form>
         </div>
     </div>
@@ -324,6 +331,15 @@ export default {
         margin-left: 5px;
         margin-top: 5px;
         font-size: 15px;
+    }
+    .button1{
+        margin: 10px 30%;
+        color: #000080;
+        background-color: #88C700;
+        width: 80px;
+        height: 40px;
+        font-size:14px;
+        border-radius:5px;
     }
 
 </style>
