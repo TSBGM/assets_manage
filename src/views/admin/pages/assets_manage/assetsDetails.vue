@@ -259,7 +259,7 @@
                                     <el-table-column label="序号" width="45">
                                         <template slot-scope="scope">{{scope.$index + 1}}</template>
                                     </el-table-column>
-                                    <el-table-column label="工號" width="85" >
+                                    <el-table-column label="工號" width="90" >
                                         <template slot-scope="scope">
                                             {{scope.row.ownerCode}}
                                         </template>
@@ -284,7 +284,7 @@
                                             <span v-html="dateFormatTime(scope.row.leftDate)"></span>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="幹部類型" width="77" >
+                                    <el-table-column label="幹部類型" width="75" >
                                         <template slot-scope="scope">
                                             {{scope.row.staffTypeName}}
                                         </template>
@@ -294,22 +294,22 @@
                                             {{scope.row.bgname}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="事業處" width="80" >
+                                    <el-table-column label="事業處" width="170" >
                                         <template slot-scope="scope">
                                             {{scope.row.unitName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="部" width="80" >
+                                    <el-table-column label="部" width="260" >
                                         <template slot-scope="scope">
                                             {{scope.row.departName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="課" width="80" >
+                                    <el-table-column label="課" width="280" >
                                         <template slot-scope="scope">
                                             {{scope.row.className}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="資產名稱" width="75" >
+                                    <el-table-column label="資產名稱" width="150" >
                                         <template slot-scope="scope">
                                             {{scope.row.assetsName}}
                                         </template>
@@ -319,12 +319,20 @@
                                             {{scope.row.typeName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="需求説明" width="80" >
+                                    <el-table-column label="需求説明" width="100" >
                                         <template slot-scope="scope">
-                                            {{scope.row.specifications}}
+                                            <!-- {{scope.row.specifications}} -->
+                                            <el-popover trigger="hover" placement="top" :visible-arrow="false">
+                                                <p class="popover-p">{{ scope.row.specifications }}</p>
+                                                <div slot="reference" class="name-wrapper">
+                                                    <el-tag size="medium">
+                                                        {{ scope.row.specifications}}
+                                                    </el-tag>
+                                                </div>
+                                            </el-popover>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="資產編號" width="80" >
+                                    <el-table-column label="資產編號" width="140" >
                                         <template slot-scope="scope">
                                             {{scope.row.assetsNumber}}
                                         </template>
@@ -349,12 +357,12 @@
                                             {{scope.row.buildingName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="使用地點" width="80" >
+                                    <el-table-column label="使用地點" width="140" >
                                         <template slot-scope="scope">
                                             {{scope.row.usingPlace}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="備注" width="70" >
+                                    <el-table-column label="備注" width="120" >
                                         <template slot-scope="scope">
                                            {{scope.row.remark}}
                                         </template>

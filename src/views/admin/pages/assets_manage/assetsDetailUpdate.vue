@@ -10,7 +10,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="廠區："  label-width="90px" >
-                            <el-select v-model="assetsDetailUpdateModel.factoryId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.factoryId" clearable class="select" @change= "handlerChange">
                                 <el-option
                                     v-for="item in factoryList"
                                     :key="item.value"
@@ -233,19 +233,20 @@
                                 class="input1"
                                 type="textarea"
                                 :rows="3"
-                                v-model="assetsDetailUpdateModel.remark">
+                                v-model="assetsDetailUpdateModel.remark" @change= "handlerChange">
                             </el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <div class="topline"></div>
-                <el-form-item >
-                    <el-button class="button1" type="button" @click = "updateSave()">保存修改</el-button>
+                <el-form-item >  
+                    <el-button class="button1" type="button" @click = "updateSave()" :disabled="this.updateResultFlag">保存修改</el-button>
+                    <!-- :disabled="this.updateResultFlag" -->
                 </el-form-item>
             </div>
         </el-form>
         
-        <div v-if="this.updateResultFlag">
+        <div>
             <span class="title_1">修改結果：</span>
             <div class="register-1" >
                 <div class="search-bar1">
@@ -254,7 +255,7 @@
                             <template slot="table">
                                 <el-table
                                     class="table"
-                                    :data="tableData"
+                                    :data="table.data"
                                     border
                                     tooltip-effect="dark"
                                     :span-method="arraySpanMethod"
@@ -265,102 +266,119 @@
                                 >
                                     <el-table-column label="工號" width="75" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.ownerCode}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="姓名" width="75" >
+                                    <el-table-column label="姓名" width="85" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.ownerName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="在職狀態" width="78" >
+                                    <el-table-column label="在職狀態" width="75" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.workStatusName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="入職時間" width="78" >
+                                    <el-table-column label="入職時間" width="85" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            <span v-html="dateFormatTime(scope.row.joinBgDate)"></span>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="離職時間" width="78" >
+                                    <el-table-column label="離職時間" width="85" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            <span v-html="dateFormatTime(scope.row.leftDate)"></span>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="幹部類型" width="77" >
+                                    <el-table-column label="幹部類型" width="75" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.staffTypeName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="事業群" width="70" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.bgname}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="事業處" width="80" >
+                                    <el-table-column label="事業處" width="170" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.unitName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="部" width="80" >
+                                    <el-table-column label="部" width="260" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.departName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="課" width="80" >
+                                    <el-table-column label="課" width="280" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.className}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="資產名稱" width="75" >
+                                    <el-table-column label="資產名稱" width="150" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.assetsName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產類型" width="80" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.typeName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="需求説明" width="80" >
+                                    <el-table-column label="需求説明" width="100" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            <el-popover trigger="hover" placement="top" :visible-arrow="false">
+                                                <p class="popover-p">{{ scope.row.specifications }}</p>
+                                                <div slot="reference" class="name-wrapper">
+                                                    <el-tag size="medium">
+                                                        {{ scope.row.specifications}}
+                                                    </el-tag>
+                                                </div>
+                                            </el-popover>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="資產編號" width="80" >
+                                    <el-table-column label="資產編號" width="140" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.assetsNumber}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產狀態" width="75" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.assetsStatusName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="廠區" width="75" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.factoryName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="工作區域" width="70" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.areaName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="工作樓棟" width="70" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.buildingName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="使用地點" width="80" >
+                                    <el-table-column label="使用地點" width="140" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                            {{scope.row.usingPlace}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="備注" width="70" >
+                                    <el-table-column label="備注" width="120" >
                                         <template slot-scope="scope">
-                                            <a  @click ="seeStampApplyInfo(scope.row.applyNum,scope.row.stampUseId)" target="_blank">{{scope.row.applyNum}}</a>
+                                           {{scope.row.remark}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="最後編輯者" width="150" >
+                                        <template slot-scope="scope">
+                                           {{scope.row.lastUpdateName}}&nbsp;&nbsp;{{scope.row.lastUpdateCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="最後編輯時間" width="120" >
+                                        <template slot-scope="scope">
+                                           <span v-html="dateFormatTime(scope.row.lastUpdateDate)"></span>
                                         </template>
                                     </el-table-column>
                                     
@@ -375,6 +393,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
     data() {
         return {
@@ -418,7 +437,7 @@ export default {
             BgFlag:'',
             unitFlag:'',
             departFlag:'',
-
+            updateResultFlag:true,
             
             table: {
                 // columns: [
@@ -434,12 +453,11 @@ export default {
         }
     },
     watch: {
-        // updateResultFlag:false,//修改結果
-        'assetsDetailUpdateModel.factoryId': {
-            handler (newName, oldName) {
-                // this.updateResultFlag = true
-            }
-        }
+        // 'assetsDetailUpdateModel.factoryId': {
+        //     handler (newName, oldName) {
+        //         this.updateResultFlag = true
+        //     }
+        // }
     },
     mounted () {
         this.selectFactory()//廠區
@@ -458,6 +476,9 @@ export default {
         this.updateOpen()
     },
     methods: {
+        handlerChange(e) {
+            this.updateResultFlag = false
+        },
         //修改頁面詳情
         updateOpen(){
             this.$store.dispatch('selectAssetsInfoById',{intengibleAssetsId:this.intengibleAssetsId})
@@ -503,10 +524,10 @@ export default {
                         this.areaList.push({label:res.data[i].areaName,value:res.data[i].areaId});
                     }
                 }
-                
             })
         },
         selectAreaChange(areaId){
+            
             this.buildingList = [],
             this.assetsDetailUpdateModel.buildingId = null
             this.areaIdFlag = this.assetsDetailUpdateModel.areaId ? false:true//工作區域狀態
@@ -514,6 +535,7 @@ export default {
                 this.selectBuildingByArea(areaId)//廠内區域樓棟
             }
         },
+        
         //廠内區域樓棟
         selectBuildingByArea(areaId){
             this.$store.dispatch('selectBuildingByArea',{areaId:areaId})
@@ -695,7 +717,21 @@ export default {
                         confirmButtonText: "确定",
                         showClose: false
                     }).then(() => {
-                        this.updateOpen()
+                        this.$store.dispatch('selectAssetsInfoById',{intengibleAssetsId:this.intengibleAssetsId})
+                        .then(res => {
+                            if(res.code == 100){
+                                this.rep = res.data
+                                Object.keys(res).map(key => (this.table[key] = res.data[key]))
+                                this.table.data = this.rep
+                            }else{
+                                this.$alert(res.message, '提示', {
+                                    confirmButtonText: '确定',
+                                    showClose: false
+                                    }).then(() => {
+                                        this.table.data = null
+                                })
+                            }
+                        })
                     });
                 }else{
                     this.$alert(res.message, '提示', {
@@ -705,6 +741,15 @@ export default {
                     })
                 }
             })
+        },
+        dateFormatTime: function(value) {
+            if(value){
+                var formatterTime = moment(new Date(value)).format("YYYY-MM-DD");
+                return "<font>"+formatterTime+"</font>";
+            }
+            else {
+                return "";
+            }
         },
         // arraySpanMethod({ row, column, rowIndex, columnIndex }) {
         //     if (rowIndex % 2 === 0) {

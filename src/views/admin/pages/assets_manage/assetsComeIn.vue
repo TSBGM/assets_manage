@@ -237,7 +237,7 @@
                     <el-form-item style="margin-left:35%">
                         <el-button class="button_1 " type="button" @click = "saveComeln()">保存</el-button>
                         <el-button class="button_1 " type="button" @click = "insertNext()">新增下一條</el-button>
-                        <el-button class="button_1 " type="button" @click = "saveComeln()">返回</el-button>
+                        <el-button class="button_1 " type="button" @click = "goToLast()">返回</el-button>
                     </el-form-item>
                 </el-row>
             </el-form>
@@ -551,19 +551,14 @@
                     }
                 })
             },
-            //
+            //新增下一條
             insertNext(){
-                this.$store.dispatch('saveComelninsert',this.assetsComelnModel)
-                .then(res => {
-                    if(res.code == 100){
-                        this.$alert(res.message, '提示', {
-                            confirmButtonText: '确定',
-                            showClose: false
-                            }).then(() => {
-                        })
-                    }
-                })
+                this.assetsComelnModel={}
             },
+            //返回
+            goToLast(){
+                this.$router.go(-1);
+            }
         }
     }
 </script>
@@ -574,8 +569,8 @@
         height: 100%;
         background-color: #1bcbae;
         width: 100%;
-        /* overflow-y: auto; */
-        position: fixed;
+        overflow-y: auto; 
+        // position: fixed;
        
     }  
     .radio{
