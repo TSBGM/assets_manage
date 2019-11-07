@@ -148,13 +148,13 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
-                        <el-form-item label="姓名："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailsModel.ownerName"></el-input>
+                        <el-form-item label="工號："  label-width="90px" >
+                            <el-input class="input" v-model="assetsDetailsModel.ownerCode" @blur.prevent="selectUserInfo"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
-                        <el-form-item label="工號："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailsModel.ownerCode"></el-input>
+                        <el-form-item label="姓名："  label-width="90px" >
+                            <el-input class="input" v-model="assetsDetailsModel.ownerName"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
@@ -252,7 +252,6 @@
                                     tooltip-effect="dark"
                                     :span-method="arraySpanMethod"
                                     ref="multipleTable"  
-                                    highlight-current-row
                                     @current-change="handleChange22"
                                     @selection-change="handleSelectionChange"
                                 >
@@ -260,104 +259,104 @@
                                     <el-table-column label="序号" width="45">
                                         <template slot-scope="scope">{{scope.$index + 1}}</template>
                                     </el-table-column>
-                                    <el-table-column label="工號" width="75" >
+                                    <el-table-column label="工號" width="85" >
                                         <template slot-scope="scope">
                                             {{scope.row.ownerCode}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="姓名" width="75" >
+                                    <el-table-column label="姓名" width="85" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.ownerName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="在職狀態" width="78" >
+                                    <el-table-column label="在職狀態" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.workStatusName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="入職時間" width="78" >
+                                    <el-table-column label="入職時間" width="85" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <span v-html="dateFormatTime(scope.row.joinBgDate)"></span>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="離職時間" width="78" >
+                                    <el-table-column label="離職時間" width="85" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            <span v-html="dateFormatTime(scope.row.leftDate)"></span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="幹部類型" width="77" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.staffTypeName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="事業群" width="70" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.bgname}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="事業處" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.unitName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="部" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.departName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="課" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.className}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產名稱" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.assetsName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產類型" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.typeName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="需求説明" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.specifications}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產編號" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.assetsNumber}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="資產狀態" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.assetsStatusName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="廠區" width="75" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.factoryName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="工作區域" width="70" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.areaName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="工作樓棟" width="70" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.buildingName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="使用地點" width="80" >
                                         <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
+                                            {{scope.row.usingPlace}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="備注" width="70" >
                                         <template slot-scope="scope">
-                                           {{scope.row.ownerCode}}
+                                           {{scope.row.remark}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="操作" min-width="50" fixed="right">
@@ -469,6 +468,7 @@ export default {
         },
         selectAreaChange(areaId){
             this.buildingList = []
+            this.assetsDetailsModel.buildingId = null
             this.areaIdFlag = this.assetsDetailsModel.areaId ? false:true//工作區域狀態
             if(!this.areaIdFlag){
                 this.selectBuildingByArea(areaId)//廠内區域樓棟
@@ -542,7 +542,14 @@ export default {
         },
         selectBGChange(bgId){
             this.unitList = []
-            this.BgFlag = this.assetsDetailsModel.bgId ? false:true//工作區域狀態
+            this.departList = []
+            this.classList = []
+            this.assetsDetailsModel.unitId = null
+            this.assetsDetailsModel.departId = null
+            this.assetsDetailsModel.classId = null
+            this.BgFlag = this.assetsDetailsModel.bgId ? false:true//事業處狀態
+            this.unitFlag = true//部狀態
+            this.departFlag = true//課狀態
             if(!this.BgFlag){
                 this.selectUnitList(bgId)//廠内區域樓棟
             }
@@ -560,7 +567,11 @@ export default {
         },
         selectUnitChange(bgId,unitId){
             this.departList = []
-            this.unitFlag = this.assetsDetailsModel.unitId ? false:true//工作區域狀態
+            this.classList = []
+            this.assetsDetailsModel.departId = null
+            this.assetsDetailsModel.classId = null
+            this.unitFlag = this.assetsDetailsModel.bgId && this.assetsDetailsModel.unitId ? false:true//部狀態
+            this.departFlag = true//課狀態
             if(!this.unitFlag){
                 this.selectDepartList(bgId,unitId)//廠内區域樓棟
             }
@@ -578,7 +589,8 @@ export default {
         },
         selectDepartChange(bgId,unitId,departId){
             this.classList = []
-            this.departFlag = this.assetsDetailsModel.departId ? false:true//工作區域狀態
+            this.assetsDetailsModel.classId = null
+            this.departFlag = this.assetsDetailsModel.bgId && this.assetsDetailsModel.unitId && this.assetsDetailsModel.departId ? false:true//課狀態
             if(!this.departFlag){
                 this.selectClassList(bgId,unitId,departId)//廠内區域樓棟
             }
@@ -591,6 +603,21 @@ export default {
                     for (var i = 0; i < res.data.length; i++) {
                         this.classList.push({label:res.data[i].className,value:res.data[i].classId});
                     }
+                }
+            })
+        },
+        //根据工号查询员工姓名接口
+        selectUserInfo(){
+            this.$store.dispatch('selectUserNameByUserCode', { staffCode: this.assetsDetailsModel.ownerCode })
+            .then(res => {
+                if(res.code == 100){
+                    this.assetsDetailsModel.ownerName = res.data
+                }else{
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                        }).then(() => {
+                    })
                 }
             })
         },
@@ -690,6 +717,15 @@ export default {
             })
             // })
         },
+        dateFormatTime: function(value) {
+            if(value){
+                var formatterTime = moment(new Date(value)).format("YYYY-MM-DD");
+                return "<font>"+formatterTime+"</font>";
+            }
+            else {
+                return "";
+            }
+        },
         // arraySpanMethod({ row, column, rowIndex, columnIndex }) {
         //     if (rowIndex % 2 === 0) {
         //         if (columnIndex === 0) {
@@ -716,7 +752,8 @@ export default {
         height: 100%;
         background-color: #1bcbae;
         width: 100%;
-        position: fixed;
+        overflow-y: auto;
+        /* position: fixed; */
     }  
     .el-col{
         height: 35px;

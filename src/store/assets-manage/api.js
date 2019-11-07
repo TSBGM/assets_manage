@@ -28,7 +28,7 @@ const api = {
   capitalexcel:'/tsbg/ac/capitalexcel',//導出
 
   selectAssetsInfoById: '/assets/selectAssetsInfoById',//根据固定资产id查询资产信息接口
-  selectUserNameByUserCode: '/assets/selectUserNameByUserCode',//根据工号查询员工姓名接口
+  selectUserNameByUserCode: '/assets/selectUserNameByStaffCode',//根据工号查询员工姓名接口
   update: '/assets/update',//固定资产修改保存
 
 };

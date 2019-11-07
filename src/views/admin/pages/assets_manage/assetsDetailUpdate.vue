@@ -154,7 +154,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="姓名："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerName" readonly></el-input>
+                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerName"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
@@ -238,10 +238,13 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+                <div class="topline"></div>
+                <el-form-item >
+                    <el-button class="button1" type="button" @click = "updateSave()">保存修改</el-button>
+                </el-form-item>
             </div>
         </el-form>
-        <div class="topline"></div>
-        <el-button class="button1" type="button" @click = "updateSave()">保存修改</el-button>
+        
         <div v-if="this.updateResultFlag">
             <span class="title_1">修改結果：</span>
             <div class="register-1" >
@@ -431,7 +434,7 @@ export default {
         }
     },
     watch: {
-        updateResultFlag:false,//修改結果
+        // updateResultFlag:false,//修改結果
         'assetsDetailUpdateModel.factoryId': {
             handler (newName, oldName) {
                 // this.updateResultFlag = true
@@ -447,10 +450,10 @@ export default {
         this.selectWorkStatus() //在职状态
         this.selectBgList() //查询事业群
         
-        this.selectBuildingByArea()//廠内區域樓棟
-        this.selectUnitList()//根据bgId查询事业处unit接口
-        this.selectDepartList()//根据bgId、 unitId查询部门depart接口
-        this.selectClassList()//根据bgId、 unitId 、departId查询課Class接口
+        // this.selectBuildingByArea()//廠内區域樓棟
+        // this.selectUnitList()//根据bgId查询事业处unit接口
+        // this.selectDepartList()//根据bgId、 unitId查询部门depart接口
+        // this.selectClassList()//根据bgId、 unitId 、departId查询課Class接口
 
         this.updateOpen()
     },
@@ -462,12 +465,21 @@ export default {
                 if(res.code == 100){
                     this.assetsDetailUpdateModel = res.data[0]
                     if(this.assetsDetailUpdateModel.areaId){
-
+                        this.selectBuildingByArea(this.assetsDetailUpdateModel.areaId)
+                    }
+                    if(this.assetsDetailUpdateModel.bgId){
+                        this.selectUnitList(this.assetsDetailUpdateModel.bgId)
+                    }
+                    if(this.assetsDetailUpdateModel.bgId && this.assetsDetailUpdateModel.unitId){
+                        this.selectDepartList(this.assetsDetailUpdateModel.bgId,this.assetsDetailUpdateModel.unitId)
+                    }
+                    if(this.assetsDetailUpdateModel.bgId && this.assetsDetailUpdateModel.unitId && this.assetsDetailUpdateModel.departId){
+                        this.selectClassList(this.assetsDetailUpdateModel.bgId,this.assetsDetailUpdateModel.unitId,this.assetsDetailUpdateModel.departId)
                     }
                     this.areaIdFlag = this.assetsDetailUpdateModel.areaId ? false:true//工作區域狀態
                     this.BgFlag = this.assetsDetailUpdateModel.bgId ? false:true//工作區域狀態
-                    this.unitFlag = this.assetsDetailUpdateModel.unitId ? false:true//工作區域狀態
-                    this.departFlag = this.assetsDetailUpdateModel.departId ? false:true//工作區域狀態
+                    this.unitFlag = this.assetsDetailUpdateModel.bgId && this.assetsDetailUpdateModel.unitId ? false:true//工作區域狀態
+                    this.departFlag = this.assetsDetailUpdateModel.bgId && this.assetsDetailUpdateModel.unitId && this.assetsDetailUpdateModel.departId ? false:true//工作區域狀態
                 }
             })
         },
@@ -495,7 +507,8 @@ export default {
             })
         },
         selectAreaChange(areaId){
-            this.buildingList = []
+            this.buildingList = [],
+            this.assetsDetailUpdateModel.buildingId = null
             this.areaIdFlag = this.assetsDetailUpdateModel.areaId ? false:true//工作區域狀態
             if(!this.areaIdFlag){
                 this.selectBuildingByArea(areaId)//廠内區域樓棟
@@ -569,7 +582,14 @@ export default {
         },
         selectBGChange(bgId){
             this.unitList = []
-            this.BgFlag = this.assetsDetailUpdateModel.bgId ? false:true//工作區域狀態
+            this.departList = []
+            this.classList = []
+            this.assetsDetailUpdateModel.unitId = null
+            this.assetsDetailUpdateModel.departId = null
+            this.assetsDetailUpdateModel.classId = null
+            this.BgFlag = this.assetsDetailUpdateModel.bgId ? false:true//事業處狀態
+            this.unitFlag = true//部狀態
+            this.departFlag = true//課狀態
             if(!this.BgFlag){
                 this.selectUnitList(bgId)//廠内區域樓棟
             }
@@ -587,7 +607,11 @@ export default {
         },
         selectUnitChange(bgId,unitId){
             this.departList = []
-            this.unitFlag = this.assetsDetailUpdateModel.unitId ? false:true//工作區域狀態
+            this.classList = []
+            this.assetsDetailUpdateModel.departId = null
+            this.assetsDetailUpdateModel.classId = null
+            this.unitFlag = this.assetsDetailUpdateModel.bgId && this.assetsDetailUpdateModel.unitId ? false:true//部狀態
+            this.departFlag = true//課狀態
             if(!this.unitFlag){
                 this.selectDepartList(bgId,unitId)//廠内區域樓棟
             }
@@ -605,7 +629,8 @@ export default {
         },
         selectDepartChange(bgId,unitId,departId){
             this.classList = []
-            this.departFlag = this.assetsDetailUpdateModel.departId ? false:true//工作區域狀態
+            this.assetsDetailUpdateModel.classId = null
+            this.departFlag = this.assetsDetailUpdateModel.bgId && this.assetsDetailUpdateModel.unitId && this.assetsDetailUpdateModel.departId ? false:true//課狀態
             if(!this.departFlag){
                 this.selectClassList(bgId,unitId,departId)//廠内區域樓棟
             }
@@ -647,16 +672,22 @@ export default {
         },
         //根据工号查询员工姓名接口
         selectUserInfo(){
-            this.$store.dispatch('selectUserNameByUserCode', { userCode: this.assetsDetailUpdateModel.ownerCode })
+            this.$store.dispatch('selectUserNameByUserCode', { staffCode: this.assetsDetailUpdateModel.ownerCode })
             .then(res => {
                 if(res.code == 100){
                     this.assetsDetailUpdateModel.ownerName = res.data
+                }else{
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                        }).then(() => {
+                    })
                 }
             })
         },
         //修改保存
         updateSave(){
-            debugger
+            this.assetsDetailUpdateModel.assetsTypeId = this.assetsDetailUpdateModel.typeId
             this.$store.dispatch('update',this.assetsDetailUpdateModel)
             .then(res => {
                 if(res.code == 100){
@@ -666,6 +697,12 @@ export default {
                     }).then(() => {
                         this.updateOpen()
                     });
+                }else{
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                        }).then(() => {
+                    })
                 }
             })
         },
@@ -686,7 +723,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .register-l{
         float: left;
         width: 95%;
@@ -736,7 +773,7 @@ export default {
         background-color: #88C700;
         width: 88px;
         height: 38px;
-        font-size:1.25em;
+        font-size:1em;
     }
     .search-bar1 {
         /* padding: 12px 22px 14px; */

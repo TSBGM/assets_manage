@@ -25840,7 +25840,9 @@
     margin: 0; }
     .el-message-box__message p {
       margin: 0;
-      line-height: 24px; }
+      line-height: 24px; 
+      font-size:1.25em;
+    }
   .el-message-box__errormsg {
     color: #ff6464;
     font-size: 12px;

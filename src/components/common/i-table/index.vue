@@ -1326,14 +1326,14 @@ export default {
     font-size: 12px;
     color: #333;
   }
-  .cell{
-    background-color: #D0D0AE;
-  }
+  // .cell{
+  //   background-color: #D0D0AE;
+  // }
   .el-table--border th:last-child {
     border: none;
   }
   .el-table--border td {
-    border-right: none;
+    border-right: 1px solid #797979;
   }
   tr{
     td {
@@ -1342,7 +1342,7 @@ export default {
   }
   tr:not(:last-child) {
     td {
-      border-bottom: none;
+      border-bottom: 1px solid #797979;
     }
   }
 

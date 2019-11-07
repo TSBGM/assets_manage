@@ -154,13 +154,13 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="5">
-                            <el-form-item label="姓名："  label-width="90px" >
-                                <el-input class="input" v-model="assetsComelnModel.ownerName"></el-input>
+                            <el-form-item label="工號："  label-width="90px" >
+                                <el-input class="input" v-model="assetsComelnModel.ownerCode" @blur.prevent="selectUserInfo"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="5">
-                            <el-form-item label="工號："  label-width="90px" >
-                                <el-input class="input" v-model="assetsComelnModel.ownerCode"></el-input>
+                            <el-form-item label="姓名："  label-width="90px" >
+                                <el-input class="input" v-model="assetsComelnModel.ownerName"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="5">
@@ -236,7 +236,7 @@
                 <el-row>
                     <el-form-item style="margin-left:35%">
                         <el-button class="button_1 " type="button" @click = "saveComeln()">保存</el-button>
-                        <el-button class="button_1 " type="button" @click = "saveComeln()">新增下一條</el-button>
+                        <el-button class="button_1 " type="button" @click = "insertNext()">新增下一條</el-button>
                         <el-button class="button_1 " type="button" @click = "saveComeln()">返回</el-button>
                     </el-form-item>
                 </el-row>
@@ -379,6 +379,7 @@
             },
             selectAreaChange(areaId){
                 this.buildingList = []
+                this.assetsComelnModel.buildingId = null
                 this.areaIdFlag = this.assetsComelnModel.areaId ? false:true//工作區域狀態
                 if(!this.areaIdFlag){
                     this.selectBuildingByArea(areaId)//廠内區域樓棟
@@ -452,7 +453,14 @@
             },
             selectBGChange(bgId){
                 this.unitList = []
-                this.BgFlag = this.assetsComelnModel.bgId ? false:true//工作區域狀態
+                this.departList = []
+                this.classList = []
+                this.assetsComelnModel.unitId = null
+                this.assetsComelnModel.departId = null
+                this.assetsComelnModel.classId = null
+                this.BgFlag = this.assetsComelnModel.bgId ? false:true//事業處狀態
+                this.unitFlag = true//部狀態
+                this.departFlag = true//課狀態
                 if(!this.BgFlag){
                     this.selectUnitList(bgId)//廠内區域樓棟
                 }
@@ -470,7 +478,11 @@
             },
             selectUnitChange(bgId,unitId){
                 this.departList = []
-                this.unitFlag = this.assetsComelnModel.unitId ? false:true//工作區域狀態
+                this.classList = []
+                this.assetsComelnModel.departId = null
+                this.assetsComelnModel.classId = null
+                this.unitFlag = this.assetsComelnModel.bgId && this.assetsComelnModel.unitId ? false:true//部狀態
+                this.departFlag = true//課狀態
                 if(!this.unitFlag){
                     this.selectDepartList(bgId,unitId)//廠内區域樓棟
                 }
@@ -488,7 +500,8 @@
             },
             selectDepartChange(bgId,unitId,departId){
                 this.classList = []
-                this.departFlag = this.assetsComelnModel.departId ? false:true//工作區域狀態
+                this.assetsComelnModel.classId = null
+                this.departFlag = this.assetsComelnModel.bgId && this.assetsComelnModel.unitId && this.assetsComelnModel.departId ? false:true//課狀態
                 if(!this.departFlag){
                     this.selectClassList(bgId,unitId,departId)//廠内區域樓棟
                 }
@@ -504,6 +517,21 @@
                     }
                 })
             },
+            //根据工号查询员工姓名接口
+            selectUserInfo(){
+                this.$store.dispatch('selectUserNameByUserCode', { staffCode: this.assetsComelnModel.ownerCode })
+                .then(res => {
+                    if(res.code == 100){
+                        this.assetsComelnModel.ownerName = res.data
+                    }else{
+                        this.$alert(res.message, '提示', {
+                            confirmButtonText: '确定',
+                            showClose: false
+                            }).then(() => {
+                        })
+                    }
+                })
+            },
             //保存
             saveComeln(){
                 this.$store.dispatch('saveComelninsert',this.assetsComelnModel)
@@ -514,9 +542,28 @@
                             showClose: false
                             }).then(() => {
                         })
+                    }else{
+                        this.$alert(res.message, '提示', {
+                            confirmButtonText: '确定',
+                            showClose: false
+                            }).then(() => {
+                        })
                     }
                 })
-            }
+            },
+            //
+            insertNext(){
+                this.$store.dispatch('saveComelninsert',this.assetsComelnModel)
+                .then(res => {
+                    if(res.code == 100){
+                        this.$alert(res.message, '提示', {
+                            confirmButtonText: '确定',
+                            showClose: false
+                            }).then(() => {
+                        })
+                    }
+                })
+            },
         }
     }
 </script>
