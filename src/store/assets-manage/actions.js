@@ -171,6 +171,28 @@ const actions = {
             return rep.data;
         });
     },
+    //根据工号查询员工姓名接口
+    selectUserNameByUserCode ({commit, dispathc, state, rootState}, param) {
+        return axios({
+                url: api.selectUserNameByUserCode,
+                method: 'post',
+                baseURL: configUrl.baseUrl,
+                data: param,
+        }).then((rep) => {
+            return rep.data;
+        });
+    },
+    //修改保存
+    update ({commit, dispathc, state, rootState}, param) {
+        return axios({
+                url: api.update,
+                method: 'post',
+                baseURL: configUrl.baseUrl,
+                data: param,
+        }).then((rep) => {
+            return rep.data;
+        });
+    },
     //导出Excel
     capitalexcel ({commit, dispathc, state, rootState}, param) {
         return axios({

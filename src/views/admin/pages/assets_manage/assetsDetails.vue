@@ -630,7 +630,6 @@ export default {
                     this.table.data = this.rep
                     this.table.totalSize = res.data.totalSize
                     this.table.totalPages = res.data.totalPages
-                    console.log(this.table.data)
                 }else{
                     this.$alert(res.message, '提示', {
                         confirmButtonText: '确定',

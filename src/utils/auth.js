@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 const TokenKey = 'token'
 const InfoKey = 'userinfo'
 const PermissionKey = 'permissions'
+const ProjIdKey = 'projId'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -38,4 +39,16 @@ export function setPermission(permissions) {
 
 export function removePermission() {
   return Cookies.remove(PermissionKey)
+}
+
+export function getProjId() {
+  return Cookies.get(ProjIdKey)
+}
+
+export function setProjId(projId) {
+  return Cookies.set(ProjIdKey, projId)
+}
+
+export function removeProjId() {
+  return Cookies.remove(ProjIdKey)
 }

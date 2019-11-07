@@ -148,13 +148,13 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
-                        <el-form-item label="姓名："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerName"></el-input>
+                        <el-form-item label="工號："  label-width="90px" >
+                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerCode" @blur.prevent="selectUserInfo"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
-                        <el-form-item label="工號："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerCode"></el-input>
+                        <el-form-item label="姓名："  label-width="90px" >
+                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerName" readonly></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
@@ -214,11 +214,35 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+                <el-row>
+                    <el-col>
+                        <el-form-item label="需求説明：" label-width="90px">
+                            <el-input
+                                class="input1"
+                                type="textarea"
+                                :rows="3"
+                                v-model="assetsDetailUpdateModel.specifications">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>   
+                <el-row>
+                    <el-col class="col">
+                        <el-form-item label="備注：" label-width="90px">
+                            <el-input
+                                class="input1"
+                                type="textarea"
+                                :rows="3"
+                                v-model="assetsDetailUpdateModel.remark">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
             </div>
         </el-form>
         <div class="topline"></div>
-            <el-button class="button1" type="button" @click= "searchDetails(val)">保存修改</el-button>
-        <div v-if="true">
+        <el-button class="button1" type="button" @click = "updateSave()">保存修改</el-button>
+        <div v-if="this.updateResultFlag">
             <span class="title_1">修改結果：</span>
             <div class="register-1" >
                 <div class="search-bar1">
@@ -391,6 +415,8 @@ export default {
             BgFlag:'',
             unitFlag:'',
             departFlag:'',
+
+            
             table: {
                 // columns: [
                 // ],
@@ -401,6 +427,14 @@ export default {
                 showPagebar: false,
                 info: null,
                 totalSize: 0,
+            }
+        }
+    },
+    watch: {
+        updateResultFlag:false,//修改結果
+        'assetsDetailUpdateModel.factoryId': {
+            handler (newName, oldName) {
+                // this.updateResultFlag = true
             }
         }
     },
@@ -611,7 +645,30 @@ export default {
                 }
             })
         },
-        
+        //根据工号查询员工姓名接口
+        selectUserInfo(){
+            this.$store.dispatch('selectUserNameByUserCode', { userCode: this.assetsDetailUpdateModel.ownerCode })
+            .then(res => {
+                if(res.code == 100){
+                    this.assetsDetailUpdateModel.ownerName = res.data
+                }
+            })
+        },
+        //修改保存
+        updateSave(){
+            debugger
+            this.$store.dispatch('update',this.assetsDetailUpdateModel)
+            .then(res => {
+                if(res.code == 100){
+                    this.$alert(res.message, "提示", {
+                        confirmButtonText: "确定",
+                        showClose: false
+                    }).then(() => {
+                        this.updateOpen()
+                    });
+                }
+            })
+        },
         // arraySpanMethod({ row, column, rowIndex, columnIndex }) {
         //     if (rowIndex % 2 === 0) {
         //         if (columnIndex === 0) {
@@ -642,8 +699,18 @@ export default {
     .el-col{
         height: 35px;
     }
+    .col{
+        margin-top: 3%;
+    }
     .el-input{
         width: 70%;
+        margin-top: 5px;
+    }
+    .input1{
+        display: block;
+        margin-bottom: 100px;
+        text-align: center;
+        width: 86.3%;
         margin-top: 5px;
     }
     .title_1{
@@ -660,7 +727,7 @@ export default {
     }
     .topline{
         width: 87%;
-        margin-top: 1.3%;
+        margin-top: 4%;
         border:0.5px rgb(10, 10, 10) solid;
     }
     .button1{
