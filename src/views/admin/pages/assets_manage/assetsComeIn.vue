@@ -271,17 +271,154 @@
                     </el-upload>
                 </div>    
                 <div>
-                    <span class="title_1">要導入的文件：</span>
-                    <span class="">XXXX</span>
+                    <el-row>
+                        <span class="title_1">要導入的文件：</span>
+                        <span class="">XXXX</span>
+                        <el-button class="button_2 " type="button" @click = "saveExcel()">刪除</el-button>
+                        <el-button class="button_3 " type="button" @click = "goToLast()">導入</el-button>
+                    </el-row>
                 </div>
-                <div class="topline-1"></div>
-                <el-row>
-                    <el-form-item style="margin-left:35%">
-                        <el-button class="button_1 " type="button" @click = "saveExcel()">確認保存</el-button>
-                        <el-button class="button_1 " type="button" @click = "goToLast()">返回</el-button>
-                    </el-form-item>
-                </el-row>
             </el-form>
+            <div class="topline-2"></div>
+            <div style="margin-top:8px;">
+                <span class="title_1">導入預覽：</span>
+            </div>
+            <div class="table-1">
+                <i-layout :toolbar="bottomButton" :title="title" destroyedWhenClose size="large">
+                    <i-table :table="table" @pageSizeChange="handleSizeChange" @pageIndexChange="handleCurrentChange" @Mounted="componentMounted">
+                        <template slot="table">
+                            <el-table
+                                class="table"
+                                :data="table.data"
+                                border
+                                tooltip-effect="dark"
+                                :span-method="arraySpanMethod"
+                                ref="multipleTable"  
+                                @current-change="handleChange22"
+                                @selection-change="handleSelectionChange">
+                                    <el-table-column label="序号" width="45">
+                                        <template slot-scope="scope">{{scope.$index + 1}}</template>
+                                    </el-table-column>
+                                    <el-table-column label="資產名稱" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="工號" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="姓名" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="干部类型" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="在職狀態" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="事業群" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="事業處" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="部" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="課" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="廠區" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="廠内區域信息" width="95" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="廠内樓棟" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="資產使用位置信息" width="120" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="資產狀態" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="資產類型" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="資產編號" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="需求説明" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="入職日期" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="離職時間" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="組織名稱" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerCode}}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="備註" width="80" >
+                                        <template slot-scope="scope">
+                                            {{scope.row.ownerName}}
+                                        </template>
+                                    </el-table-column>
+                            </el-table>			
+                        </template>
+                    </i-table>
+                </i-layout>
+            </div>
+            <div>
+                <el-form>
+                    <el-row>
+                        <el-form-item>
+                            <el-button class="button_1 " @click = "saveExcel()">確認保存</el-button>
+                            <el-button class="button_11 " @click = "goToLast()">返回</el-button>
+                        </el-form-item>
+                    </el-row>
+                </el-form>
+            </div>
         </div>
     </div>
 </template>
@@ -331,6 +468,17 @@
                 BgFlag:'',
                 unitFlag:'',
                 departFlag:'',
+                table: {
+                // columns: [
+                // ],
+                search: null,
+                data: null,
+                // 注册 page 相关信息
+                // ---是否显示底部分页
+                showPagebar: true,
+                info: null,
+                totalSize: 0,
+            }
             };
         },
         mounted () {
@@ -617,20 +765,54 @@
         margin-top: 3.5%;
         border:0.5px rgb(10, 10, 10) solid;
     }
+    .topline-1{
+        width: 87%;
+        margin-top: 10px;
+        border:0.5px rgb(10, 10, 10) solid;
+    }
+    .topline-2{
+        width: 87%;
+        margin-top: 5px;
+        border:0.5px rgb(10, 10, 10) solid;
+    }
     .button_1{
         color: #000080;
         background-color: #88C700;
         height: 38px;
         font-size:14px;
         margin-top: 10px;
+        margin-left: 37%;
     }
-
-    /* .button1{
+    .button_11{
+        color: #000080;
+        background-color: #88C700;
+        height: 38px;
+        font-size:14px;
+        margin-top: 10px;
+    }
+    .button_2{
+        color: #333333;
+        background-color: #88C700;
         width: 58px;
-    } */
-    /* .button2{
-        width: 105px;
-    } */
+        height: 25px;
+        font-size:13px;
+        margin-top: 10px;
+        line-height: 10%;
+        border-color: #333333;
+        border-radius: 5px;
+        margin-left: 30%;
+    }
+    .button_3{
+        color: #000080;
+        background-color: #88C700;
+        width: 58px;
+        height: 25px;
+        font-size:13px;
+        margin-top: 10px;
+        line-height: 10%;
+        border-color: #333333;
+        border-radius: 5px;
+    }
     .search-bar1 {
         background: #fff;
         width: 87%;
@@ -645,9 +827,12 @@
             display: inline;
         }
     }
-    .topline-1{
+    
+    .table{
+        background-color: #D0D0AE;
+        width: 100%
+    }
+    .table-1{
         width: 87%;
-        margin-top: 10px;
-        border:0.5px rgb(10, 10, 10) solid;
     }
 </style>
