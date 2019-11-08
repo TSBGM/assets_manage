@@ -36,7 +36,7 @@
         </el-menu>
     </div>
 
-    <el-main>
+    <el-main style="height:100vh;">
         <router-view></router-view>
     </el-main>
 </div>    
