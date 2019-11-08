@@ -4,8 +4,8 @@
             class="input"
             placeholder="可輸入工號、姓名查看擁有的權限"
             clearable="true"
-            >
-                <el-button class="button" slot="append" icon="el-icon-search"></el-button>
+            v-model="assetsUserManageModel.userCode">
+                <el-button class="button" slot="append" icon="el-icon-search" @click="searchUser(val)"></el-button>
         </el-input>
         <div class="register">
             <el-form>
@@ -84,7 +84,6 @@
                                 tooltip-effect="dark"
                                 :span-method="arraySpanMethod"
                                 ref="multipleTable"  
-                                highlight-current-row
                                 @current-change="handleChange22"
                                 @selection-change="handleSelectionChange">
                                 <el-table-column label="序号" width="50">
@@ -92,65 +91,75 @@
                                 </el-table-column>
                                 <el-table-column label="工號" width="90" >
                                     <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                        <el-input v-model="scope.row.userCode"></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="姓名" width="90" >
                                     <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                        {{scope.row.userName}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="事業群" width="90" >
                                     <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                        {{scope.row.bgName}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="事業處" width="130" >
                                     <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                        {{scope.row.unitName}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="部" width="130" >
                                     <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                        {{scope.row.departName}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="課" width="130" >
                                     <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                        {{scope.row.className}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="查看權限" width="100" >
-                                    <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                    <template>
+                                        <el-checkbox v-model="assetsUserManageModel.viewasset"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="修改權限" width="100" >
-                                    <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                    <template>
+                                        <el-checkbox v-model="assetsUserManageModel.updateasset"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="增加權限" width="100" >
-                                    <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                    <template>
+                                        <el-checkbox v-model="assetsUserManageModel.addasset"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="刪除權限" width="100" >
-                                    <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                    <template>
+                                        <el-checkbox v-model="assetsUserManageModel.delasset"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="角色" width="100" >
                                     <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
+                                        {{scope.row.role}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="停/啓用" width="130" >
-                                    <template slot-scope="scope">
-                                        {{scope.row.ownerCode}}
-                                    </template>
+                                    <el-row>
+                                        <template>
+                                            <el-checkbox v-model="checked">停用</el-checkbox>
+                                        </template>
+                                    </el-row>
+                                    <el-row>
+                                        <template>
+                                            <el-checkbox v-model="checked">啓用</el-checkbox>
+                                        </template>
+                                    </el-row>
                                 </el-table-column>
                             </el-table>
+                            <footer>
+                                <el-button class="button2" @click.prevent="addRow()">增加</el-button>
+                            </footer>
                         </template> 
                     </i-table>
                 </i-layout>
@@ -166,10 +175,15 @@ export default {
     data() {
         return {
             assetsUserManageModel:{
-                        bgId:'',//查询事业群
-                        unitId:'',//根据bgId查询事业处unit接口
-                        departId:'',//根据bgId、 unitId查询部门depart接口
-                        classId:'',//根据bgId、 unitId 、departId查询課Class接口
+                userCode:'',//查詢用戶
+                bgId:'',//查询事业群
+                unitId:'',//根据bgId查询事业处unit接口
+                departId:'',//根据bgId、 unitId查询部门depart接口
+                classId:'',//根据bgId、 unitId 、departId查询課Class接口
+                addasset:'',//增加權限
+                delasset:'',//刪除權限
+                updateasset:'',//修改權限
+                viewasset:'',//查看權限
             },
             table: {
                 // columns: [
@@ -181,9 +195,52 @@ export default {
                 showPagebar: true,
                 info: null,
                 totalSize: 0,
-            }
-         }
-    }
+            },
+            checked:'',
+        }
+    },
+     methods: {
+            // 增加行
+            addRow () {
+                var list = {
+                address: this.userCode,
+                }
+                this.table.data.unshift(list)
+            },
+            //查詢用戶
+            searchUser(val){
+                let params = {
+                    pageRequest:{
+                        pageIndex: val ? val.pageIndex :1,
+                        pageSize: val ? val.pageSize :10,
+                    },
+                    userInfo:{}
+                }
+                let permissionList = permission.permissionList
+                params.userInfo = this.assetsUserManageModel
+                this.$store.dispatch('findManager',params)
+                .then(res => {
+                    if(res.code == 100){
+                        this.rep = res.data.content
+                        Object.keys(res).map(key => (this.table[key] = res.data[key]))
+                        this.table.data = this.rep
+                        this.table.totalSize = res.data.totalSize
+                        this.table.totalPages = res.data.totalPages
+                    }else{
+                        this.$alert(res.message, '提示', {
+                            confirmButtonText: '确定',
+                            showClose: false
+                            }).then(() => {
+                                this.table.data = null
+                            })
+                    }
+                })
+            },
+            //用戶停/啓用
+            modifyManager(){},
+            //添加管理員
+            addManager(){},
+        }
 }
 </script>
 
@@ -244,5 +301,9 @@ export default {
         width: 80px;
         height: 40px;
         font-size:14px;
+    }
+    .button2{
+        background-color: #D0D0AE;
+        color: #000080;
     }
 </style>

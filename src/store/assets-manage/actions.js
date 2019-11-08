@@ -6,7 +6,47 @@ import axios from '../http';//使用 http response 拦截器
 import { configUrl } from '../config';
 
 const actions = {
+
     
+    //系統用戶管理頁面----添加管理員
+    addManager ({commit, dispathc, state, rootState}, param) {
+        return axios({
+            url: api.addManager,
+            method: 'post',
+            baseURL: configUrl.baseUrl,// baseUrl 
+            data: param
+        }).then((rep) => {
+          return (function() {  
+            return rep.data;
+          })();
+        });
+    },
+    //系統用戶管理頁面----權限停/啓用
+    modifyManager ({commit, dispathc, state, rootState}, param) {
+        return axios({
+            url: api.modifyManager,
+            method: 'post',
+            baseURL: configUrl.baseUrl,// baseUrl 
+            data: param
+        }).then((rep) => {
+          return (function() {  
+            return rep.data;
+          })();
+        });
+    },
+    //系統用戶管理頁面----查詢用戶
+    findManager ({commit, dispathc, state, rootState}, param) {
+        return axios({
+            url: api.findManager,
+            method: 'post',
+            baseURL: configUrl.baseUrl,// baseUrl 
+            data: param
+        }).then((rep) => {
+          return (function() {  
+            return rep.data;
+          })();
+        });
+    },
     //廠區
     selectFactory ({commit, dispathc, state, rootState}, param) {
         return axios({
@@ -154,7 +194,7 @@ const actions = {
         return axios({
                 url: api.query,
                 method: 'post',
-                baseURL: configUrl.zhouUrl,
+                baseURL: configUrl.baseUrl,
                 data: param,
         }).then((rep) => {
             return rep.data;
@@ -198,7 +238,7 @@ const actions = {
         return axios({
                 url: api.capitalexcel,
                 method: 'post',
-                baseURL: configUrl.zhouUrl,
+                baseURL: configUrl.baseUrl,
                 data: param,
                 headers: {
                     'Content-Type': 'application/json',

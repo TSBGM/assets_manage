@@ -31,6 +31,10 @@ const api = {
   selectUserNameByUserCode: '/assets/selectUserNameByStaffCode',//根据工号查询员工姓名接口
   update: '/assets/update',//固定资产修改保存
 
+  findManager:'/tsbg/assets/findManager',//系統用戶管理頁面---查詢用戶
+  modifyManager:'/tsbg/assets/modifyManager',//系統用戶管理頁面---權限停/啓用
+  addManager:'/tsbg/assets/addManager',//系統用戶管理頁面---添加管理員
+
 };
 
 module.exports = {
