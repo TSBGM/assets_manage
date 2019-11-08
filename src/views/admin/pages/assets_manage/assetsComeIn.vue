@@ -249,7 +249,7 @@
                         下載批量導入模板
                     </el-button>
                     <!-- <el-button class="button_1 " type="button" @click = "saveComeln()">選擇Excel文件</el-button> -->
-                    <el-upload   style="display:inline;"
+                    <el-upload style="display:inline;"
                         ref="upload"
                         :action="`${FILE_URL_80}/tsbg/upload/importmore`"
                         :headers="headers"
@@ -277,8 +277,8 @@
                 <div class="topline-1"></div>
                 <el-row>
                     <el-form-item style="margin-left:35%">
-                        <el-button class="button_1 " type="button" @click = "saveComeln()">確認保存</el-button>
-                        <el-button class="button_1 " type="button" @click = "saveComeln()">返回</el-button>
+                        <el-button class="button_1 " type="button" @click = "saveExcel()">確認保存</el-button>
+                        <el-button class="button_1 " type="button" @click = "goToLast()">返回</el-button>
                     </el-form-item>
                 </el-row>
             </el-form>

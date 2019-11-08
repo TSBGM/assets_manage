@@ -10,7 +10,8 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="廠區："  label-width="90px" >
-                            <el-select v-model="assetsDetailUpdateModel.factoryId" clearable class="select" @change= "handlerChange">
+                            <el-select v-model="assetsDetailUpdateModel.factoryId" clearable class="select" @change= "handlerChange"
+                            popper-class="select-option">
                                 <el-option
                                     v-for="item in factoryList"
                                     :key="item.value"
@@ -34,7 +35,8 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="工作樓棟："  label-width="90px" >
-                            <el-select v-model="assetsDetailUpdateModel.buildingId" clearable class="select" :disabled="this.areaIdFlag" placeholder="請先輸入工作區域">
+                            <el-select v-model="assetsDetailUpdateModel.buildingId" clearable class="select" 
+                            :disabled="this.areaIdFlag" placeholder="請先輸入工作區域"  @change= "handlerChange">
                                 <el-option
                                     v-for="item in buildingList"
                                     :key="item.value"
@@ -46,7 +48,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="使用位置：" label-width="90px" >
-                            <el-input class="input" placeholder="使用位置至少具體到辦公室" v-model="assetsDetailUpdateModel.usingPlace"></el-input>
+                            <el-input class="input" placeholder="使用位置至少具體到辦公室" v-model="assetsDetailUpdateModel.usingPlace" @change= "handlerChange"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -57,7 +59,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產狀態："  label-width="90px" >
-                            <el-select v-model="assetsDetailUpdateModel.assetsStatusId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.assetsStatusId" clearable class="select" @change= "handlerChange">
                                 <el-option
                                     v-for="item in assetsStatusList"
                                     :key="item.value"
@@ -69,7 +71,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產分類："  label-width="90px" >
-                            <el-select v-model="assetsDetailUpdateModel.typeId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.typeId" clearable class="select" @change= "handlerChange">
                                 <el-option
                                     v-for="item in assetsTypeList"
                                     :key="item.value"
@@ -81,7 +83,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="資產名稱："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailUpdateModel.assetsName"></el-input>
+                            <el-input class="input" v-model="assetsDetailUpdateModel.assetsName" @change= "handlerChange"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -131,7 +133,7 @@
                     <el-col :span="5">
                         <el-form-item label="課："  label-width="90px" >
                             <el-select v-model="assetsDetailUpdateModel.classId" clearable class="select" 
-                            placeholder="請先輸入部" :disabled="this.departFlag">
+                            placeholder="請先輸入部" :disabled="this.departFlag" @change= "handlerChange">
                                 <el-option
                                     v-for="item in classList"
                                     :key="item.value"
@@ -149,17 +151,17 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="工號："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerCode" @blur.prevent="selectUserInfo"></el-input>
+                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerCode" @blur.prevent="selectUserInfo" @change= "handlerChange"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="姓名："  label-width="90px" >
-                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerName"></el-input>
+                            <el-input class="input" v-model="assetsDetailUpdateModel.ownerName" @change= "handlerChange"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="幹部類型："  label-width="90px" >
-                            <el-select v-model="assetsDetailUpdateModel.staffTypeId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.staffTypeId" clearable class="select" @change= "handlerChange">
                                 <el-option
                                     v-for="item in staffTypeList"
                                     :key="item.value"
@@ -171,7 +173,7 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="是否在職："  label-width="90px" >
-                            <el-select v-model="assetsDetailUpdateModel.workStatusId" clearable class="select">
+                            <el-select v-model="assetsDetailUpdateModel.workStatusId" clearable class="select" @change= "handlerChange">
                                 <el-option
                                     v-for="item in workStatusList"
                                     :key="item.value"
@@ -194,7 +196,7 @@
                                 style="width: 70%; margin-top:5px;"
                                 :editable="true"
                                 :picker-options="birthOptions"
-                                @change="getSTime"
+                                @change= "handlerChange"
                                 placeholder=""
                                 v-model="assetsDetailUpdateModel.joinBgDate">
                             </el-date-picker>
@@ -207,7 +209,7 @@
                                 style="width: 70%; margin-top:5px;"
                                 :editable="true"
                                 :picker-options="birthOptions"
-                                @change="getSTime"
+                                @change= "handlerChange"
                                 placeholder=""
                                 v-model="assetsDetailUpdateModel.joinBgDate">
                             </el-date-picker>
@@ -221,7 +223,8 @@
                                 class="input1"
                                 type="textarea"
                                 :rows="3"
-                                v-model="assetsDetailUpdateModel.specifications">
+                                v-model="assetsDetailUpdateModel.specifications"
+                                @change= "handlerChange">
                             </el-input>
                         </el-form-item>
                     </el-col>
@@ -233,7 +236,8 @@
                                 class="input1"
                                 type="textarea"
                                 :rows="3"
-                                v-model="assetsDetailUpdateModel.remark" @change= "handlerChange">
+                                v-model="assetsDetailUpdateModel.remark" 
+                                @change= "handlerChange">
                             </el-input>
                         </el-form-item>
                     </el-col>
@@ -453,9 +457,9 @@ export default {
         }
     },
     watch: {
-        // 'assetsDetailUpdateModel.factoryId': {
+        // 'assetsDetailUpdateModel.specifications': {
         //     handler (newName, oldName) {
-        //         this.updateResultFlag = true
+        //         this.updateResultFlag = false
         //     }
         // }
     },
@@ -474,6 +478,7 @@ export default {
         // this.selectClassList()//根据bgId、 unitId 、departId查询課Class接口
 
         this.updateOpen()
+        // this.$watch('assetsDetailUpdateModel.specifications', this.handlerChange)
     },
     methods: {
         handlerChange(e) {
@@ -527,13 +532,13 @@ export default {
             })
         },
         selectAreaChange(areaId){
-            
             this.buildingList = [],
             this.assetsDetailUpdateModel.buildingId = null
             this.areaIdFlag = this.assetsDetailUpdateModel.areaId ? false:true//工作區域狀態
             if(!this.areaIdFlag){
                 this.selectBuildingByArea(areaId)//廠内區域樓棟
             }
+            this.updateResultFlag = false
         },
         
         //廠内區域樓棟
@@ -615,6 +620,7 @@ export default {
             if(!this.BgFlag){
                 this.selectUnitList(bgId)//廠内區域樓棟
             }
+            this.updateResultFlag = false
         },
         //根据bgId查询事业处unit接口
         selectUnitList(bgId){
@@ -637,6 +643,7 @@ export default {
             if(!this.unitFlag){
                 this.selectDepartList(bgId,unitId)//廠内區域樓棟
             }
+            this.updateResultFlag = false
         },
         //根据bgId、 unitId查询部门depart接口
         selectDepartList(bgId,unitId){
@@ -656,6 +663,7 @@ export default {
             if(!this.departFlag){
                 this.selectClassList(bgId,unitId,departId)//廠内區域樓棟
             }
+            this.updateResultFlag = false
         },
         //根据bgId、 unitId 、departId查询課Class接口
         selectClassList(bgId,unitId,departId){
