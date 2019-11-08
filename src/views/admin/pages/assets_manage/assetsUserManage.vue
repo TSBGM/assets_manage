@@ -116,7 +116,7 @@
                                 </el-table-column>
                                 <el-table-column label="課" width="130" >
                                     <template slot-scope="scope">
-                                        {{scope.row.className}}
+                                        {{scope.row.list}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="查看權限" width="100" >
@@ -147,12 +147,12 @@
                                 <el-table-column label="停/啓用" width="130" >
                                     <el-row>
                                         <template>
-                                            <el-checkbox v-model="checked">停用</el-checkbox>
+                                            <el-checkbox v-model="checkon">停用</el-checkbox>
                                         </template>
                                     </el-row>
                                     <el-row>
                                         <template>
-                                            <el-checkbox v-model="checked">啓用</el-checkbox>
+                                            <el-checkbox v-model="checkoff">啓用</el-checkbox>
                                         </template>
                                     </el-row>
                                 </el-table-column>
@@ -180,10 +180,9 @@ export default {
                 unitId:'',//根据bgId查询事业处unit接口
                 departId:'',//根据bgId、 unitId查询部门depart接口
                 classId:'',//根据bgId、 unitId 、departId查询課Class接口
-                addasset:'',//增加權限
-                delasset:'',//刪除權限
-                updateasset:'',//修改權限
-                viewasset:'',//查看權限
+                list:[],
+                checkon:'',//用戶啓用
+                checkoff:'',//用戶啓用
             },
             table: {
                 // columns: [
@@ -197,50 +196,205 @@ export default {
                 totalSize: 0,
             },
             checked:'',
+            bgList:[],//查询事业群
+            unitList:[],//根据bgId查询事业处unit接口
+            departList:[],//根据bgId、 unitId查询部门depart接口
+            classList:[],//根据bgId、 unitId 、departId查询課Class接口
+
+            BgFlag:'',
+            unitFlag:'',
+            departFlag:'',
         }
     },
-     methods: {
-            // 增加行
-            addRow () {
-                var list = {
-                address: this.userCode,
-                }
-                this.table.data.unshift(list)
-            },
-            //查詢用戶
-            searchUser(val){
-                let params = {
-                    pageRequest:{
-                        pageIndex: val ? val.pageIndex :1,
-                        pageSize: val ? val.pageSize :10,
-                    },
-                    userInfo:{}
-                }
-                let permissionList = permission.permissionList
-                params.userInfo = this.assetsUserManageModel
-                this.$store.dispatch('findManager',params)
-                .then(res => {
-                    if(res.code == 100){
-                        this.rep = res.data.content
-                        Object.keys(res).map(key => (this.table[key] = res.data[key]))
-                        this.table.data = this.rep
-                        this.table.totalSize = res.data.totalSize
-                        this.table.totalPages = res.data.totalPages
-                    }else{
-                        this.$alert(res.message, '提示', {
-                            confirmButtonText: '确定',
-                            showClose: false
-                            }).then(() => {
-                                this.table.data = null
-                            })
+    mounted () {
+        this.selectBgList() //查询事业群
+    },
+    methods: {
+        // 增加行
+        addRow () {
+            var list = {
+            address: this.userCode,
+            }
+            this.table.data.unshift(list)
+        },
+        //查詢用戶
+        searchUser(val){
+            let params = {
+                pageRequest:{
+                    pageIndex: val ? val.pageIndex :1,
+                    pageSize: val ? val.pageSize :10,
+                },
+                userInfo:{}
+            }
+            
+            params.userInfo = this.assetsUserManageModel
+            this.$store.dispatch('findManager',params)
+            .then(res => {
+                if(res.code == 100){
+                    this.rep = res.data.content
+                    Object.keys(res).map(key => (this.table[key] = res.data[key]))
+                    this.table.data = this.rep
+                    this.table.totalSize = res.data.totalSize
+                    this.table.totalPages = res.data.totalPages
+
+                    let addassetFlag = false 
+                    let delassetFlag = false
+                    let updateassetFlag = false
+                    let viewassetFlag = false
+                    let content = res.data.content
+                    
+                    if(content.length > 0)
+                    {
+                        for (let i = 0; i < content.length; i++) 
+                        {
+                            let permList = res.data.content[i].permList
+                            for (let j = 0; j < permList.length; j++) {
+                                if(permList[j] == 'addasset') {
+                                    debugger
+                                    addassetFlag = true
+                                        debugger
+                                }
+                                else if(permList[j] == 'delasset')
+                                {
+                                    delassetFlag = true
+                                }
+                                else if(permList[j] == 'updateasset')
+                                {
+                                    updateassetFlag = true
+                                }
+                                else if(permList[j] == 'viewasset')
+                                {
+                                    viewassetFlag = true
+                                }
+                                localStorage.setItem('LIMITS', JSON.stringify
+                                ({
+                                    ADD:addassetFlag?'addasset':'',
+                                    DEL:delassetFlag?'delasset':'',
+                                    UPDATE:updateassetFlag?'updateasset':'',
+                                    VIEW:viewassetFlag?'viewasset':''
+                                })
+                                );
+                            }
+                        }
                     }
-                })
-            },
-            //用戶停/啓用
-            modifyManager(){},
-            //添加管理員
-            addManager(){},
-        }
+                    else if(permList.length == 0)
+                    {
+                        localStorage.setItem('LIMITS', JSON.stringify
+                        ({
+                            ADD:'',DEL:'', UPDATE:'',VIEW:''
+                        })
+                        );
+                    }
+                }else{
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                        }).then(() => {
+                            this.table.data = null
+                        })
+                }
+            })
+        },
+        //用戶停/啓用
+        modifyManager(){},
+        //添加管理員
+        addManager(){},
+        // 监听每页显示条数变化
+        handleSizeChange (val) {
+            let params = {
+                pageIndex: val.pageIndex,
+                pageSize: val.pageSize,
+            }   
+            this.table.info = val
+            this.searchUser(params)
+        },
+        // 监听页数变化
+        handleCurrentChange (val) {
+            let params = {
+                pageIndex: val.pageIndex,
+                pageSize: val.pageSize,
+            }
+            this.table.info = val
+            this.searchUser(params)
+        },
+        //查询事业群
+        selectBgList(){
+            this.$store.dispatch('selectBgList')
+            .then(res => {
+                if(res.code == 100){
+                    for (var i = 0; i < res.data.length; i++) {
+                        this.bgList.push({label:res.data[i].bgName,value:res.data[i].bgId});
+                    }
+                }
+            })
+        },
+        selectBGChange(bgId){
+            this.unitList = []
+            this.departList = []
+            this.classList = []
+            this.assetsUserManageModel.unitId = null
+            this.assetsUserManageModel.departId = null
+            this.assetsUserManageModel.classId = null
+            this.BgFlag = this.assetsUserManageModel.bgId ? false:true//事業處狀態
+            this.unitFlag = true//部狀態
+            this.departFlag = true//課狀態
+            if(!this.BgFlag){
+                this.selectUnitList(bgId)//廠内區域樓棟
+            }
+        },
+        //根据bgId查询事业处unit接口
+        selectUnitList(bgId){
+            this.$store.dispatch('selectUnitList',{bgId:bgId})
+            .then(res => {
+                if(res.code == 100){
+                    for (var i = 0; i < res.data.length; i++) {
+                        this.unitList.push({label:res.data[i].unitName,value:res.data[i].unitId});
+                    }
+                }
+            })
+        },
+        selectUnitChange(bgId,unitId){
+            this.departList = []
+            this.classList = []
+            this.assetsUserManageModel.departId = null
+            this.assetsUserManageModel.classId = null
+            this.unitFlag = this.assetsUserManageModel.bgId && this.assetsUserManageModel.unitId ? false:true//部狀態
+            this.departFlag = true//課狀態
+            if(!this.unitFlag){
+                this.selectDepartList(bgId,unitId)//部門信息
+            }
+        },
+        //根据bgId、 unitId查询部门depart接口
+        selectDepartList(bgId,unitId){
+            this.$store.dispatch('selectDepartList',{bgId:bgId,unitId:unitId})
+            .then(res => {
+                if(res.code == 100){
+                    for (var i = 0; i < res.data.length; i++) {
+                        this.departList.push({label:res.data[i].departName,value:res.data[i].departId});
+                    }
+                }
+            })
+        },
+        selectDepartChange(bgId,unitId,departId){
+            this.classList = []
+            this.assetsUserManageModel.classId = null
+            this.departFlag = this.assetsUserManageModel.bgId && this.assetsUserManageModel.unitId && this.assetsUserManageModel.departId ? false:true//課狀態
+            if(!this.departFlag){
+                this.selectClassList(bgId,unitId,departId)//課信息
+            }
+        },
+        //根据bgId、 unitId 、departId查询課Class接口
+        selectClassList(bgId,unitId,departId){
+            this.$store.dispatch('selectClassList',{bgId,unitId,departId})
+            .then(res => {
+                if(res.code == 100){
+                    for (var i = 0; i < res.data.length; i++) {
+                        this.classList.push({label:res.data[i].className,value:res.data[i].classId});
+                    }
+                }
+            })
+        },
+    }
 }
 </script>
 
