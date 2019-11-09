@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="register_l">
         <el-input 
             class="input"
             placeholder="可輸入工號、姓名查看擁有的權限"
@@ -89,83 +89,91 @@
                                 <el-table-column label="序号" width="50">
                                     <template slot-scope="scope">{{scope.$index + 1}}</template>
                                 </el-table-column>
-                                <el-table-column label="工號" width="90" >
+                                <el-table-column label="工號" width="130" prop="userCode">
                                     <template slot-scope="scope">
-                                        <el-input v-model="scope.row.userCode"></el-input>
+                                        <span v-if="scope.row.isSet">
+                                            <el-input size="mini" v-model="assetsUserManageModel.userCode" @blur.prevent="addManager()">
+                                            </el-input>
+                                        </span>
+                                        <span v-else>{{scope.row.userCode}}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="姓名" width="90" >
+                                <el-table-column label="姓名" width="110" prop="userName">
                                     <template slot-scope="scope">
                                         {{scope.row.userName}}
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="事業群" width="90" >
+                                <el-table-column label="事業群" width="90" prop="bgName">
                                     <template slot-scope="scope">
                                         {{scope.row.bgName}}
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="事業處" width="130" >
+                                <el-table-column label="事業處" width="150" prop="unitName">
                                     <template slot-scope="scope">
                                         {{scope.row.unitName}}
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="部" width="130" >
+                                <el-table-column label="部" width="150" prop="departName">
                                     <template slot-scope="scope">
                                         {{scope.row.departName}}
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="課" width="130" >
+                                <el-table-column label="課" min-width="150" prop="className">
                                     <template slot-scope="scope">
-                                        {{scope.row.list}}
+                                        {{scope.row.className}}
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="查看權限" width="100" >
+                                <el-table-column label="查看權限" width="70" >
                                     <template>
                                         <el-checkbox v-model="assetsUserManageModel.viewasset"></el-checkbox>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="修改權限" width="100" >
+                                <el-table-column label="修改權限" width="70" >
                                     <template>
                                         <el-checkbox v-model="assetsUserManageModel.updateasset"></el-checkbox>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="增加權限" width="100" >
+                                <el-table-column label="增加權限" width="70" >
                                     <template>
                                         <el-checkbox v-model="assetsUserManageModel.addasset"></el-checkbox>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="刪除權限" width="100" >
+                                <!-- <el-table-column label="刪除權限" width="100" >
                                     <template>
                                         <el-checkbox v-model="assetsUserManageModel.delasset"></el-checkbox>
                                     </template>
-                                </el-table-column>
-                                <el-table-column label="角色" width="100" >
+                                </el-table-column> -->
+                                <el-table-column label="角色" width="120" >
                                     <template slot-scope="scope">
-                                        {{scope.row.role}}
+                                        <!-- {{scope.row.role}} -->
+                                        <el-select  v-model="scope.row.role" placeholder="请选择" @change= "modifyManager(scope.row)">
+                                            <el-option
+                                                v-for="item in roleList"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                            </el-option>
+                                        </el-select>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="停/啓用" width="130" >
-                                    <el-row>
-                                        <template>
-                                            <el-checkbox v-model="checkon">停用</el-checkbox>
-                                        </template>
-                                    </el-row>
-                                    <el-row>
-                                        <template>
-                                            <el-checkbox v-model="checkoff">啓用</el-checkbox>
-                                        </template>
-                                    </el-row>
+                                <el-table-column label="停/啓用" width="160" >
+                                    <template slot-scope="scope">  
+                                    <el-radio-group v-model="scope.row.status" @change="modifyManager(scope.row)">
+                                        <el-radio :label="1">停用</el-radio>
+                                        <el-radio :label="0">啓用</el-radio>
+                                    </el-radio-group>
+                                    </template>
                                 </el-table-column>
                             </el-table>
                             <footer>
-                                <el-button class="button2" @click.prevent="addRow()">增加</el-button>
+                                <el-button class="button2" @click.prevent="addRow()"><i class="el-icon-plus"></i></el-button>
                             </footer>
                         </template> 
                     </i-table>
                 </i-layout>
             </div>
             <div class="topline"></div>
-            <el-button class="button1" type="button" @click= "searchDetails(val)">查詢</el-button>
+            <!-- <el-button class="button1" type="button" @click= "searchDetails(val)">查詢</!--> 
         </div>
     </div>
 </template>
@@ -180,10 +188,13 @@ export default {
                 unitId:'',//根据bgId查询事业处unit接口
                 departId:'',//根据bgId、 unitId查询部门depart接口
                 classId:'',//根据bgId、 unitId 、departId查询課Class接口
-                list:[],
-                checkon:'',//用戶啓用
-                checkoff:'',//用戶啓用
+                list:{},
+                status:'',
             },
+            roleList: [    //角色
+                {label: '保管員', value: '11' },
+                {label: '管理員', value: '9' }
+            ],
             table: {
                 // columns: [
                 // ],
@@ -208,25 +219,31 @@ export default {
     },
     mounted () {
         this.selectBgList() //查询事业群
+        this.searchUser()
     },
     methods: {
         // 增加行
         addRow () {
-            var list = {
-            address: this.userCode,
+            this.list = {
+                userCode: '',
+                userName: '',
+                bgName: '',
+                unitName: '',
+                departName: '',
+                className: '',
+                isSet:true
             }
-            this.table.data.unshift(list)
+            this.table.data.push(this.list)
         },
         //查詢用戶
         searchUser(val){
             let params = {
                 pageRequest:{
-                    pageIndex: val ? val.pageIndex :1,
-                    pageSize: val ? val.pageSize :10,
+                    pageIndex: val && val.pageIndex ? val.pageIndex :1,
+                    pageSize: val && val.pageSize ? val.pageSize :10,
                 },
                 userInfo:{}
             }
-            
             params.userInfo = this.assetsUserManageModel
             this.$store.dispatch('findManager',params)
             .then(res => {
@@ -242,45 +259,41 @@ export default {
                     let updateassetFlag = false
                     let viewassetFlag = false
                     let content = res.data.content
-                    
-                    if(content.length > 0)
-                    {
-                        for (let i = 0; i < content.length; i++) 
-                        {
-                            let permList = res.data.content[i].permList
+
+                    let test = []
+                    if(this.table.data.length > 0){
+                        for (let i = 0; i < this.table.data.length; i++){
+                            let permList = this.table.data[i].realPerm
+                            // console.log(permList.length)
                             for (let j = 0; j < permList.length; j++) {
-                                if(permList[j] == 'addasset') {
-                                    debugger
+                                if(permList[j] == '8') {
                                     addassetFlag = true
-                                        debugger
-                                }
-                                else if(permList[j] == 'delasset')
-                                {
+                                }else if(permList[j] == '9'){
                                     delassetFlag = true
-                                }
-                                else if(permList[j] == 'updateasset')
-                                {
+                                }else if(permList[j] == '10'){
                                     updateassetFlag = true
-                                }
-                                else if(permList[j] == 'viewasset')
-                                {
+                                }else if(permList[j] == '11'){
                                     viewassetFlag = true
                                 }
-                                localStorage.setItem('LIMITS', JSON.stringify
-                                ({
-                                    ADD:addassetFlag?'addasset':'',
-                                    DEL:delassetFlag?'delasset':'',
-                                    UPDATE:updateassetFlag?'updateasset':'',
-                                    VIEW:viewassetFlag?'viewasset':''
-                                })
-                                );
+
+                            this.test.push({ADD:addassetFlag?'addasset':'',
+                                DEL:delassetFlag?'delasset':'',
+                                UPDATE:updateassetFlag?'updateasset':'',
+                                VIEW:viewassetFlag?'viewasset':''})
+                                // localStorage.setItem('LIMITS', JSON.stringify({
+                                //     ADD:addassetFlag?'addasset':'',
+                                //     DEL:delassetFlag?'delasset':'',
+                                //     UPDATE:updateassetFlag?'updateasset':'',
+                                //     VIEW:viewassetFlag?'viewasset':''
+                                // })
+                                // );
+                                console.log(this.test)
                             }
+                        
                         }
                     }
-                    else if(permList.length == 0)
-                    {
-                        localStorage.setItem('LIMITS', JSON.stringify
-                        ({
+                    else if(permList.length == 0){
+                        localStorage.setItem('LIMITS', JSON.stringify({
                             ADD:'',DEL:'', UPDATE:'',VIEW:''
                         })
                         );
@@ -289,16 +302,63 @@ export default {
                     this.$alert(res.message, '提示', {
                         confirmButtonText: '确定',
                         showClose: false
-                        }).then(() => {
-                            this.table.data = null
-                        })
+                    }).then(() => {
+                        this.table.data = null
+                    })
                 }
             })
         },
         //用戶停/啓用
-        modifyManager(){},
-        //添加管理員
-        addManager(){},
+        modifyManager(scope){
+            // debugger
+            let params={
+                data: '',
+                status: scope.status,
+                role: scope.role
+            }
+            this.$store.dispatch('modifyManager',params)
+            .then(res => {
+                if(res.code == 100){
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                    }).then(() => {
+                        this.searchUser(scope)
+                    })
+                }else{
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                    }).then(() => {
+                        this.searchUser(scope)
+                    })
+                }
+            })
+        },
+        //添加管理員assetsUserManageModel.userCode
+        addManager(){
+            this.$store.dispatch('addManager',{userCode:this.assetsUserManageModel.userCode})
+            .then(res => {
+                if(res.code == 100){
+                    debugger
+                    userCode = res.data.userCode
+                    userName = res.data.userName
+                    bgName = res.data.bgName
+                    unitName = res.data.unitName
+                    departName = res.data.departName
+                    className = res.data.className
+                    // permList = res.data.permList
+                    role = res.data.role
+                    status = res.data.status
+                }else{
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                    }).then(() => {
+                    })
+                }
+            })
+        },
         // 监听每页显示条数变化
         handleSizeChange (val) {
             let params = {
@@ -398,11 +458,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    .register_l{
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+    }  
     .input{
         width: 20%;
         margin-top: 5px;
-        margin-left: 39%;
+        margin-left: 35%;
         text-align: center;
     }
     .el-col-1{
@@ -419,18 +484,15 @@ export default {
         margin-top: 2%;
     }
     .register-l{
-        float: left;
-        width: 95%;
         margin-left: 10%;
         height: 100%;
         background-color: #1bcbae;
         width: 100%;
-        position: fixed;
     } 
     .search-bar1 {
         /* padding: 12px 22px 14px; */
         background: #fff;
-        width: 70%;
+        width: 72%;
     } 
     .select{
         width: 100%;

@@ -132,7 +132,7 @@ export default {
                 userEmailAddress: '',
                 userDepartment: '',
                 applyStatusId:'',
-                projId:'4',
+                projId:'3',
             },
             applyStatustype: [                //選擇反饋問題類型
                 {label: '待接單', value: 1 },
@@ -236,7 +236,7 @@ export default {
                     userExt:this.UploadModel.userExt,
                     userEmailAddress:this.UploadModel.userEmailAddress,
                     userDepartment:this.UploadModel.userDepartment,
-                    projId:'4',//用印projId為4
+                    projId:'3',//
                 },
             }
             // 附件和參數

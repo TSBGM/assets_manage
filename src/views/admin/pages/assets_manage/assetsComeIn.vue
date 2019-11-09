@@ -235,9 +235,9 @@
                 <div class="topline1"></div>
                 <el-row>
                     <el-form-item style="margin-left:35%">
-                        <el-button class="button_1 " type="button" @click = "saveComeln()">保存</el-button>
-                        <el-button class="button_1 " type="button" @click = "insertNext()">新增下一條</el-button>
-                        <el-button class="button_1 " type="button" @click = "goToLast()">返回</el-button>
+                        <el-button class="button-1 " type="button" @click = "saveComeln()">保存</el-button>
+                        <el-button class="button-1 " type="button" @click = "insertNext()">新增下一條</el-button>
+                        <el-button class="button-1 " type="button" @click = "goToLast()">返回</el-button>
                     </el-form-item>
                 </el-row>
             </el-form>
@@ -248,10 +248,9 @@
                     <el-button class="button_import" type="button" @click = "importTemplate()">
                         下載批量導入模板
                     </el-button>
-                    <!-- <el-button class="button_1 " type="button" @click = "saveComeln()">選擇Excel文件</el-button> -->
                     <el-upload style="display:inline;"
                         ref="upload"
-                        :action="`${FILE_URL_80}/tsbg/upload/importmore`"
+                        :action="`${FILE_URL}/tsbg/upload/importmore`"
                         :headers="headers"
                         :file-list="fileList"
                         :data="otherData"
@@ -268,18 +267,18 @@
                         <el-button slot="trigger" type="plain" class="button_import">
                             選擇Excel文件
                         </el-button>
+                        <div style="margin-top:-60px;">
+                            <!-- <span class="title_1">要導入的文件：</span> -->
+                            <!-- <span class="">XXXX</span> -->
+                            <el-button class="button_2 " type="button" @click = "saveExcel()">刪除</el-button>
+                            <el-button class="button_3 " type="button" @click = "importExcel()">導入</el-button>
+                        </div>
                     </el-upload>
-                </div>    
-                <div>
-                    <el-row>
-                        <span class="title_1">要導入的文件：</span>
-                        <span class="">XXXX</span>
-                        <el-button class="button_2 " type="button" @click = "saveExcel()">刪除</el-button>
-                        <el-button class="button_3 " type="button" @click = "goToLast()">導入</el-button>
-                    </el-row>
-                </div>
+                </div>   
             </el-form>
             <div class="topline-2"></div>
+            <input id="upload" type="file" @change="importfxx(this)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+
             <div style="margin-top:8px;">
                 <span class="title_1">導入預覽：</span>
             </div>
@@ -287,7 +286,19 @@
                 <i-layout :toolbar="bottomButton" :title="title" destroyedWhenClose size="large">
                     <i-table :table="table" @pageSizeChange="handleSizeChange" @pageIndexChange="handleCurrentChange" @Mounted="componentMounted">
                         <template slot="table">
-                            <el-table
+                            <el-table class="table" :data="table.data"  border
+                                tooltip-effect="dark"
+                                :span-method="arraySpanMethod"
+                                ref="multipleTable"  
+                                @current-change="handleChange22"
+                                @selection-change="handleSelectionChange">
+                                <el-table-column  :label="tableTitle" >
+                                    <el-table-column min-width="150" v-for='item in tableHeader' :prop="item" :label="item" :key='item'>
+                                    </el-table-column>
+                                </el-table-column>
+                            </el-table>
+
+                            <!-- <el-table
                                 class="table"
                                 :data="table.data"
                                 border
@@ -295,8 +306,8 @@
                                 :span-method="arraySpanMethod"
                                 ref="multipleTable"  
                                 @current-change="handleChange22"
-                                @selection-change="handleSelectionChange">
-                                    <el-table-column label="序号" width="45">
+                                @selection-change="handleSelectionChange"> -->
+                                    <!-- <el-table-column label="序号" width="45">
                                         <template slot-scope="scope">{{scope.$index + 1}}</template>
                                     </el-table-column>
                                     <el-table-column label="資產名稱" width="80" >
@@ -403,8 +414,8 @@
                                         <template slot-scope="scope">
                                             {{scope.row.ownerName}}
                                         </template>
-                                    </el-table-column>
-                            </el-table>			
+                                    </el-table-column> -->
+                            <!-- </el-table>			 -->
                         </template>
                     </i-table>
                 </i-layout>
@@ -425,6 +436,7 @@
 
 <script>
 // import {getInfo,getPermission} from '../../../../utils/auth'
+import { BASE_URL ,FILE_URL} from '@/store/api'
     export default {
         data () {
             return {
@@ -469,16 +481,18 @@
                 unitFlag:'',
                 departFlag:'',
                 table: {
-                // columns: [
-                // ],
-                search: null,
-                data: null,
-                // 注册 page 相关信息
-                // ---是否显示底部分页
-                showPagebar: true,
-                info: null,
-                totalSize: 0,
-            }
+                    // columns: [
+                    // ],
+                    search: null,
+                    data: null,
+                    // 注册 page 相关信息
+                    // ---是否显示底部分页
+                    showPagebar: true,
+                    info: null,
+                    totalSize: 0,
+                },  
+                tableHeader: '' 
+
             };
         },
         mounted () {
@@ -490,6 +504,7 @@
             this.selectStaffType()//幹部類型
             this.selectWorkStatus() //在职状态
             this.selectBgList() //查询事业群
+            
         },
         methods: {
             init(){
@@ -706,7 +721,119 @@
             //返回
             goToLast(){
                 this.$router.go(-1);
-            }
+            },
+            // 删除文件钩子
+            fileRemvoeFunc (file, fl) {
+                // this.fileList = fl
+                fl.length === 0 && (this.tipFlag = true)
+            },
+            // 文件成功时钩子
+            uploadCtrlFunc (res, file, fl) {
+                this.fileList = fl
+                this.loading = false
+                this.$emit('confirm')
+                // this.done()
+                this.$message({
+                    type: 'success',
+                    message: '文件发布成功'
+                })
+                this.$refs.upload.clearFiles()
+            },
+            // 文件失败时钩子
+            fileErrorFunc (err, file, fileList) {
+                this.loading = false
+                console.log('error: ', err, file, fileList)
+                this.$message({
+                    type: 'error',
+                    message: '文件发布失败'
+                })
+            },
+            // 上传前增加loading
+            beforeUploadFunc (file) {
+                if (file) {
+                    this.loading = true
+                    let fileLimitSize = 30
+                    if (file.size) {
+                        const limitSize = file.size / 1024 / 1024 < fileLimitSize
+                        // const limitSize
+                        if (!limitSize)  {
+                            // debugger
+                        this.$message.warning(`上传文件大小不能超过 ${fileLimitSize} MB!`)
+                        }
+                        return  limitSize && fileLimitSize
+                    }
+                }
+            },
+            // 文件上传到浏览器的钩子
+            handleUploadChange (file, fl) {
+                fl.length > 0 && (this.tipFlag = false)
+            },
+            // 附件和參數
+            uploadSectionFile(file){
+               console.log(file.file)
+                this.postparams.append('file', file);
+            },
+            //批量導入
+             importfxx(obj) {
+                let _this = this;
+                //   console.log(obj);
+                let inputDOM = this.$refs.inputer;
+                // 通过DOM取文件数据
+    
+                this.file = event.currentTarget.files[0];
+            
+                var rABS = false; //是否将文件读取为二进制字符串
+                var f = this.file;
+            
+                var reader = new FileReader();
+                //if (!FileReader.prototype.readAsBinaryString) {
+                FileReader.prototype.readAsBinaryString = function(f) {
+                    var binary = "";
+                    var rABS = false; //是否将文件读取为二进制字符串
+                    var pt = this;
+                    var wb; //读取完成的数据
+                    var outdata;
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                    var bytes = new Uint8Array(reader.result);
+                    var length = bytes.byteLength;
+                    for (var i = 0; i < length; i++) {
+                        binary += String.fromCharCode(bytes[i]);
+                    }
+                    var XLSX = require("xlsx");
+                    if (rABS) {
+                        wb = XLSX.read(btoa(fixdata(binary)), {
+                        //手动转化
+                        type: "base64"
+                        });
+                    } else {
+                        wb = XLSX.read(binary, {
+                        type: "binary"
+                        });
+                    }
+                    outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); //结果
+                        let outdata_1=[]
+                        this.outdata_1.push('totalSize',outdata.length)
+                        this.outdata_1.push('totalPages',outdata.length / 10)
+                        this.outdata_1.push('outdata',outdata)
+                        Object.keys(outdata_1).map(key => (this.table[key] = outdata_1[key]))
+                        console.log(this.outdata_1)
+                        // this.table.data = outdata
+                        // console.log(this.table.data)
+                        // this.table.totalSize = outdata.length
+                        // this.table.totalPages = outdata.length / 10
+                        // console.log(this.table.totalSize)
+                    };
+                    reader.readAsArrayBuffer(f);
+                };
+                if (rABS) {
+                    reader.readAsArrayBuffer(f);
+                } else {
+                    reader.readAsBinaryString(f);
+                }
+                
+
+            },
         }
     }
 </script>
@@ -774,6 +901,13 @@
         width: 87%;
         margin-top: 5px;
         border:0.5px rgb(10, 10, 10) solid;
+    }
+    .button-1{
+        color: #000080;
+        background-color: #88C700;
+        height: 38px;
+        font-size:14px;
+        margin-top: 10px;
     }
     .button_1{
         color: #000080;
