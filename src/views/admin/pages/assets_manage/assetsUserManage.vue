@@ -118,34 +118,34 @@
                                         {{scope.row.departName}}
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="課" min-width="150" prop="className">
+                                <el-table-column label="課" width="160" prop="className">
                                     <template slot-scope="scope">
                                         {{scope.row.className}}
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="查看權限" width="70" >
-                                    <template>
-                                        <el-checkbox v-model="assetsUserManageModel.viewasset"></el-checkbox>
+                                    <template slot-scope="scope">
+                                        <!-- {{scope.row.realPerm[0].VIEW}} -->
+                                        <el-checkbox v-model="scope.row.realPerm[0].VIEW" :checked="scope.row.realPerm[0].VIEW==11" @change= "modifyManager(scope.row)"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="修改權限" width="70" >
-                                    <template>
-                                        <el-checkbox v-model="assetsUserManageModel.updateasset"></el-checkbox>
+                                    <template slot-scope="scope">
+                                        <el-checkbox v-model="scope.row.realPerm[0].UPDATE" :checked="scope.row.realPerm[0].UPDATE==10" @change= "modifyManager(scope.row)"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="增加權限" width="70" >
-                                    <template>
-                                        <el-checkbox v-model="assetsUserManageModel.addasset"></el-checkbox>
+                                    <template slot-scope="scope">
+                                        <el-checkbox v-model="scope.row.realPerm[0].ADD" :checked="scope.row.realPerm[0].ADD==8" @change= "modifyManager(scope.row)"></el-checkbox>
+                                    </template>
+                                </el-table-column> 
+                                <el-table-column label="刪除權限" width="70" >
+                                    <template slot-scope="scope">
+                                        <el-checkbox v-model="scope.row.realPerm[0].DEL" :checked="scope.row.realPerm[0].DEL==9" @change= "modifyManager(scope.row)"></el-checkbox>
                                     </template>
                                 </el-table-column>
-                                <!-- <el-table-column label="刪除權限" width="100" >
-                                    <template>
-                                        <el-checkbox v-model="assetsUserManageModel.delasset"></el-checkbox>
-                                    </template>
-                                </el-table-column> -->
                                 <el-table-column label="角色" width="120" >
                                     <template slot-scope="scope">
-                                        <!-- {{scope.row.role}} -->
                                         <el-select  v-model="scope.row.role" placeholder="请选择" @change= "modifyManager(scope.row)">
                                             <el-option
                                                 v-for="item in roleList"
@@ -158,7 +158,7 @@
                                 </el-table-column>
                                 <el-table-column label="停/啓用" width="160" >
                                     <template slot-scope="scope">  
-                                    <el-radio-group v-model="scope.row.status" @change="modifyManager(scope.row)">
+                                    <el-radio-group v-model="scope.row.status" @change= "modifyManager(scope.row)">
                                         <el-radio :label="1">停用</el-radio>
                                         <el-radio :label="0">啓用</el-radio>
                                     </el-radio-group>
@@ -173,7 +173,6 @@
                 </i-layout>
             </div>
             <div class="topline"></div>
-            <!-- <el-button class="button1" type="button" @click= "searchDetails(val)">查詢</!--> 
         </div>
     </div>
 </template>
@@ -205,6 +204,7 @@ export default {
                 showPagebar: true,
                 info: null,
                 totalSize: 0,
+                
             },
             checked:'',
             bgList:[],//查询事业群
@@ -253,51 +253,44 @@ export default {
                     this.table.data = this.rep
                     this.table.totalSize = res.data.totalSize
                     this.table.totalPages = res.data.totalPages
-
-                    let addassetFlag = false 
-                    let delassetFlag = false
-                    let updateassetFlag = false
-                    let viewassetFlag = false
                     let content = res.data.content
 
-                    let test = []
                     if(this.table.data.length > 0){
                         for (let i = 0; i < this.table.data.length; i++){
+                            // this.rep[i].realPerm = []
                             let permList = this.table.data[i].realPerm
-                            // console.log(permList.length)
-                            for (let j = 0; j < permList.length; j++) {
-                                if(permList[j] == '8') {
-                                    addassetFlag = true
-                                }else if(permList[j] == '9'){
-                                    delassetFlag = true
-                                }else if(permList[j] == '10'){
-                                    updateassetFlag = true
-                                }else if(permList[j] == '11'){
-                                    viewassetFlag = true
+                            if(permList.length > 0){
+                                let addassetFlag = false 
+                                let delassetFlag = false
+                                let updateassetFlag = false
+                                let viewassetFlag = false
+                                this.rep[i].realPerm = []
+                                for (let j = 0; j < permList.length; j++) {
+                                    if(permList[j] == '8') {
+                                        addassetFlag = true
+                                    }else if(permList[j] == '9'){
+                                        delassetFlag = true
+                                    }else if(permList[j] == '10'){
+                                        updateassetFlag = true
+                                    }else if(permList[j] == '11'){
+                                        viewassetFlag = true
+                                    }
                                 }
-
-                            this.test.push({ADD:addassetFlag?'addasset':'',
-                                DEL:delassetFlag?'delasset':'',
-                                UPDATE:updateassetFlag?'updateasset':'',
-                                VIEW:viewassetFlag?'viewasset':''})
-                                // localStorage.setItem('LIMITS', JSON.stringify({
-                                //     ADD:addassetFlag?'addasset':'',
-                                //     DEL:delassetFlag?'delasset':'',
-                                //     UPDATE:updateassetFlag?'updateasset':'',
-                                //     VIEW:viewassetFlag?'viewasset':''
-                                // })
-                                // );
-                                console.log(this.test)
+                                this.rep[i].realPerm.push({ADD:addassetFlag?'8':'',
+                                DEL:delassetFlag?'9':'',
+                                UPDATE:updateassetFlag?'10':'',
+                                VIEW:viewassetFlag?'11':''})
+                            }else if(permList.length == 0){
+                                this.rep[i].realPerm.push({
+                                    ADD:'',DEL:'', UPDATE:'',VIEW:''
+                                })
                             }
-                        
+                            // console.log(permList)
+                            
                         }
                     }
-                    else if(permList.length == 0){
-                        localStorage.setItem('LIMITS', JSON.stringify({
-                            ADD:'',DEL:'', UPDATE:'',VIEW:''
-                        })
-                        );
-                    }
+                    this.table.data.realPerm = this.rep.realPerm
+                    // console.log(this.table.data)
                 }else{
                     this.$alert(res.message, '提示', {
                         confirmButtonText: '确定',
@@ -311,29 +304,66 @@ export default {
         //用戶停/啓用
         modifyManager(scope){
             // debugger
+            // console.log(scope.realPerm[0])
+
             let params={
-                data: '',
+                userCode: scope.userCode,
+                data: [],
                 status: scope.status,
                 role: scope.role
             }
-            this.$store.dispatch('modifyManager',params)
-            .then(res => {
-                if(res.code == 100){
-                    this.$alert(res.message, '提示', {
-                        confirmButtonText: '确定',
-                        showClose: false
-                    }).then(() => {
-                        this.searchUser(scope)
-                    })
-                }else{
-                    this.$alert(res.message, '提示', {
-                        confirmButtonText: '确定',
-                        showClose: false
-                    }).then(() => {
-                        this.searchUser(scope)
-                    })
-                }
-            })
+// console.log(params)
+for (var j = 0; j < scope.realPerm[0].length; j++) {
+                params.data.push ({
+                    data:this.LoginForm.authorities[j],
+                });
+            }
+            // console.log(scope.realPerm[0].ADD)
+            // let add = ''
+            // let view = '' 
+            // let update = '' 
+            // let  del = '' 
+            // if(scope.realPerm[0].ADD == true){
+            //     this.add = 8
+            // }else if(scope.realPerm[0].ADD == false){
+            //     this.add = 6
+            // }
+            // if(scope.realPerm[0].VIEW == true){
+            //     this.view = 11
+            // }else if(scope.realPerm[0].VIEW == false){
+            //     this.view = 6
+            // }
+            // if(scope.realPerm[0].UPDATE == true){
+            //     this.update = 10
+            // }else if(scope.realPerm[0].UPDATE == false){
+            //     this.update = 6
+            // }
+            // if(scope.realPerm[0].DEL == true){
+            //     this.del = 9
+            // }else if(scope.realPerm[0].DEL == false){
+            //     this.del = 6
+            // }
+            
+            // this.params.data.push(this.add,this.view,this.update,this.del)
+// console.log(this.params)
+            // this.$store.dispatch('modifyManager',params)
+            // .then(res => {
+            //     if(res.code == 100){
+            //         this.$alert(res.message, '提示', {
+            //             confirmButtonText: '确定',
+            //             showClose: false
+            //         }).then(() => {
+            //             this.searchUser(scope)
+            //         })
+            //     }else{
+            //         this.$alert(res.message, '提示', {
+            //             confirmButtonText: '确定',
+            //             showClose: false
+            //         }).then(() => {
+            //             this.searchUser(scope)
+            //         })
+            //     }
+            // })
         },
         //添加管理員assetsUserManageModel.userCode
         addManager(){
