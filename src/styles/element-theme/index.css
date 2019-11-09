@@ -1541,12 +1541,16 @@
   left: 50%;
   margin-right: 3px;
   border-top-color: #e6ebf5;
-  border-bottom-width: 0; }
+  border-bottom-width: 0; 
+  display: none;
+}
   .el-popper[x-placement^="top"] .popper__arrow::after {
     bottom: 1px;
     margin-left: -6px;
     border-top-color: #fff;
-    border-bottom-width: 0; }
+    border-bottom-width: 0; 
+    display: none;
+  }
 
 .el-popper[x-placement^="bottom"] {
   /* margin-top: 12px;  */
