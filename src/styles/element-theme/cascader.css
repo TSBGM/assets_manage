@@ -966,7 +966,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }

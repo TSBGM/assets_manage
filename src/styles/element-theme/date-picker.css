@@ -3348,12 +3348,14 @@
   left: 50%;
   margin-right: 3px;
   border-top-width: 0;
-  border-bottom-color: #e6ebf5; }
+  border-bottom-color: #1bcbae;
+    border-color: #1bcbae;}
   .el-popper[x-placement^="bottom"] .popper__arrow::after {
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }

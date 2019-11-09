@@ -1560,7 +1560,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae;}
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
@@ -5126,7 +5127,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
@@ -6433,7 +6435,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
@@ -11066,7 +11069,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
@@ -19620,7 +19624,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
@@ -21386,7 +21391,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
@@ -23408,7 +23414,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
@@ -23948,7 +23955,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae;}
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
@@ -33096,7 +33104,7 @@
       opacity: 1;
       color: #3da5fe; }
     .el-upload-list__item:hover {
-      background-color: #f5f7fa; }
+      background-color: #1bcbae; }
       .el-upload-list__item:hover .el-icon-close {
         display: inline-block; }
       .el-upload-list__item:hover .el-progress__text {
@@ -33130,7 +33138,8 @@
     -webkit-transition: color .3s;
     transition: color .3s;
     white-space: nowrap; 
-    width:40%;
+    width:47%;
+    background-color: #1bcbae;
   }
     .el-upload-list__item-name [class^="el-icon"] {
       height: 100%;
@@ -37719,7 +37728,8 @@
     top: 1px;
     margin-left: -6px;
     border-top-width: 0;
-    border-bottom-color: #fff; }
+    border-bottom-color: #1bcbae;
+    border-color: #1bcbae; }
 
 .el-popper[x-placement^="right"] {
   margin-left: 12px; }
