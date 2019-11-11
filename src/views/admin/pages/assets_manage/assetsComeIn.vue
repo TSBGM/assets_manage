@@ -275,7 +275,7 @@
                 </div>   
             </el-form>
             <div class="topline-2"></div>
-            <a href="javascript:;" class="file">导入表格
+            <a href="javascript:;" class="file">
                 <input id="upload" type="file" @change="importfxx(this)"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
             </a>
 
@@ -286,18 +286,6 @@
                 <i-layout :toolbar="bottomButton" :title="title" destroyedWhenClose size="large">
                     <i-table :table="table" @pageSizeChange="handleSizeChange" @pageIndexChange="handleCurrentChange" @Mounted="componentMounted">
                         <template slot="table">
-                            <!-- <el-table class="table" :data="table.data" border
-                                tooltip-effect="dark"
-                                :span-method="arraySpanMethod"
-                                ref="multipleTable"  
-                                @current-change="handleChange22"
-                                @selection-change="handleSelectionChange">
-                                <el-table-column  :label="tableHeader" > 
-                                </el-table-column>
-                                <el-table-column min-width="150" v-for='item in tableDate' :prop="item" :label="item" :key='item'>
-                                </el-table-column>
-                            </el-table> -->
-
                             <el-table
                                 class="table"
                                 :data="table.data"
@@ -313,28 +301,28 @@
                                 </el-table-column>
                                 <el-table-column label="在職狀態" width="80" prop="在職狀態">
                                 </el-table-column>
-                                <el-table-column label="入職時間" width="80" prop="入職時間">
+                                <el-table-column label="入職時間" width="100" prop="入職時間">
                                 </el-table-column>
-                                <el-table-column label="離職時間" width="80" prop="離職時間">
+                                <el-table-column label="離職時間" width="100" prop="離職時間">
                                 </el-table-column>
                                 <el-table-column label="幹部類型" width="80" prop="幹部類型">
                                 </el-table-column>
                                 <el-table-column label="事業群" width="80" prop="事業群"></el-table-column>
-                                <el-table-column label="事業處" width="80" prop="事業處">
+                                <el-table-column label="事業處" width="150" prop="事業處">
                                 </el-table-column>
-                                <el-table-column label="部" width="80" prop="部">
+                                <el-table-column label="部" width="180" prop="部">
                                 </el-table-column>
-                                <el-table-column label="課" width="95" prop="課">
+                                <el-table-column label="課" width="200" prop="課">
                                 </el-table-column>
-                                <el-table-column label="資產名稱" width="80" prop="資產名稱">
+                                <el-table-column label="資產名稱" width="100" prop="資產名稱">
                                 </el-table-column>
                                 <el-table-column label="資產類型" width="80" prop="資產類型">
                                 </el-table-column>
                                 <el-table-column label="需求説明" width="80" prop="需求説明">
                                 </el-table-column>
-                                <el-table-column label="資產編號" width="80" prop="資產編號">
+                                <el-table-column label="資產編號" width="70" prop="資產編號">
                                 </el-table-column>
-                                <el-table-column label="資產狀態" width="80" prop="資產狀態">
+                                <el-table-column label="資產狀態" width="70" prop="資產狀態">
                                 </el-table-column>
                                 <el-table-column label="廠區" width="80" prop="廠區">
                                 </el-table-column>
@@ -719,7 +707,7 @@ import XLSX from 'xlsx'
                 　　var rABS = false; //是否将文件读取为二进制字符串
                 　　var f = this.file;
                 　　var reader = new FileReader();
-                FileReader.prototype.readAsBinaryString = function(f) {
+                    FileReader.prototype.readAsBinaryString = function(f) {
                         var binary = "";
                         var rABS = false; //是否将文件读取为二进制字符串
                         var pt = this;
@@ -741,24 +729,14 @@ import XLSX from 'xlsx'
                                 wb = XLSX.read(binary, {
                                     type: 'binary'
                                 });
-                            }
-                            let table = {
-                                data: [],
-                                totalSize: 0,
-                            },  
+                            }  
                             outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-                            this.tableDate = outdata;
                             let outdata_1={}
-                            this.outdata_1 = {'totalSize':outdata.length,'totalPages':outdata.length % 10}
+                            this.outdata_1 = {'totalSize':outdata.length,'totalPages':(outdata.length / 10)+1}
                             this.outdata_1.outdata = outdata
                             Object.keys(outdata_1).map(key => (this.table[key] = outdata_1.outdata[key]))
-                            console.log(this.outdata_1.outdata)
-                            this.table.data = outdata
-                            this.table.totalPages = this.outdata_1.totalPages
-                            this.table.totalSize = this.outdata_1.totalSize
-
-                            console.log(this.table)
-                            
+                            _this.table.data = outdata
+                            _this.table.totalPages = this.outdata_1.totalPages
             　　　　　　　}
                         reader.readAsArrayBuffer(f);
                     }
