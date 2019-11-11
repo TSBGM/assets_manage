@@ -34,6 +34,7 @@ const api = {
   findManager:'/tsbg/assets/findManager',//系統用戶管理頁面---查詢用戶
   modifyManager:'/tsbg/assets/modifyManager',//系統用戶管理頁面---權限停/啓用
   addManager:'/tsbg/assets/addManager',//系統用戶管理頁面---添加管理員
+  importAssets:'/import/assets',//批量导入
 
 };
 

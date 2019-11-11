@@ -248,6 +248,20 @@ const actions = {
             return rep.data;
         });
     },
+    //批量导入
+    importAssets ({commit, dispathc, state, rootState}, param) {
+        return axios({
+                url: api.importAssets,
+                method: 'post',
+                baseURL: configUrl.haiUrl,
+                data: param,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+        }).then((rep) => {
+            return rep.data;
+        });
+    },
 }
 export default actions;
 

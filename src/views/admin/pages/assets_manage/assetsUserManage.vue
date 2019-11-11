@@ -285,8 +285,6 @@ export default {
                                     ADD:'',DEL:'', UPDATE:'',VIEW:''
                                 })
                             }
-                            // console.log(permList)
-                            
                         }
                     }
                     this.table.data.realPerm = this.rep.realPerm
@@ -303,67 +301,58 @@ export default {
         },
         //用戶停/啓用
         modifyManager(scope){
-            // debugger
-            // console.log(scope.realPerm[0])
-
             let params={
                 userCode: scope.userCode,
                 data: [],
                 status: scope.status,
                 role: scope.role
             }
-// console.log(params)
-for (var j = 0; j < scope.realPerm[0].length; j++) {
-                params.data.push ({
-                    data:this.LoginForm.authorities[j],
-                });
+            let add = ''
+            let view = '' 
+            let update = '' 
+            let del = '' 
+            if(scope.realPerm[0].ADD == true){
+                this.add = 8
+            }else if(scope.realPerm[0].ADD == false){
+                this.add = 6
             }
-            // console.log(scope.realPerm[0].ADD)
-            // let add = ''
-            // let view = '' 
-            // let update = '' 
-            // let  del = '' 
-            // if(scope.realPerm[0].ADD == true){
-            //     this.add = 8
-            // }else if(scope.realPerm[0].ADD == false){
-            //     this.add = 6
-            // }
-            // if(scope.realPerm[0].VIEW == true){
-            //     this.view = 11
-            // }else if(scope.realPerm[0].VIEW == false){
-            //     this.view = 6
-            // }
-            // if(scope.realPerm[0].UPDATE == true){
-            //     this.update = 10
-            // }else if(scope.realPerm[0].UPDATE == false){
-            //     this.update = 6
-            // }
-            // if(scope.realPerm[0].DEL == true){
-            //     this.del = 9
-            // }else if(scope.realPerm[0].DEL == false){
-            //     this.del = 6
-            // }
+            if(scope.realPerm[0].VIEW == true){
+                this.view = 11
+            }else if(scope.realPerm[0].VIEW == false){
+                this.view = 6
+            }
+            if(scope.realPerm[0].UPDATE == true){
+                this.update = 10
+            }else if(scope.realPerm[0].UPDATE == false){
+                this.update = 6
+            }
+            if(scope.realPerm[0].DEL == true){
+                this.del = 9
+            }else if(scope.realPerm[0].DEL == false){
+                this.del = 6
+            }
             
-            // this.params.data.push(this.add,this.view,this.update,this.del)
-// console.log(this.params)
-            // this.$store.dispatch('modifyManager',params)
-            // .then(res => {
-            //     if(res.code == 100){
-            //         this.$alert(res.message, '提示', {
-            //             confirmButtonText: '确定',
-            //             showClose: false
-            //         }).then(() => {
-            //             this.searchUser(scope)
-            //         })
-            //     }else{
-            //         this.$alert(res.message, '提示', {
-            //             confirmButtonText: '确定',
-            //             showClose: false
-            //         }).then(() => {
-            //             this.searchUser(scope)
-            //         })
-            //     }
-            // })
+            params.data.push(this.add,this.view,this.update,this.del)
+            this.$store.dispatch('modifyManager',params)
+            .then(res => {
+                if(res.code == 100){
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                    }).then(() => {
+                        // this.searchUser()
+                        // this.$router.go(0)
+                    })
+                    // this.searchUser()
+                }else{
+                    this.$alert(res.message, '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                    }).then(() => {
+                        // this.searchUser(scope)
+                    })
+                }
+            })
         },
         //添加管理員assetsUserManageModel.userCode
         addManager(){

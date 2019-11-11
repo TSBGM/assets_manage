@@ -267,17 +267,17 @@
                         <el-button slot="trigger" type="plain" class="button_import">
                             選擇Excel文件
                         </el-button>
-                        <div style="margin-top:-60px;">
-                            <!-- <span class="title_1">要導入的文件：</span> -->
-                            <!-- <span class="">XXXX</span> -->
-                            <el-button class="button_2 " type="button" @click = "saveExcel()">刪除</el-button>
-                            <el-button class="button_3 " type="button" @click = "importExcel()">導入</el-button>
-                        </div>
                     </el-upload>
+                    <div style="margin-top:-9px;">
+                        <el-button class="button_2 " type="button" @click = "saveExcel()">刪除</el-button>
+                        <el-button class="button_3 " type="button" @click = "importExcel()">導入</el-button>
+                    </div>
                 </div>   
             </el-form>
             <div class="topline-2"></div>
-            <input id="upload" type="file" @change="importfxx(this)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+            <a href="javascript:;" class="file">导入表格
+                <input id="upload" type="file" @change="importfxx(this)"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+            </a>
 
             <div style="margin-top:8px;">
                 <span class="title_1">導入預覽：</span>
@@ -286,136 +286,67 @@
                 <i-layout :toolbar="bottomButton" :title="title" destroyedWhenClose size="large">
                     <i-table :table="table" @pageSizeChange="handleSizeChange" @pageIndexChange="handleCurrentChange" @Mounted="componentMounted">
                         <template slot="table">
-                            <el-table class="table" :data="table.data"  border
+                            <!-- <el-table class="table" :data="table.data" border
                                 tooltip-effect="dark"
                                 :span-method="arraySpanMethod"
                                 ref="multipleTable"  
                                 @current-change="handleChange22"
                                 @selection-change="handleSelectionChange">
-                                <el-table-column  :label="tableTitle" >
-                                    <el-table-column min-width="150" v-for='item in tableHeader' :prop="item" :label="item" :key='item'>
-                                    </el-table-column>
+                                <el-table-column  :label="tableHeader" > 
                                 </el-table-column>
-                            </el-table>
+                                <el-table-column min-width="150" v-for='item in tableDate' :prop="item" :label="item" :key='item'>
+                                </el-table-column>
+                            </el-table> -->
 
-                            <!-- <el-table
+                            <el-table
                                 class="table"
                                 :data="table.data"
                                 border
                                 tooltip-effect="dark"
                                 :span-method="arraySpanMethod"
-                                ref="multipleTable"  
-                                @current-change="handleChange22"
-                                @selection-change="handleSelectionChange"> -->
-                                    <!-- <el-table-column label="序号" width="45">
-                                        <template slot-scope="scope">{{scope.$index + 1}}</template>
-                                    </el-table-column>
-                                    <el-table-column label="資產名稱" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="工號" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="姓名" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="干部类型" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="在職狀態" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="事業群" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="事業處" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="部" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="課" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="廠區" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="廠内區域信息" width="95" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="廠内樓棟" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="資產使用位置信息" width="120" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="資產狀態" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="資產類型" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="資產編號" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="需求説明" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="入職日期" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="離職時間" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="組織名稱" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerCode}}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="備註" width="80" >
-                                        <template slot-scope="scope">
-                                            {{scope.row.ownerName}}
-                                        </template>
-                                    </el-table-column> -->
-                            <!-- </el-table>			 -->
+                                ref="multipleTable" > 
+                                <el-table-column label="序号" width="45">
+                                    <template slot-scope="scope">{{scope.$index + 1}}</template>
+                                </el-table-column>
+                                <el-table-column label="工號" width="80" prop="工號"></el-table-column>
+                                <el-table-column label="姓名" width="80" prop="姓名">
+                                </el-table-column>
+                                <el-table-column label="在職狀態" width="80" prop="在職狀態">
+                                </el-table-column>
+                                <el-table-column label="入職時間" width="80" prop="入職時間">
+                                </el-table-column>
+                                <el-table-column label="離職時間" width="80" prop="離職時間">
+                                </el-table-column>
+                                <el-table-column label="幹部類型" width="80" prop="幹部類型">
+                                </el-table-column>
+                                <el-table-column label="事業群" width="80" prop="事業群"></el-table-column>
+                                <el-table-column label="事業處" width="80" prop="事業處">
+                                </el-table-column>
+                                <el-table-column label="部" width="80" prop="部">
+                                </el-table-column>
+                                <el-table-column label="課" width="95" prop="課">
+                                </el-table-column>
+                                <el-table-column label="資產名稱" width="80" prop="資產名稱">
+                                </el-table-column>
+                                <el-table-column label="資產類型" width="80" prop="資產類型">
+                                </el-table-column>
+                                <el-table-column label="需求説明" width="80" prop="需求説明">
+                                </el-table-column>
+                                <el-table-column label="資產編號" width="80" prop="資產編號">
+                                </el-table-column>
+                                <el-table-column label="資產狀態" width="80" prop="資產狀態">
+                                </el-table-column>
+                                <el-table-column label="廠區" width="80" prop="廠區">
+                                </el-table-column>
+                                <el-table-column label="工作區域" width="80" prop="工作區域">
+                                </el-table-column>
+                                <el-table-column label="工作樓棟" width="80" prop="工作樓棟">
+                                </el-table-column>
+                                <el-table-column label="使用地點" width="80" prop="使用地點">
+                                </el-table-column>
+                                <el-table-column label="備注" width="80" prop="備注">
+                                </el-table-column>
+                            </el-table>			
                         </template>
                     </i-table>
                 </i-layout>
@@ -437,6 +368,7 @@
 <script>
 // import {getInfo,getPermission} from '../../../../utils/auth'
 import { BASE_URL ,FILE_URL} from '@/store/api'
+import XLSX from 'xlsx'
     export default {
         data () {
             return {
@@ -491,8 +423,8 @@ import { BASE_URL ,FILE_URL} from '@/store/api'
                     info: null,
                     totalSize: 0,
                 },  
-                tableHeader: '' 
-
+                tableHeader: [], 
+                tableDate: [] ,
             };
         },
         mounted () {
@@ -722,6 +654,11 @@ import { BASE_URL ,FILE_URL} from '@/store/api'
             goToLast(){
                 this.$router.go(-1);
             },
+            //下載批量導入模板assetsInfo
+            importTemplate(){
+                debugger
+                window.open(`http:10.139.198.184:8080/import/assets`)
+            },
             // 删除文件钩子
             fileRemvoeFunc (file, fl) {
                 // this.fileList = fl
@@ -770,69 +707,89 @@ import { BASE_URL ,FILE_URL} from '@/store/api'
             },
             // 附件和參數
             uploadSectionFile(file){
-               console.log(file.file)
-                this.postparams.append('file', file);
+            //    console.log(file.file)
+                this.postparams.append('file', file.file);
             },
             //批量導入
-             importfxx(obj) {
+            importfxx(obj) {
                 let _this = this;
-                //   console.log(obj);
                 let inputDOM = this.$refs.inputer;
                 // 通过DOM取文件数据
-    
                 this.file = event.currentTarget.files[0];
-            
-                var rABS = false; //是否将文件读取为二进制字符串
-                var f = this.file;
-            
-                var reader = new FileReader();
-                //if (!FileReader.prototype.readAsBinaryString) {
+                　　var rABS = false; //是否将文件读取为二进制字符串
+                　　var f = this.file;
+                　　var reader = new FileReader();
                 FileReader.prototype.readAsBinaryString = function(f) {
-                    var binary = "";
-                    var rABS = false; //是否将文件读取为二进制字符串
-                    var pt = this;
-                    var wb; //读取完成的数据
-                    var outdata;
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                    var bytes = new Uint8Array(reader.result);
-                    var length = bytes.byteLength;
-                    for (var i = 0; i < length; i++) {
-                        binary += String.fromCharCode(bytes[i]);
-                    }
-                    var XLSX = require("xlsx");
-                    if (rABS) {
-                        wb = XLSX.read(btoa(fixdata(binary)), {
-                        //手动转化
-                        type: "base64"
-                        });
-                    } else {
-                        wb = XLSX.read(binary, {
-                        type: "binary"
-                        });
-                    }
-                    outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); //结果
-                        let outdata_1=[]
-                        this.outdata_1.push('totalSize',outdata.length)
-                        this.outdata_1.push('totalPages',outdata.length / 10)
-                        this.outdata_1.push('outdata',outdata)
-                        Object.keys(outdata_1).map(key => (this.table[key] = outdata_1[key]))
-                        console.log(this.outdata_1)
-                        // this.table.data = outdata
-                        // console.log(this.table.data)
-                        // this.table.totalSize = outdata.length
-                        // this.table.totalPages = outdata.length / 10
-                        // console.log(this.table.totalSize)
-                    };
-                    reader.readAsArrayBuffer(f);
-                };
-                if (rABS) {
-                    reader.readAsArrayBuffer(f);
-                } else {
-                    reader.readAsBinaryString(f);
-                }
-                
+                        var binary = "";
+                        var rABS = false; //是否将文件读取为二进制字符串
+                        var pt = this;
+                        var wb; //读取完成的数据
+                        var outdata;
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            var bytes = new Uint8Array(reader.result);
+                            var length = bytes.byteLength;
+                            for(var i = 0; i < length; i++) {
+                                binary += String.fromCharCode(bytes[i]);
+                            }
+                            var XLSX = require('xlsx');
+                            if(rABS) {
+                                wb = XLSX.read(btoa(fixdata(binary)), { //手动转化
+                                    type: 'base64'
+                                });
+                            } else {
+                                wb = XLSX.read(binary, {
+                                    type: 'binary'
+                                });
+                            }
+                            let table = {
+                                data: [],
+                                totalSize: 0,
+                            },  
+                            outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+                            this.tableDate = outdata;
+                            let outdata_1={}
+                            this.outdata_1 = {'totalSize':outdata.length,'totalPages':outdata.length % 10}
+                            this.outdata_1.outdata = outdata
+                            Object.keys(outdata_1).map(key => (this.table[key] = outdata_1.outdata[key]))
+                            console.log(this.outdata_1.outdata)
+                            this.table.data = outdata
+                            this.table.totalPages = this.outdata_1.totalPages
+                            this.table.totalSize = this.outdata_1.totalSize
 
+                            console.log(this.table)
+                            
+            　　　　　　　}
+                        reader.readAsArrayBuffer(f);
+                    }
+                    if(rABS) {
+                        reader.readAsArrayBuffer(f);
+                    } else {
+                        reader.readAsBinaryString(f);
+                    }
+            },
+
+            //確認保存
+            saveExcel(){
+                this.postparams = new FormData()
+                this.postparams.append('assetsVo',{userCode:'F000001'});
+                this.$refs.upload.submit()
+                this.$store.dispatch('importAssets', this.postparams)
+                .then(res => {
+                    if(res.code == 100){
+                        this.$alert(res.message, '提示', {
+                            confirmButtonText: '确定',
+                            showClose: false
+                            }).then(() => {
+                        })
+                    }else{
+                        this.$alert(res.message, '提示', {
+                            confirmButtonText: '确定',
+                            showClose: false
+                            }).then(() => {
+                        })
+                    }
+                })
             },
         }
     }
@@ -942,6 +899,7 @@ import { BASE_URL ,FILE_URL} from '@/store/api'
         width: 58px;
         height: 25px;
         font-size:13px;
+        // margin-left: 30%;
         margin-top: 10px;
         line-height: 10%;
         border-color: #333333;
