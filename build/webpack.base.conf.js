@@ -22,6 +22,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
+    // app: './src/views/admin/main.js'
     app: ["babel-polyfill", "./src/views/admin/main.js"]
   },
   output: {
@@ -42,7 +43,7 @@ module.exports = {
   },
   module: {
     rules: [
-    //   ...(config.dev.useEslint ? [createLintingRule()] : []),
+      // ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -58,7 +59,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('img/guzi-[name].[hash:7].[ext]')
         }
       },
       {
@@ -74,7 +75,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: utils.assetsPath('fonts/guzi-[name].[hash:7].[ext]')
         }
       }
     ]

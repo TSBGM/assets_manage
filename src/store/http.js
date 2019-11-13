@@ -1,6 +1,6 @@
 const axios = require('axios');
 import { Message } from 'element-ui'
-import {getToken} from '../utils/auth'
+import {getToken,removeToken} from '../utils/auth'
 
 axios.defaults.timeout = 60000;
 // http request 拦截器
@@ -36,6 +36,11 @@ axios.interceptors.response.use(
         }
         if (response.config && response.config.headers) {
             if (response.config.headers['token']) localStorage.TOKEN = response.config.headers['token'];
+        }
+        //token验证失效请重新登錄
+        if(response.data.code == '400'){
+            // removeToken()
+            // window.location.replace(`http://`+window.location.host)  
         }
         return response;
     },

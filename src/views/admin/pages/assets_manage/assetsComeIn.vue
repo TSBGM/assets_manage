@@ -245,16 +245,17 @@
         <div v-if="radio === '2'">
             <el-form>
                 <div class="import-style">
-                    <el-button class="button_import" type="button" @click = "importTemplate()">
-                        下載批量導入模板
+                    <el-button class="button_import" type="button">
+                        <a class="icon" :href="getDownload()" @click="importTemplate();" >下載批量導入模板</a>
                     </el-button>
+                    <!-- :on-remove="fileRemvoeFunc"  :file-list="fileList" -->
                     <el-upload style="display:inline;"
                         ref="upload"
-                        :action="`${FILE_URL}/tsbg/upload/importmore`"
+                        :action="`${FILE_URL}/tsbg/batchInsert/upload`"
                         :headers="headers"
-                        :file-list="fileList"
+                        
                         :data="otherData"
-                        :on-remove="fileRemvoeFunc"
+                        
                         :on-error="fileErrorFunc"
                         :before-upload="beforeUploadFunc"
                         :on-change="handleUploadChange"
@@ -269,16 +270,15 @@
                         </el-button>
                     </el-upload>
                     <div style="margin-top:-9px;">
-                        <el-button class="button_2 " type="button" @click = "saveExcel()">刪除</el-button>
-                        <el-button class="button_3 " type="button" @click = "importExcel()">導入</el-button>
+                        <el-button class="button_2 " type="button" @click = "delExcel()">刪除</el-button>
+                        <el-button class="button_3 " type="button" @click = "importExcel(val)">導入</el-button>
                     </div>
                 </div>   
             </el-form>
             <div class="topline-2"></div>
-            <a href="javascript:;" class="file">
+            <!-- <a href="javascript:;" class="file">
                 <input id="upload" type="file" @change="importfxx(this)"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-            </a>
-
+            </a> -->
             <div style="margin-top:8px;">
                 <span class="title_1">導入預覽：</span>
             </div>
@@ -296,43 +296,59 @@
                                 <el-table-column label="序号" width="45">
                                     <template slot-scope="scope">{{scope.$index + 1}}</template>
                                 </el-table-column>
-                                <el-table-column label="工號" width="80" prop="工號"></el-table-column>
-                                <el-table-column label="姓名" width="80" prop="姓名">
+                                <el-table-column label="工號" width="80" prop="ownerCode"></el-table-column>
+                                <el-table-column label="姓名" width="80" prop="ownerName">
                                 </el-table-column>
-                                <el-table-column label="在職狀態" width="80" prop="在職狀態">
+                                <el-table-column label="在職狀態" width="80" prop="workStatusId">
                                 </el-table-column>
-                                <el-table-column label="入職時間" width="100" prop="入職時間">
+                                <el-table-column label="入職時間" width="100">
+                                    <template slot-scope="scope">
+                                        <span v-html="dateFormatTime(scope.row['joinBgDate'])"></span>
+                                    </template>
                                 </el-table-column>
-                                <el-table-column label="離職時間" width="100" prop="離職時間">
+                                <el-table-column label="離職時間" width="100">
+                                    <template slot-scope="scope">
+                                        <span v-html="dateFormatTime(scope.row['leftDate'])"></span>
+                                    </template>
                                 </el-table-column>
-                                <el-table-column label="幹部類型" width="80" prop="幹部類型">
+                                <el-table-column label="幹部類型" width="80" prop="staffTypeId">
                                 </el-table-column>
-                                <el-table-column label="事業群" width="80" prop="事業群"></el-table-column>
-                                <el-table-column label="事業處" width="150" prop="事業處">
+                                <el-table-column label="事業群" width="70" prop="bgId"></el-table-column>
+                                <el-table-column label="事業處" width="70" prop="unitId">
                                 </el-table-column>
-                                <el-table-column label="部" width="180" prop="部">
+                                <el-table-column label="部" width="70" prop="departId">
                                 </el-table-column>
-                                <el-table-column label="課" width="200" prop="課">
+                                <el-table-column label="課" width="70" prop="classId">
                                 </el-table-column>
-                                <el-table-column label="資產名稱" width="100" prop="資產名稱">
+                                <el-table-column label="資產名稱" width="100" prop="assetsName">
                                 </el-table-column>
-                                <el-table-column label="資產類型" width="80" prop="資產類型">
+                                <el-table-column label="資產類型" width="80" prop="staffTypeId">
                                 </el-table-column>
-                                <el-table-column label="需求説明" width="80" prop="需求説明">
+                                <el-table-column label="需求説明" width="150">
+                                    <template slot-scope="scope">
+                                        <el-popover trigger="hover" placement="top" :visible-arrow="false">
+                                            <p class="popover-p">{{ scope.row['specifications']}}</p>
+                                            <div slot="reference" class="name-wrapper">
+                                                <el-tag size="medium">
+                                                    {{ scope.row[specifications]}}
+                                                </el-tag>
+                                            </div>
+                                        </el-popover>
+                                    </template>
                                 </el-table-column>
-                                <el-table-column label="資產編號" width="70" prop="資產編號">
+                                <el-table-column label="資產編號" width="80" prop="assetsNumber">
                                 </el-table-column>
-                                <el-table-column label="資產狀態" width="70" prop="資產狀態">
+                                <el-table-column label="資產狀態" width="70" prop="assetsStatusId">
                                 </el-table-column>
-                                <el-table-column label="廠區" width="80" prop="廠區">
+                                <el-table-column label="廠區" width="70" prop="factoryId">
                                 </el-table-column>
-                                <el-table-column label="工作區域" width="80" prop="工作區域">
+                                <el-table-column label="工作區域" width="70" prop="areaId">
                                 </el-table-column>
-                                <el-table-column label="工作樓棟" width="80" prop="工作樓棟">
+                                <el-table-column label="工作樓棟" width="70" prop="buildingId">
                                 </el-table-column>
-                                <el-table-column label="使用地點" width="80" prop="使用地點">
+                                <el-table-column label="使用地點" width="150" prop="usingPlace">
                                 </el-table-column>
-                                <el-table-column label="備注" width="80" prop="備注">
+                                <el-table-column label="備注" width="100" prop="remark">
                                 </el-table-column>
                             </el-table>			
                         </template>
@@ -357,10 +373,12 @@
 // import {getInfo,getPermission} from '../../../../utils/auth'
 import { BASE_URL ,FILE_URL} from '@/store/api'
 import XLSX from 'xlsx'
+import moment from 'moment'
     export default {
         data () {
             return {
                 radio: '1',
+                userCode:localStorage.getItem('USERCODE'), //登錄人工號
                 assetsComelnModel:{
                     // projId:3,//項目id
                     userCode:'133',//登錄人工號
@@ -411,8 +429,9 @@ import XLSX from 'xlsx'
                     info: null,
                     totalSize: 0,
                 },  
-                tableHeader: [], 
-                tableDate: [] ,
+                // tableHeader: [], 
+                // tableDate: [] ,
+                fileList: [], // 上传文件列表
             };
         },
         mounted () {
@@ -427,16 +446,6 @@ import XLSX from 'xlsx'
             
         },
         methods: {
-            init(){
-                //權限管理
-                let permission = JSON.parse(getPermission());
-                let permissionList = permission.permissionList
-                if(permissionList.length == 2){
-                    this.POWER = ''
-                }else if(permissionList.length == 3){
-                    this.POWER = 'powerstamp'
-                }
-            },
             //廠區
             selectFactory(){
                 this.$store.dispatch('selectFactory')
@@ -643,9 +652,19 @@ import XLSX from 'xlsx'
                 this.$router.go(-1);
             },
             //下載批量導入模板assetsInfo
+            getDownload () {
+                return `${FILE_URL}/tsbg/batchInsert/download?fileName=assetsInfo.xlsx`
+            },
             importTemplate(){
-                debugger
-                window.open(`http:10.139.198.184:8080/import/assets`)
+                const form = document.createElement('form')
+                const formConfig = {
+                    action: this.getDownload(),
+                    method: 'get',
+                }
+                Object.entries(formConfig).map(
+                    ([key, val]) => form.setAttribute(key, val)
+                )
+                form.submit()
             },
             // 删除文件钩子
             fileRemvoeFunc (file, fl) {
@@ -692,82 +711,158 @@ import XLSX from 'xlsx'
             // 文件上传到浏览器的钩子
             handleUploadChange (file, fl) {
                 fl.length > 0 && (this.tipFlag = false)
+                this.fileList = JSON.parse(JSON.stringify(fl))
             },
             // 附件和參數
             uploadSectionFile(file){
-            //    console.log(file.file)
                 this.postparams.append('file', file.file);
             },
             //批量導入
-            importfxx(obj) {
-                let _this = this;
-                let inputDOM = this.$refs.inputer;
-                // 通过DOM取文件数据
-                this.file = event.currentTarget.files[0];
-                　　var rABS = false; //是否将文件读取为二进制字符串
-                　　var f = this.file;
-                　　var reader = new FileReader();
-                    FileReader.prototype.readAsBinaryString = function(f) {
-                        var binary = "";
-                        var rABS = false; //是否将文件读取为二进制字符串
-                        var pt = this;
-                        var wb; //读取完成的数据
-                        var outdata;
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-                            var bytes = new Uint8Array(reader.result);
-                            var length = bytes.byteLength;
-                            for(var i = 0; i < length; i++) {
-                                binary += String.fromCharCode(bytes[i]);
-                            }
-                            var XLSX = require('xlsx');
-                            if(rABS) {
-                                wb = XLSX.read(btoa(fixdata(binary)), { //手动转化
-                                    type: 'base64'
-                                });
-                            } else {
-                                wb = XLSX.read(binary, {
-                                    type: 'binary'
-                                });
-                            }  
-                            outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-                            let outdata_1={}
-                            this.outdata_1 = {'totalSize':outdata.length,'totalPages':(outdata.length / 10)+1}
-                            this.outdata_1.outdata = outdata
-                            Object.keys(outdata_1).map(key => (this.table[key] = outdata_1.outdata[key]))
-                            _this.table.data = outdata
-                            _this.table.totalPages = this.outdata_1.totalPages
-            　　　　　　　}
-                        reader.readAsArrayBuffer(f);
-                    }
-                    if(rABS) {
-                        reader.readAsArrayBuffer(f);
-                    } else {
-                        reader.readAsBinaryString(f);
-                    }
+            // importExcel(obj) {
+            //     let _this = this;
+            //     let inputDOM = this.$refs.inputer;
+            //     // 通过DOM取文件数据
+            //     this.file = event.currentTarget.files[0];
+            //     　　var rABS = false; //是否将文件读取为二进制字符串
+            //     　　var f = this.file;
+            //     　　var reader = new FileReader();
+            //         FileReader.prototype.readAsBinaryString = function(f) {
+            //             var binary = "";
+            //             var rABS = false; //是否将文件读取为二进制字符串
+            //             var pt = this;
+            //             var wb; //读取完成的数据
+            //             var outdata;
+            //             var reader = new FileReader();
+            //             reader.onload = function(e) {
+            //                 var bytes = new Uint8Array(reader.result);
+            //                 var length = bytes.byteLength;
+            //                 for(var i = 0; i < length; i++) {
+            //                     binary += String.fromCharCode(bytes[i]);
+            //                 }
+            //                 var XLSX = require('xlsx');
+            //                 if(rABS) {
+            //                     wb = XLSX.read(btoa(fixdata(binary)), { //手动转化
+            //                         type: 'base64'
+            //                     });
+            //                 } else {
+            //                     wb = XLSX.read(binary, {
+            //                         type: 'binary'
+            //                     });
+            //                 }  
+            //                 outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+            //                 let outdata_1={}
+            //                 this.outdata_1 = {'totalSize':outdata.length,'totalPages':Math.ceil(outdata.length / 10)}
+            //                 this.outdata_1.outdata = outdata
+            //                 Object.keys(outdata_1).map(key => (this.table[key] = outdata_1.outdata[key]))
+            //                 _this.table.data = outdata
+            //                 _this.table.totalPages = this.outdata_1.totalPages
+            //                 _this.table.totalSize = this.outdata_1.totalSize
+            //                 console.log(_this.table.totalPages)
+            // 　　　　　　　}
+            //             reader.readAsArrayBuffer(f);
+            //         }
+            //         if(rABS) {
+            //             reader.readAsArrayBuffer(f);
+            //         } else {
+            //             reader.readAsBinaryString(f);
+            //         }
+            // },
+            dateFormatTime: function(value) {
+                if(value){
+                    var formatterTime = moment(new Date(value)).format("YYYY-MM-DD");
+                    return "<font>"+formatterTime+"</font>";
+                }
+                else {
+                    return "";
+                }
             },
-
+            //刪除附件及表格数据
+            delExcel(){
+                this.$refs.upload.clearFiles();
+                this.table.data = null
+            },
+            // 监听每页显示条数变化
+            handleSizeChange (val) {
+                let params = {
+                    pageIndex: val.pageIndex,
+                    pageSize: val.pageSize,
+                }   
+                this.table.info = val
+                this.importExcel(params)
+            },
+            // 监听页数变化
+            handleCurrentChange (val) {
+                let params = {
+                    pageIndex: val.pageIndex,
+                    pageSize: val.pageSize,
+                }
+                this.table.info = val
+                this.importExcel(params)
+            },
+            //導入预览模板数据 
+            importExcel(val){
+                let param = {
+                    pageIndex: val && val.pageIndex ? val.pageIndex :1,
+                    pageSize: val && val.pageSize ? val.pageSize :10,
+                }
+                this.postparams = new FormData()
+                this.postparams.append('pageRequest',JSON.stringify(param));
+                this.$refs.upload.submit()
+                if(this.fileList.length > 0){
+                    this.$store.dispatch('viewAssets', this.postparams)
+                    .then(res => {
+                        if(res.code == 100){
+                            this.rep = res.data.content
+                            Object.keys(res).map(key => (this.table[key] = res.data[key]))
+                            this.table.data = this.rep
+                            this.table.totalSize = res.data.totalSize
+                            this.table.totalPages = res.data.totalPages
+                        }else{
+                            this.$alert(res.message, '提示', {
+                                confirmButtonText: '确定',
+                                showClose: false
+                                }).then(() => {
+                                    this.$refs.upload.clearFiles();
+                                    this.table.data = null
+                            })
+                        }
+                    })
+                }else{
+                    this.$alert('未選擇任何文件！', '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                        }).then(() => {
+                    })
+                }
+            },
             //確認保存
             saveExcel(){
                 this.postparams = new FormData()
-                this.postparams.append('assetsVo',{userCode:'F000001'});
                 this.$refs.upload.submit()
-                this.$store.dispatch('importAssets', this.postparams)
-                .then(res => {
-                    if(res.code == 100){
-                        this.$alert(res.message, '提示', {
-                            confirmButtonText: '确定',
-                            showClose: false
-                            }).then(() => {
-                        })
-                    }else{
-                        this.$alert(res.message, '提示', {
-                            confirmButtonText: '确定',
-                            showClose: false
-                            }).then(() => {
-                        })
-                    }
-                })
+                if(this.fileList.length > 0){
+                    this.$store.dispatch('importAssets', this.postparams)
+                    .then(res => {
+                        if(res.code == 100){
+                            this.$alert(res.message, '提示', {
+                                confirmButtonText: '确定',
+                                showClose: false
+                                }).then(() => {
+                            })
+                        }else{
+                            this.$alert(res.message, '提示', {
+                                confirmButtonText: '确定',
+                                showClose: false
+                                }).then(() => {
+                            })
+                        }
+                    })
+                }else{
+                    this.$alert('請先選擇導入文件！', '提示', {
+                        confirmButtonText: '确定',
+                        showClose: false
+                        }).then(() => {
+                    })
+                }
             },
         }
     }
@@ -775,13 +870,12 @@ import XLSX from 'xlsx'
 
 <style lang="scss" scoped>
     .register-l{
-        margin-left: 5%;
+        float: left;
+        margin: 30px 30px 30px 8%;
         height: 100%;
         background-color: #1bcbae;
-        width: 100%;
-        overflow-y: auto; 
-        // position: fixed;
-       
+        width: 92%;
+        // position: fixed;      
     }  
     .radio{
         margin-top: 1%;

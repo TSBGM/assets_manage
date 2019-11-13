@@ -92,7 +92,7 @@
                                 <el-table-column label="工號" width="130" prop="userCode">
                                     <template slot-scope="scope">
                                         <span v-if="scope.row.isSet">
-                                            <el-input size="mini" v-model="assetsUserManageModel.userCode" @blur.prevent="addManager()">
+                                            <el-input size="mini" v-model="list.userCode" @blur.prevent="addManager()">
                                             </el-input>
                                         </span>
                                         <span v-else>{{scope.row.userCode}}</span>
@@ -100,48 +100,56 @@
                                 </el-table-column>
                                 <el-table-column label="姓名" width="110" prop="userName">
                                     <template slot-scope="scope">
-                                        {{scope.row.userName}}
+                                        <span v-if="scope.row.isSet">{{list.userName}}</span>
+                                        <span v-else>{{scope.row.userName}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="事業群" width="90" prop="bgName">
                                     <template slot-scope="scope">
-                                        {{scope.row.bgName}}
+                                        <span v-if="scope.row.isSet">{{list.bgName}}</span>
+                                        <span v-else>{{scope.row.bgName}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="事業處" width="150" prop="unitName">
                                     <template slot-scope="scope">
-                                        {{scope.row.unitName}}
+                                        <span v-if="scope.row.isSet">{{list.unitName}}</span>
+                                        <span v-else>{{scope.row.unitName}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="部" width="150" prop="departName">
                                     <template slot-scope="scope">
-                                        {{scope.row.departName}}
+                                        <span v-if="scope.row.isSet">{{list.departName}}</span>
+                                        <span v-else>{{scope.row.departName}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="課" width="160" prop="className">
                                     <template slot-scope="scope">
-                                        {{scope.row.className}}
+                                        <span v-if="scope.row.isSet">{{list.className}}</span>
+                                        <span v-else>{{scope.row.className}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="查看權限" width="70" >
                                     <template slot-scope="scope">
-                                        <!-- {{scope.row.realPerm[0].VIEW}} -->
-                                        <el-checkbox v-model="scope.row.realPerm[0].VIEW" :checked="scope.row.realPerm[0].VIEW==11" @change= "modifyManager(scope.row)"></el-checkbox>
+                                        <el-checkbox v-if="scope.row.isSet"  :checked="false"></el-checkbox>
+                                        <el-checkbox v-else v-model="scope.row.realPerm[0].VIEW" :checked="scope.row.realPerm[0].VIEW==11" @change= "modifyManager(scope.row)"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="修改權限" width="70" >
                                     <template slot-scope="scope">
-                                        <el-checkbox v-model="scope.row.realPerm[0].UPDATE" :checked="scope.row.realPerm[0].UPDATE==10" @change= "modifyManager(scope.row)"></el-checkbox>
+                                        <el-checkbox v-if="scope.row.isSet" :checked="false"></el-checkbox>
+                                        <el-checkbox v-else v-model="scope.row.realPerm[0].UPDATE" :checked="scope.row.realPerm[0].UPDATE==10" @change= "modifyManager(scope.row)"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="增加權限" width="70" >
                                     <template slot-scope="scope">
-                                        <el-checkbox v-model="scope.row.realPerm[0].ADD" :checked="scope.row.realPerm[0].ADD==8" @change= "modifyManager(scope.row)"></el-checkbox>
+                                        <el-checkbox v-if="scope.row.isSet" :checked="false"></el-checkbox>
+                                        <el-checkbox v-else v-model="scope.row.realPerm[0].ADD" :checked="scope.row.realPerm[0].ADD==8" @change= "modifyManager(scope.row)"></el-checkbox>
                                     </template>
                                 </el-table-column> 
                                 <el-table-column label="刪除權限" width="70" >
                                     <template slot-scope="scope">
-                                        <el-checkbox v-model="scope.row.realPerm[0].DEL" :checked="scope.row.realPerm[0].DEL==9" @change= "modifyManager(scope.row)"></el-checkbox>
+                                        <el-checkbox v-if="scope.row.isSet"  :checked="false"></el-checkbox>
+                                        <el-checkbox v-else v-model="scope.row.realPerm[0].DEL" :checked="scope.row.realPerm[0].DEL==9" @change= "modifyManager(scope.row)"></el-checkbox>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="角色" width="120" >
@@ -166,7 +174,7 @@
                                 </el-table-column>
                             </el-table>
                             <footer>
-                                <el-button class="button2" @click.prevent="addRow()"><i class="el-icon-plus"></i></el-button>
+                                <el-button class="button2" @click.prevent= "addRow()"><i class="el-icon-plus"></i></el-button>
                             </footer>
                         </template> 
                     </i-table>
@@ -187,7 +195,6 @@ export default {
                 unitId:'',//根据bgId查询事业处unit接口
                 departId:'',//根据bgId、 unitId查询部门depart接口
                 classId:'',//根据bgId、 unitId 、departId查询課Class接口
-                list:{},
                 status:'',
             },
             roleList: [    //角色
@@ -211,6 +218,7 @@ export default {
             unitList:[],//根据bgId查询事业处unit接口
             departList:[],//根据bgId、 unitId查询部门depart接口
             classList:[],//根据bgId、 unitId 、departId查询課Class接口
+            list:{},
 
             BgFlag:'',
             unitFlag:'',
@@ -231,7 +239,7 @@ export default {
                 unitName: '',
                 departName: '',
                 className: '',
-                isSet:true
+                isSet: true
             }
             this.table.data.push(this.list)
         },
@@ -359,16 +367,17 @@ export default {
             this.$store.dispatch('addManager',{userCode:this.assetsUserManageModel.userCode})
             .then(res => {
                 if(res.code == 100){
-                    debugger
-                    userCode = res.data.userCode
-                    userName = res.data.userName
-                    bgName = res.data.bgName
-                    unitName = res.data.unitName
-                    departName = res.data.departName
-                    className = res.data.className
-                    // permList = res.data.permList
-                    role = res.data.role
-                    status = res.data.status
+                    this.list.userCode = res.data[0].userCode
+                    this.list.userName = res.data[0].userName
+                    this.list.bgName = res.data[0].bgName
+                    this.list.unitName = res.data[0].unitName
+                    this.list.departName = res.data[0].departName
+                    this.list.className = res.data[0].className
+
+                    // this.assetsUserManageModel.role = res.data.role
+                    // this.assetsUserManageModel.status = res.data.status
+                    console.log(res.data)
+                    console.log(this.list)
                 }else{
                     this.$alert(res.message, '提示', {
                         confirmButtonText: '确定',
@@ -479,9 +488,11 @@ export default {
 
 <style lang="scss" scoped>
     .register_l{
+        float: left;
+        width: 92%;
+        margin: 30px 30px 30px 8%;
         height: 100%;
-        width: 100%;
-        overflow-y: auto;
+        background-color: #1bcbae;
     }  
     .input{
         width: 20%;
@@ -506,12 +517,12 @@ export default {
         margin-left: 10%;
         height: 100%;
         background-color: #1bcbae;
-        width: 100%;
+        width: 90%;
     } 
     .search-bar1 {
         /* padding: 12px 22px 14px; */
         background: #fff;
-        width: 72%;
+        width: 80%;
     } 
     .select{
         width: 100%;

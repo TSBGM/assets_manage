@@ -253,11 +253,19 @@ const actions = {
         return axios({
                 url: api.importAssets,
                 method: 'post',
-                baseURL: configUrl.haiUrl,
+                baseURL: configUrl.baseUrl,
                 data: param,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+        }).then((rep) => {
+            return rep.data;
+        });
+    },
+    //预览模板数据
+    viewAssets({commit, dispathc, state, rootState}, param) {
+        return axios({
+                url: api.viewAssets,
+                method: 'post',
+                baseURL: configUrl.baseUrl,
+                data: param,
         }).then((rep) => {
             return rep.data;
         });

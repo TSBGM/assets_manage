@@ -1,3 +1,4 @@
+
 'use strict'
 const path = require('path')
 const utils = require('./utils')
@@ -26,8 +27,10 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    // filename: utils.assetsPath('js/[name].[chunkhash].js'),
+    // chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    filename: utils.assetsPath('js/guzi-[name].js?v=[hash:8]'),
+    chunkFilename: utils.assetsPath('js/guzi-[id].js?v=[hash:8]')
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -43,9 +46,10 @@ const webpackConfig = merge(baseWebpackConfig, {
       sourceMap: config.build.productionSourceMap,
       parallel: true
     }),
-    // extract css into its own file
+    // extract css into its own file?v=[hash:8]
     new ExtractTextPlugin({
-      filename: utils.assetsPath('css/guzi-[name].[contenthash].css'),
+      // filename: utils.assetsPath('css/[name].[contenthash].css'),
+      filename: utils.assetsPath('css/guzi-[name].css?v=[hash:8]'),
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
       // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 

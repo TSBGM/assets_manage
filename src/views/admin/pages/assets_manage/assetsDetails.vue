@@ -291,7 +291,7 @@
                                     </el-table-column>
                                     <el-table-column label="事業群" width="70" >
                                         <template slot-scope="scope">
-                                            {{scope.row.bgname}}
+                                            {{scope.row.bgName}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="事業處" width="170" >
@@ -367,7 +367,7 @@
                                            {{scope.row.remark}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="操作" min-width="50" fixed="right">
+                                    <el-table-column label="操作" min-width="50" fixed="right" v-if="this.UPDATE == 'updateasset'">
                                         <template slot-scope="scope">
                                             <el-button @click="updateOpen(scope.row.intengibleAssetsId)" type="text" size="small">修改</el-button>
                                         </template>
@@ -385,10 +385,12 @@
 </template>
 
 <script>
+import { BASE_URL } from '@/store/api'
 import moment from 'moment'
 export default {
     data() {
         return {
+            UPDATE:JSON.parse(localStorage.getItem('LIMITS')).UPDATE,
             assetsDetailsModel:{
                 // projId:3,//項目id
                 // userCode:'133',//登錄人工號
@@ -656,6 +658,13 @@ export default {
                 },
                 assetsquerypackage:{}
             }
+            // let params = {
+            //     pageTools:{
+            //         pageIndex: val ? val.pageIndex :1,
+            //         pageSize: val ? val.pageSize :10,
+            //     },
+            //     assetsVo:{}
+            // }
             params.assetsquerypackage = this.assetsDetailsModel
             this.$store.dispatch('query',params)
             .then(res => {
@@ -680,9 +689,10 @@ export default {
             localStorage.setItem('intengibleAssetsId', id);
             this.$store.dispatch('selectAssetsInfoById', {intengibleAssetsId:id})
             .then(res => {
-                // if(res.data.code == 0){
-                    window.open("http://localhost:8080/#/assetsDetailUpdate")
-                    // window.open(`${BASE_URL}/#/assetsDetailUpdate`)
+                if(res.code == 100){
+                    // window.open("http://localhost:8080/#/assetsDetailUpdate")
+                    window.open(`${BASE_URL}/#/assetsDetailUpdate`)
+                }
             })
         
         },
@@ -751,16 +761,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .register-l{
         float: left;
-        width: 95%;
-        margin: 30px;
-        margin-left: 5%;
+        margin: 30px 30px 30px 8%;
         height: 100%;
         background-color: #1bcbae;
-        width: 100%;
-        overflow-y: auto;
+        width: 92%;
         /* position: fixed; */
     }  
     .el-col{

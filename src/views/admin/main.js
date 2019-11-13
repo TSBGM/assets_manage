@@ -6,11 +6,8 @@ import App from './App'
 import router from './router'
 import store from '../../store'
 // import 'es6-promise/auto'
-import PageModal from '@/components/pageModal/index.js'
 import '../../assets/css/main.css';
 
-Vue.prototype.$pageModal = PageModal;
-window.$channel = new Vue();
 import './permission.js'
 
 // 注册全局mixin

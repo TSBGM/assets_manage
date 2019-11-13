@@ -285,7 +285,7 @@ export default {
         gotoLogin() {
             this.$router.go(-1);
         },
-            // <!--问题反馈列表-->
+        // <!--问题反馈列表-->
         gotofeedbackSelect() {
             this.$router.replace({
                 path: '/feedbackSelect',
@@ -317,6 +317,7 @@ export default {
         float: left;
         width: 95%;
         margin: 30px;
+        overflow-y: auto;
     }  
     .el-input{
         width: 50%;

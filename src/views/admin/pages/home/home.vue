@@ -1,5 +1,5 @@
 <template>
-<div class="wrapper"> 
+<div class="wrapper" v-if="this.getToken && this.getPermission"> 
     <div class="main-header">  
         <div class="main-header-left"> 
             <div class="fii-style">
@@ -8,8 +8,8 @@
             <span>TSBG固定資產管理系統</span>
         </div>
         <div class="user-header">
-            <div class="form" >當前用戶：胡永鋒</div>
-            <div class="form" >角色：MIS資產管理員</div>
+            <div class="form" >當前用戶：{{this.userName}}</div>
+            <div class="form" >角色：{{this.roleName}}</div>
             
             <div class="edit" @click="gotoLogout">
                 <span class="span-header">登出</span>
@@ -27,34 +27,41 @@
             active-text-color="#333333"
             router 
             :default-active="activerouter">
-            <el-menu-item index="/assetsDetails" class="menu-item-font" >固定資產明細</el-menu-item>
-            <el-menu-item index="/assetsComeIn" class="menu-item-font">固定資產入庫</el-menu-item>
+            <el-menu-item index="/assetsDetails" class="menu-item-font" v-if="this.VIEW == 'viewasset'" >固定資產明細</el-menu-item>
+            <el-menu-item index="/assetsComeIn" class="menu-item-font" v-if="this.ADD == 'addasset'">固定資產入庫</el-menu-item>
             <!-- <el-menu-item index="/assetsDistribute" class="menu-item-font">固定資產分配</el-menu-item>
             <el-menu-item index="/assetsScrap" class="menu-item-font" >資產報廢管理</el-menu-item> -->
-            <el-menu-item index="/assetsUserManage" class="menu-item-font">系統用戶管理</el-menu-item>
+            <el-menu-item index="/assetsUserManage" class="menu-item-font" v-if="this.POWER == 'powerasset'">系統用戶管理</el-menu-item>
             <el-menu-item index="/FeedbackUpload" class="menu-item-font">問題反饋</el-menu-item>
         </el-menu>
     </div>
 
-    <el-main style="height:100vh;">
+    <el-main class="main-height">
         <router-view></router-view>
     </el-main>
 </div>    
 </template>
 
 <script>
-// import {getInfo,getPermission} from '../../../../utils/auth'
+import {getInfo,getPermission,getToken,removeToken,removeInfo,removePermission,setProjId} from '../../../../utils/auth'
   export default {
     components: {
     },
     data(){
         return{
             activerouter:'0',
-            userName : localStorage.getItem('USERNAME'),
+            userName : '',
+            POWER:JSON.parse(localStorage.getItem('LIMITS')) ? JSON.parse(localStorage.getItem('LIMITS')).POWER:'',
+            VIEW:JSON.parse(localStorage.getItem('LIMITS')) ? JSON.parse(localStorage.getItem('LIMITS')).VIEW:'',
+            ADD:JSON.parse(localStorage.getItem('LIMITS')) ? JSON.parse(localStorage.getItem('LIMITS')).ADD:'',
+            getToken:getToken(),
+            getPermission:getPermission(),
+            // getToken:'1111',
+            roleName:'',
         }
     },
     mounted () {
-        // this.init()
+        this.init()
     },
     watch: {
         $route () {
@@ -63,14 +70,13 @@
     },
     methods: {
         init(){
-            //權限管理
-            let permission = JSON.parse(getPermission());
-            let permissionList = permission.permissionList
-            if(permissionList.length == 2){
-                this.POWER = ''
-            }else if(permissionList.length == 3){
-                this.POWER = 'powerstamp'
+            let userInfo = JSON.parse(getInfo());
+            this.userName = userInfo.userName
+            if(getPermission()){
+                let permission = JSON.parse(getPermission());
+                this.roleName = permission.roleName
             }
+            localStorage.setItem('USERCODE',userInfo.userCode)
         },
         handleSelect(key, keyPath) {
         }, 
@@ -127,6 +133,7 @@
             .fii-style{
                 width:59px;
                 height:35px;
+                margin-left: 10px;
                 display:inline-block;
                 vertical-align: middle;
             }
@@ -184,6 +191,9 @@
             }
 
         }
+    }
+    .main-height{
+        height:calc(100% - 130px);
     }
     
 </style>

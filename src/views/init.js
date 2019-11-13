@@ -12,9 +12,6 @@ Vue.component('i-form', IForm)
 // i-table组件全局注册
 import ITable from '@/components/common/i-table'
 Vue.component('i-table', ITable)
-// i-layout组件全局注册
-// import ILayout from 'components/common/i-layout'
-// Vue.component('i-layout', ILayout)
 
 // 更改日期输入框不能输入
 Element.DatePicker.props.editable = false
@@ -25,7 +22,6 @@ Element.Autocomplete.watch = {
     this.broadcast('ElAutocompleteSuggestions', 'visible', [val, 'auto'])
   }
 }
-
 
 import '@/styles/element-theme/index.css'
 import '@/styles/index.scss'

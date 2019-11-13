@@ -10,23 +10,7 @@ export default new Vuex.Store({
   modules: {
     mutations,
     assetsManage,
-  },
-  state: {
-    token: null,
-    userInfo: {
-      user:{
-        userName:"",
-        mobile:""
-      },
-    },
-    toast: {
-      isShow: false,
-      config: {
-        msg: '',
-        width: '7.6em',
-        time: 2000
-      }
-    }
+    
   },
   // actions,
   // mutations

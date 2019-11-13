@@ -402,9 +402,9 @@ export default {
     data() {
         return {
             intengibleAssetsId:localStorage.getItem('intengibleAssetsId'),
+            // userCode:localStorage.getItem('USERCODE'), //登錄人工號
             assetsDetailUpdateModel:{
                 // projId:3,//項目id
-                // userCode:'133',//登錄人工號
                 factoryId:'',//厰區
                 areaId:'',//工作區域列表
                 buildingId:'',//廠内區域樓棟

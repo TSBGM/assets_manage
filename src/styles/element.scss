@@ -430,7 +430,8 @@
   border: none;
   border-radius: 0;
   .el-message-box__header{
-    background: #FAFAFA;
+    // background: #FAFAFA;
+    background: rgb(238, 237, 237);
     padding: 16px;
     .el-message-box__title{
       text-align: center;
