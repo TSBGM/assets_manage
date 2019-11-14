@@ -1,5 +1,5 @@
 <template>
-    <div class="register-l">
+    <div class="register-l" v-if="this.ADD == 'addasset'">
         <div class="radio">
             <el-radio v-model="radio" label="1">單條錄入新增</el-radio>
             <el-radio v-model="radio" label="2">通過excel批量導入</el-radio>
@@ -378,6 +378,7 @@ import moment from 'moment'
         data () {
             return {
                 radio: '1',
+                ADD:JSON.parse(localStorage.getItem('LIMITS')) ? JSON.parse(localStorage.getItem('LIMITS')).ADD:'',
                 userCode:localStorage.getItem('USERCODE'), //登錄人工號
                 assetsComelnModel:{
                     // projId:3,//項目id

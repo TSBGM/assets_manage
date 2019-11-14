@@ -1,5 +1,5 @@
 <template>
-    <div class="register_l">
+    <div class="register_l" v-if="this.POWER == 'powerasset'">
         <el-input 
             class="input"
             placeholder="可輸入工號、姓名查看擁有的權限"
@@ -189,6 +189,7 @@
 export default {
     data() {
         return {
+            POWER:JSON.parse(localStorage.getItem('LIMITS')) ? JSON.parse(localStorage.getItem('LIMITS')).POWER:'',
             assetsUserManageModel:{
                 userCode:'',//查詢用戶
                 bgId:'',//查询事业群

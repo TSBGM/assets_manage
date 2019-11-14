@@ -1,5 +1,5 @@
 <template>
-    <div class="register-l">
+    <div class="register-l" v-if="this.VIEW == 'viewasset'" >
         <el-form>
             <span class="title_1">請選擇查詢範圍：</span>
             <div class="rowcss">
@@ -391,6 +391,7 @@ export default {
     data() {
         return {
             UPDATE:JSON.parse(localStorage.getItem('LIMITS')).UPDATE,
+            VIEW:JSON.parse(localStorage.getItem('LIMITS')) ? JSON.parse(localStorage.getItem('LIMITS')).VIEW:'',
             assetsDetailsModel:{
                 // projId:3,//項目id
                 // userCode:'133',//登錄人工號

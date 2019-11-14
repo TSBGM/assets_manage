@@ -16,15 +16,15 @@ import assetsUserManage from '../pages/assets_manage/assetsUserManage.vue'
 import assetsDetailUpdate from '../pages/assets_manage/assetsDetailUpdate.vue'
 import FeedbackUpload from '../pages/feedback/feedbackUpload'
 
-
 const router = new Router({
     scrollBehavior: () => ({y: 0}),
+    VIEW:JSON.parse(localStorage.getItem('LIMITS')) ? JSON.parse(localStorage.getItem('LIMITS')).VIEW:'',
     routes: [
         {
             path: '/',
             name: '首頁',
             component: Admin,
-            redirect: '/assetsDetails',
+            redirect: this.VIEW == 'viewasset' ? '/assetsDetails':'/FeedbackUpload',// 
             meta: {
                 title: '',
                 requireAuth: true,  
